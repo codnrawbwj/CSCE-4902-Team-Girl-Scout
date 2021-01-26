@@ -10,6 +10,7 @@ import 'package:girl_scout_simple/screens/members.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:simple_image_crop/simple_image_crop.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
+import 'package:girl_scout_simple/components/database_operations.dart';
 
 class Add extends StatefulWidget {
   //TODO: complete parameters
@@ -445,28 +446,10 @@ class _AddState extends State<Add> {
 
                       final File localFile = await file.copy('$path');
 
-                      switch (gradeString)
-                      {
-                        case 'Daisy':
-                          addScoutToList(gradeEnum.DAISY, teamController.text, nameController.text, month, day, year, path);
-                          break;
-                        case 'Brownie':
-                          addScoutToList(gradeEnum.BROWNIE, teamController.text, nameController.text, month, day, year, path);
-                          break;
-                        case 'Junior':
-                          addScoutToList(gradeEnum.JUNIOR, teamController.text, nameController.text, month, day, year, path);
-                          break;
-                        case 'Cadette':
-                          addScoutToList(gradeEnum.CADETTE, teamController.text, nameController.text, month, day, year, path);
-                          break;
-                        case 'Senior':
-                          addScoutToList(gradeEnum.SENIOR, teamController.text, nameController.text, month, day, year, path);
-                          break;
-                        case 'Ambassador':addScoutToList(gradeEnum.AMBASSADOR, teamController.text, nameController.text, month, day, year, path);
-                          break;
-                      }
+                      addScoutToList(gradeString, teamController.text, nameController.text, month, day, year, path);
+                      await db.addMember(gradeString, teamController.text, nameController.text, month, day, year, path);
                       //Navigator.push(context, MaterialPageRoute(builder: (
-                          //context) => Members()));
+                          //+context) => Members()));
                       Navigator.pop(context);
                     },
                   ),

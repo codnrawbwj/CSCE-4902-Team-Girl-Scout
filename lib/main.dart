@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/bottom_navigation.dart';
-import 'package:girl_scout_simple/components/globals.dart';
-import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/screens/dashboard.dart';
 import 'package:girl_scout_simple/screens/members.dart';
 import 'package:girl_scout_simple/screens/collection.dart';
 import 'package:girl_scout_simple/screens/settings.dart';
+import 'package:girl_scout_simple/components/globals.dart';
+import 'package:hive/hive.dart';
 
-void main() {
+
+void main() async{
+  print('starting init');
+  await db.initDB();
+  print('finished init');
+
   runApp(Home());
-  GirlScoutDatabase db = GirlScoutDatabase();
-  db.loadMembers(gradeEnum.DAISY);
-  db.loadMembers(gradeEnum.BROWNIE);
-  db.loadMembers(gradeEnum.JUNIOR);
-  db.loadMembers(gradeEnum.CADETTE);
-  db.loadMembers(gradeEnum.SENIOR);
-  db.loadMembers(gradeEnum.AMBASSADOR);
 }
 
 class Home extends StatelessWidget {

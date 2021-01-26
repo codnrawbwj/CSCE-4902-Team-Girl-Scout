@@ -3,6 +3,11 @@ import 'package:girl_scout_simple/components/default_theme.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/components/images_by_grade.dart';
 
+//import 'package:girl_scout_simple/components/globals.dart';
+import 'package:girl_scout_simple/components/badge_container.dart';
+import 'package:girl_scout_simple/components/reusable_card.dart';
+import 'package:girl_scout_simple/models.dart';
+
 class Collection extends StatefulWidget {
   static String id = '/Collection';
 
@@ -32,7 +37,7 @@ class _CollectionState extends State<Collection> {
               ],
             ),
             title: const Text(
-              'Members',
+              'Badges',
               style: TextStyle(
                 color: kBlackColor,
                 fontWeight: FontWeight.bold,
@@ -40,21 +45,21 @@ class _CollectionState extends State<Collection> {
               ),
             ),
             actions: <Widget>[
-              GestureDetector( onTap: () {
+              GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.search, color: kBlackColor,), ),
+              }, child: Icon(Icons.search, color: kBlackColor,),),
               SizedBox(width: 10.0),
-              GestureDetector( onTap: () {
+              GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.apps, color: kBlackColor,), ),
+              }, child: Icon(Icons.apps, color: kBlackColor,),),
               SizedBox(width: 10.0),
-              GestureDetector( onTap: () {
+              GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.format_list_bulleted, color: kBlackColor,), ),
+              }, child: Icon(Icons.format_list_bulleted, color: kBlackColor,),),
               SizedBox(width: 10.0),
-              GestureDetector( onTap: () {
+              GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.get_app, color: kBlackColor,), ),
+              }, child: Icon(Icons.get_app, color: kBlackColor,),),
               SizedBox(width: 10.0),
             ],
             backgroundColor: kWhiteColor,
@@ -64,16 +69,181 @@ class _CollectionState extends State<Collection> {
           //Note: ListView makes the page vertically scrollable.
           body: TabBarView(
             children: [
-              //TODO: create the list of collection and pass it
-              //TODO: count the number of boxes for each grade
-              ImagesByGrade(grade: "ALL", title: "Badge", subtitle: "18 collections", numBox: 1,),
-              ImagesByGrade(grade: "DAISY", title: "Badge", subtitle: "18 collections", numBox: 1,),
-              ImagesByGrade(grade: "BROWNIE", title: "Badge", subtitle: "18 collections", numBox: 1,),
-              ImagesByGrade(grade: "JUNIOR", title: "Badge", subtitle: "18 collections", numBox: 1,),
-              ImagesByGrade(grade: "CADETTE", title: "Badge", subtitle: "18 collections", numBox: 1,),
-              ImagesByGrade(grade: "SENIOR", title: "Badge", subtitle: "18 collections", numBox: 1,),
-              ImagesByGrade(grade: "AMBASSADOR", title: "Badge", subtitle: "18 collections", numBox: 1,),
-            ],
+              ListView(
+                  children: <Widget>[
+                    ReusableCard(
+                      title: 'Badges', subtitle: 'All', addIcon: true,
+                      cardChild: Column(
+                        children: <Widget>[
+                          ListView(
+                            shrinkWrap: true,
+                            children: getBadgeWidgetList(gradeEnum.ALL, false)
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ///THIS IS USED FOR PATCHES
+                    ///ReusableCard(
+                    ///  title: 'Patches', subtitle: 'All', addIcon: true,
+                    ///  cardChild:
+                    ///  ListView(
+                    ///      shrinkWrap: true,
+                    ///      children: getBadgeWidgetList(gradeEnum.ALL, false)
+                    ///  ),
+                    ///),
+                  ]
+              ),
+              ListView(
+                  children: <Widget>[
+                    ReusableCard(
+                      title: 'Badges', subtitle: 'Daisy', addIcon: true,
+                      cardChild: Column(
+                        children: <Widget>[
+                          ListView(
+                              shrinkWrap: true,
+                              children: getBadgeWidgetList(gradeEnum.DAISY, false)
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ///THIS IS USED FOR PATCHES
+                    ///ReusableCard(
+                    ///  title: 'Patches', subtitle: 'Daisy', addIcon: true,
+                    ///  cardChild:
+                    ///  ListView(
+                    ///      shrinkWrap: true,
+                    ///      children: getBadgeWidgetList(gradeEnum.DAISY, false)
+                    ///  ),
+                    ///),
+                  ]
+              ),
+              ListView(
+                  children: <Widget>[
+                    ReusableCard(
+                      title: 'Badges', subtitle: 'Brownie', addIcon: true,
+                      cardChild: Column(
+                        children: <Widget>[
+                          ListView(
+                              shrinkWrap: true,
+                              children: getBadgeWidgetList(gradeEnum.BROWNIE, false)
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ///THIS IS USED FOR PATCHES
+                    ///ReusableCard(
+                    ///  title: 'Patches', subtitle: 'Brownie', addIcon: true,
+                    ///  cardChild:
+                    ///  ListView(
+                    ///      shrinkWrap: true,
+                    ///      children: getBadgeWidgetList(gradeEnum.BROWNIE, false)
+                    ///  ),
+                    ///),
+                  ]
+              ),
+              ListView(
+                  children: <Widget>[
+                    ReusableCard(
+                      title: 'Badges', subtitle: 'Junior', addIcon: true,
+                      cardChild: Column(
+                        children: <Widget>[
+                          ListView(
+                              shrinkWrap: true,
+                              children: getBadgeWidgetList(gradeEnum.JUNIOR, false)
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ///THIS IS USED FOR PATCHES
+                    ///ReusableCard(
+                    ///  title: 'Patches', subtitle: 'Junior', addIcon: true,
+                    ///  cardChild:
+                    ///  ListView(
+                    ///      shrinkWrap: true,
+                    ///      children: getBadgeWidgetList(gradeEnum.JUNIOR, false)
+                    ///  ),
+                    ///),
+                  ]
+              ),
+              ListView(
+                  children: <Widget>[
+                    ReusableCard(
+                      title: 'Badges', subtitle: 'Cadette', addIcon: true,
+                      cardChild: Column(
+                        children: <Widget>[
+                          ListView(
+                              shrinkWrap: true,
+                              children: getBadgeWidgetList(gradeEnum.CADETTE, false)
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ///THIS IS USED FOR PATCHES
+                    ///ReusableCard(
+                    ///  title: 'Patches', subtitle: 'Cadette', addIcon: true,
+                    ///  cardChild:
+                    ///  ListView(
+                    ///      shrinkWrap: true,
+                    ///      children: getBadgeWidgetList(gradeEnum.CADETTE, false)
+                    ///  ),
+                    ///),
+                  ]
+              ),
+              ListView(
+                  children: <Widget>[
+                    ReusableCard(
+                      title: 'Badges', subtitle: 'Senior', addIcon: true,
+                      cardChild: Column(
+                        children: <Widget>[
+                          ListView(
+                              shrinkWrap: true,
+                              children: getBadgeWidgetList(gradeEnum.SENIOR, false)
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ///THIS IS USED FOR PATCHES
+                    ///ReusableCard(
+                    ///  title: 'Patches', subtitle: 'Senior', addIcon: true,
+                    ///  cardChild:
+                    ///  ListView(
+                    ///      shrinkWrap: true,
+                    ///      children: getBadgeWidgetList(gradeEnum.SENIOR, false)
+                    ///  ),
+                    ///),
+                  ]
+              ),
+              ListView(
+                  children: <Widget>[
+                    ReusableCard(
+                      title: 'Badges', subtitle: 'Ambassador', addIcon: true,
+                      cardChild: Column(
+                        children: <Widget>[
+                          ListView(
+                              shrinkWrap: true,
+                              children: getBadgeWidgetList(gradeEnum.AMBASSADOR, false)
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ///THIS IS USED FOR PATCHES
+                    ///ReusableCard(
+                    ///  title: 'Patches', subtitle: 'Ambassador', addIcon: true,
+                    ///  cardChild:
+                    ///  ListView(
+                    ///      shrinkWrap: true,
+                    ///      children: getBadgeWidgetList(gradeEnum.AMBASSADOR, false)
+                    ///  ),
+                    ///),
+                  ]
+              ),],
           ),
         ),
       ),

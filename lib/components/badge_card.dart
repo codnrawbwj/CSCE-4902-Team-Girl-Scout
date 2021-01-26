@@ -2,39 +2,33 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
+import 'globals.dart';
 import 'package:girl_scout_simple/models.dart';
 import 'package:girl_scout_simple/components/globals.dart';
-import 'package:girl_scout_simple/screens/member_info.dart';
+import 'package:girl_scout_simple/screens/badge_info.dart';
 
-//import 'globals.dart';
+class BadgeCard extends StatelessWidget {
 
-class AnimatedMemberCard extends StatefulWidget {
+  BadgeCard({this.grade, this.name, this.description, this.requirements,
+    this.quantity, this.photoLocation, this.selectable = false, this.memberData});
 
-  final Data data;
-
-  AnimatedMemberCard({@required this.data});
-  @override
-  _AnimatedMemberCard createState() => _AnimatedMemberCard();
-}
-
-class _AnimatedMemberCard extends State<AnimatedMemberCard> {
-
-  String name;
-  String team;
-  String imageLocation;
+  final gradeEnum grade;
+  final String name;
+  final String description;
+  final List<String> requirements;
+  final int quantity;
+  final String photoLocation; //idk if we need this
+  final bool selectable;
+  final Data memberData;
 
   @override
   Widget build(BuildContext context) {
-    name = widget.data.name;
-    team = widget.data.team;
-    imageLocation = widget.data.photoLocation;
-
-    return AnimatedContainer(
-      margin: EdgeInsets.fromLTRB(15, 15, 15, 0),
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       width: MediaQuery
           .of(context)
           .size
-          .width * 0.91,
+          .width * 0.800,
       decoration: BoxDecoration(
         color: kWhiteColor,
         border: Border.all(
@@ -50,29 +44,28 @@ class _AnimatedMemberCard extends State<AnimatedMemberCard> {
           ),
         ],
       ),
-      duration: Duration(milliseconds: 100),
 
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: InkWell(
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 //parentPage == 'Setting' ? ExcludeTitle() : IncludeTitle(title: title, subtitle: subtitle),
                 //show only if subtitle is not null ('')
                 Expanded(
                   flex: 3,
                   child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: FileImage(File(imageLocation)),
-                          fit: BoxFit.scaleDown
-                      ),
-                    ),
-                  ),
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: FileImage(File(photoLocation)),
+                    fit: BoxFit.scaleDown
+                ),
+              ),
+            ),
                 ),
                 SizedBox(width: 10.0),
                 Expanded(
@@ -85,29 +78,34 @@ class _AnimatedMemberCard extends State<AnimatedMemberCard> {
                             .of(context)
                             .textTheme
                             .headline2,),
-                        SizedBox(height: 20.0),
-                        Text(team, style: Theme
+                        Text(description, style: Theme
                             .of(context)
                             .textTheme
                             .subtitle1,),
                       ]
                   ),
                 ),
-                SizedBox(height: 20.0),
-                Column(
-                    children: <Widget>[
-//TODO add number of bagdes completed in an elegant way, can be a button that appears when scout is ready to be moved to higher rank
-                    ]
-                ),
               ],
             ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => new MemberInfo(data: widget.data)));
-              setState(() {
-                //update();
-              });
+            onTap: () async{
               //TODO create funtion so that if state is triggered, bring up edit page with populated information for tapped scout
+              if (selectable) {
+                  //add badge to scout list
+                if (memberData == null) {
+                  print(
+                      'YOU NEED TO PASS A  MEMBER IF YOU MAKE THE BADGECARD SELECTABLE!');
+                  return;
+                }
+                Member member = db.getMember(memberData.name); //get member
+                Badge badge = db.getBadge(name);
+
+                await db.addBadgeTag(member, badge);
+                Navigator.pop(context, true);
+                }
+              else {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => new BadgeInfo(badge: db.getBadge(name))));
+                }
             }
         ),
       ),

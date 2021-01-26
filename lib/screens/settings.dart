@@ -95,7 +95,9 @@ class _SettingsState extends State<Settings> {
                   ),
               ),
               ReusableCard(parentPage: 'Setting', title: '', subtitle: '', addIcon: false,
-                cardChild: SettingFlatButton(title: "Delete All Data"),
+                cardChild: SettingFlatButton(
+                    title: "Delete All Data"
+                ),
                 ),
               SizedBox(height: 15.0),
             ],
