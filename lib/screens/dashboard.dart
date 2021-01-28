@@ -26,9 +26,8 @@ class _DashboardState extends State<Dashboard> {
      ///*
     var now = DateTime.now();
     var today = DateTime(now.year, now.month, now.day);
-    // ---------------- test data (remove when done testing) ---------------
+    // ---------------- test data (remove when done testing) --------------
 
-    _badgeTagsBox.clear();
     print('loading badge data for chart');
     if (_badgeTagsBox.isEmpty) {
       var yesterday = today.subtract(new Duration(days: 1));
