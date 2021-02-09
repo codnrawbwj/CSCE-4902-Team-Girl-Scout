@@ -99,8 +99,10 @@ class BadgeCard extends StatelessWidget {
                 Member member = db.getMember(memberData.name); //get member
                 Badge badge = db.getBadge(name);
 
-                await db.addBadgeTag(member, badge);
-                Navigator.pop(context, true);
+                if (await db.addBadgeTag(member, badge) == null) //if member already has badge, alert user
+                  AlertPopup(context);
+                else
+                  Navigator.pop(context, true);
                 }
               else {
                 Navigator.push(context, MaterialPageRoute(
@@ -111,4 +113,25 @@ class BadgeCard extends StatelessWidget {
       ),
     );
   }
+}
+
+void AlertPopup(BuildContext context) async {
+  String result = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Notice'),
+          content: Text('Member already has the selected badge'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: ()async {
+                Navigator.pop(context, 'yes');
+              },
+            ),
+          ],
+        );
+      }
+  );
 }

@@ -236,7 +236,7 @@ class GirlScoutDatabase {
   }
 
 
-  Future<void> addBadgeTag (Member member, Badge badge) async{
+  Future<dynamic> addBadgeTag (Member member, Badge badge) async{
     //try {
     print('adding member badge');
     var memberBox = Hive.box('members'); //open boxes
@@ -244,6 +244,13 @@ class GirlScoutDatabase {
     var badgeTagBox = Hive.box('badgeTags');
 
     Map<String,String> requirementsMet = Map();
+
+    for (BadgeTag bt in member.badgeTags) { // check if member already has badge
+      Badge b = bt.badge.first;
+      if (b.name == badge.name ) {
+        return null; // return empty
+      }
+    }
 
     var badgeLink = HiveList(badgeBox); // create a hive list to hold 1 badge
     badgeLink.add(badge); // link badge to badgeTag
