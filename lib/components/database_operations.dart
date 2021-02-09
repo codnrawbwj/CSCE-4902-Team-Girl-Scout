@@ -117,7 +117,6 @@ class GirlScoutDatabase {
         {
           print(i.name);
           Grade grade = i.grade.first;
-          print(describeEnum(grade.name));
           addScoutToList(describeEnum(grade.name), i.team, i.name, monthNames[i.birthday.month], i.birthday.day, i.birthday.year, i.photoPath);
         }
     }
@@ -267,6 +266,8 @@ class GirlScoutDatabase {
 
     badge.badgeTags.add(badgeTag); // link badgeTag to badge
     member.badgeTags.add(badgeTag); // link badgeTag to member
+    member.save();
+    badge.save();
     BadgeTag memberbadge = member.badgeTags.first;
     print(memberbadge.status);
     /*
@@ -288,7 +289,7 @@ class GirlScoutDatabase {
 
     for (var i in badgeTagBox.values) {
       print('badge tag box values');
-      print(i.status);
+      print(i.member.first.name);
     }
 
     Member member = getMember(name); //get member
