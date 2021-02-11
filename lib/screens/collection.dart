@@ -19,7 +19,6 @@ class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: DefaultTheme().theme,
       home: DefaultTabController(
         length: 7,
         child: Scaffold(
@@ -36,33 +35,39 @@ class _CollectionState extends State<Collection> {
                 Tab(text: "AMBASSADOR"),
               ],
             ),
-            title: const Text(
+            title: Text(
               'Badges',
-              style: TextStyle(
-                color: kBlackColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 30.0,
-              ),
+              style: Theme.of(context).textTheme.headline1,
+              // style: TextStyle(
+              //   color: kBlackColor,
+              //   fontWeight: FontWeight.bold,
+              //   fontSize: 30.0,
+              // ),
             ),
             actions: <Widget>[
               GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.search, color: kBlackColor,),),
+              }, child: Icon(Icons.search, color: Theme.of(context).hintColor),),
               SizedBox(width: 10.0),
               GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.apps, color: kBlackColor,),),
+              }, child: Icon(Icons.apps, color: Theme.of(context).hintColor),),
               SizedBox(width: 10.0),
               GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.format_list_bulleted, color: kBlackColor,),),
+              }, child: Icon(Icons.format_list_bulleted, color: Theme.of(context).hintColor),),
               SizedBox(width: 10.0),
               GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.get_app, color: kBlackColor,),),
+              }, child: Icon(Icons.get_app, color: Theme.of(context).hintColor),),
               SizedBox(width: 10.0),
             ],
-            backgroundColor: kWhiteColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(10)
+              )
+            ),
+            backgroundColor: kPrimaryColor,
 
           ),
           backgroundColor: kLightGreyBackgroundColor,
