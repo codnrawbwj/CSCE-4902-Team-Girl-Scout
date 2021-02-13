@@ -266,17 +266,24 @@ class GirlScoutDatabase {
     BadgeTag badgeTag = BadgeTag(badgeLink, memberLink, requirementsMet); // create badgeTag
 
     badgeTagBox.add(badgeTag); // add badgeTag to db
+
+    /*
     for (var i in badgeTagBox.values) {
       print('badge tag box values');
       print(i.status);
     }
+  */
 
     badge.badgeTags.add(badgeTag); // link badgeTag to badge
     member.badgeTags.add(badgeTag); // link badgeTag to member
     member.save();
     badge.save();
+    return 1;
+    /*
     BadgeTag memberbadge = member.badgeTags.first;
     print(memberbadge.status);
+    */
+
     /*
     }
     catch (e) {

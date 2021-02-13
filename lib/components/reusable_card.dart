@@ -7,13 +7,14 @@ import 'package:girl_scout_simple/components/globals.dart';
 
 class ReusableCard extends StatelessWidget {
 
-  ReusableCard({this.parentPage, this.title, this.subtitle, @required this.addIcon, @required this.cardChild, this.data});
+  ReusableCard({this.parentPage, this.title, this.subtitle, @required this.addIcon, @required this.cardChild, this.data, this.callingObj});
   final String parentPage;
   final String title;
   final String subtitle;
   final Widget cardChild;
   final bool addIcon;
   final Data data;
+  final dynamic callingObj;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class ReusableCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            parentPage == 'Setting' ? ExcludeTitle() : IncludeTitle(title: title, subtitle: subtitle, addIcon: addIcon, data: data),
+            parentPage == 'Setting' ? ExcludeTitle() : IncludeTitle(title: title, subtitle: subtitle, addIcon: addIcon, data: data, callingObj: callingObj),
             //show only if subtitle is not null ('')
             subtitle == '' ? SizedBox(height: 0.0) : SizedBox(height: 10.0),
             subtitle == '' ? SizedBox() : Text(subtitle, style: Theme.of(context).textTheme.bodyText2),
@@ -59,14 +60,20 @@ class ExcludeTitle extends StatelessWidget {
   }
 }
 
-class IncludeTitle extends StatelessWidget {
+class IncludeTitle extends StatefulWidget {
 
-  IncludeTitle({@required this.title, @required this.subtitle, @required this.addIcon, this.data});
+  IncludeTitle({@required this.title, @required this.subtitle, @required this.addIcon, this.data, this.callingObj});
   final String title;
   final String subtitle;
   final bool addIcon;
   final Data data;
+  final dynamic callingObj;
 
+  @override
+  _IncludeTitleState createState() => _IncludeTitleState();
+}
+
+class _IncludeTitleState extends State<IncludeTitle> {
   @override
   Widget build(BuildContext context) {
     return
@@ -74,17 +81,18 @@ class IncludeTitle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            title,
+            widget.title,
             style: Theme.of(context).textTheme.headline2,
           ),
           //Note: Place empty container if add icon is not needed.
-          addIcon == false ? Container() :
-          GestureDetector( onTap: () {
+          widget.addIcon == false ? Container() :
+          GestureDetector( onTap: () async {
             //move to add
             //TODO: Figure out why this is not working >>>>>> Navigator.pushNamed(context, Add.id);
-            (title == 'Badges') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddBadge(title: 'Add Badge'))) :
-            (title == 'Patches') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddBadge(title: 'Add Patch'))) :
-            (title == 'Scout\'s Badges') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new BadgeListPage(type: 0, data: data))) :
+            (widget.title == 'Badges') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddBadge(title: 'Add Badge'))) :
+            (widget.title == 'Patches') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddBadge(title: 'Add Patch'))) :
+            (widget.title == 'Scout\'s Badges') ? await Navigator.push(context, MaterialPageRoute(builder: (context) =>  new BadgeListPage(type: 0, data: widget.data)))
+                .then((value) => widget.callingObj.refresh()) :
             Navigator.push(context, MaterialPageRoute(builder: (context) =>  new Add(title: 'Add Member')));
           }, child: Icon(Icons.add_circle), ),
         ],
