@@ -23,6 +23,7 @@ class MemberInfo extends StatefulWidget {
   static String id = '/MemberInfo';
   @override
   _AddState createState() => _AddState();
+
 }
 
 class _AddState extends State<MemberInfo> {
@@ -117,20 +118,23 @@ class _AddState extends State<MemberInfo> {
                 addIcon: true,
                 data: widget.data,
                 cardChild:
-                Column(
-                  children: <Widget>[
-                    ListView(
-                        shrinkWrap: true,
-                        children: getScoutBadgesWidgetList(
-                            name) //TODO add an overloaded function to get scouts badges and progress
-
-                    )
-                  ],
+                  Column(
+                    children: <Widget>[
+                      ListView(
+                          shrinkWrap: true,
+                          children: getScoutBadgesWidgetList(name)
+                          )
+                    ],
+                  ),
+                callingObj: this,
                 ),
-              ),
             ]
         ),
       ),
     );
+  }
+
+  void refresh () {
+    setState(() {});
   }
 }

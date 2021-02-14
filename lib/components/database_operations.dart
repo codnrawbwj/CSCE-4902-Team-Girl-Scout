@@ -117,7 +117,6 @@ class GirlScoutDatabase {
         {
           print(i.name);
           Grade grade = i.grade.first;
-          print(describeEnum(grade.name));
           addScoutToList(describeEnum(grade.name), i.team, i.name, monthNames[i.birthday.month], i.birthday.day, i.birthday.year, i.photoPath);
         }
     }
@@ -237,7 +236,7 @@ class GirlScoutDatabase {
   }
 
 
-  Future<void> addBadgeTag (Member member, Badge badge) async{
+  Future<dynamic> addBadgeTag (Member member, Badge badge) async{
     //try {
     print('adding member badge');
     var memberBox = Hive.box('members'); //open boxes
@@ -245,6 +244,13 @@ class GirlScoutDatabase {
     var badgeTagBox = Hive.box('badgeTags');
 
     Map<String,String> requirementsMet = Map();
+
+    for (BadgeTag bt in member.badgeTags) { // check if member already has badge
+      Badge b = bt.badge.first;
+      if (b.name == badge.name ) {
+        return null; // return empty
+      }
+    }
 
     var badgeLink = HiveList(badgeBox); // create a hive list to hold 1 badge
     badgeLink.add(badge); // link badge to badgeTag
@@ -260,15 +266,24 @@ class GirlScoutDatabase {
     BadgeTag badgeTag = BadgeTag(badgeLink, memberLink, requirementsMet); // create badgeTag
 
     badgeTagBox.add(badgeTag); // add badgeTag to db
+
+    /*
     for (var i in badgeTagBox.values) {
       print('badge tag box values');
       print(i.status);
     }
+  */
 
     badge.badgeTags.add(badgeTag); // link badgeTag to badge
     member.badgeTags.add(badgeTag); // link badgeTag to member
+    member.save();
+    badge.save();
+    return 1;
+    /*
     BadgeTag memberbadge = member.badgeTags.first;
     print(memberbadge.status);
+    */
+
     /*
     }
     catch (e) {
@@ -288,7 +303,7 @@ class GirlScoutDatabase {
 
     for (var i in badgeTagBox.values) {
       print('badge tag box values');
-      print(i.status);
+      print(i.member.first.name);
     }
 
     Member member = getMember(name); //get member
