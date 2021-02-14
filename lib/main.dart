@@ -7,6 +7,9 @@ import 'package:girl_scout_simple/screens/settings.dart';
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:hive/hive.dart';
 
+import 'components/default_theme.dart';
+import 'package:girl_scout_simple/components/reusable_card.dart';
+
 
 void main() async{
   print('starting init');
@@ -16,13 +19,21 @@ void main() async{
   runApp(Home());
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
 
   // This widget is the root of your application.
   @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: BottomNavigation(),
+      theme: DefaultTheme.lightTheme,
+      // darkTheme: DefaultTheme.darkTheme,
       routes: {
         BottomNavigation.id: (context) => BottomNavigation(),
         Dashboard.id: (context) => Dashboard(),

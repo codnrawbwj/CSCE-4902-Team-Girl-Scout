@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:girl_scout_simple/components//setting_flat_popup.dart';
+import 'package:girl_scout_simple/components/default_theme.dart';
+import 'package:girl_scout_simple/components/theme_config.dart';
 
 
 class SettingFlatButton extends StatelessWidget {

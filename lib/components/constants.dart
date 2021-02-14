@@ -8,3 +8,8 @@ const kDarkGreyColor = Color(0xFF707070); //with white font
 const kLightGreyBackgroundColor = Color(0xB5B5B5);
 const kWhiteColor = Color(0xFFFFFFFF);
 const kGreenColor = Color(0xFF00B61E);
+const kLightGreenColor = Color(0xFFE5FFCC);
+
+
+const kPrimaryColor = Color(0xFF0C9869);
+const kTextColor = Colors.black;

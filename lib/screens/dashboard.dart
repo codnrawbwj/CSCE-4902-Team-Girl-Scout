@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/components/reusable_card.dart';
-import 'package:girl_scout_simple/components/default_theme.dart';
+// import 'package:girl_scout_simple/components/default_theme.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -26,8 +26,9 @@ class _DashboardState extends State<Dashboard> {
      ///*
     var now = DateTime.now();
     var today = DateTime(now.year, now.month, now.day);
-    // ---------------- test data (remove when done testing) --------------
+    // ---------------- test data (remove when done testing) ---------------
 
+    _badgeTagsBox.clear();
     print('loading badge data for chart');
     if (_badgeTagsBox.isEmpty) {
       var yesterday = today.subtract(new Duration(days: 1));
@@ -112,40 +113,67 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: DefaultTheme().theme,
+      // This removes the 'debug' banner.
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text(
+          centerTitle: true,
+          title: Text(
             'Dashboard',
-            style: TextStyle(
-              color: kBlackColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 30.0,
-            ),
+            style: Theme.of(context).textTheme.headline1,
+            // style: TextStyle(
+            //   color: Colors.white,
+            //   fontWeight: FontWeight.bold,
+            //   fontSize: 30.0,
+            // ),
           ),
-          backgroundColor: kWhiteColor,
-        ),
+          bottom: PreferredSize(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 15),
+                Icon(Icons.group, color: Theme.of(context).hintColor),
+                SizedBox(width: 3),
+                //TODO: Count the actual number of members
+                Text("13 members", style: Theme.of(context).textTheme.bodyText2,),
+                SizedBox(width: 10),
+                Icon(Icons.equalizer, color: Theme.of(context).hintColor),
+                SizedBox(width: 3),
+                //TODO: Count the actual number of collections
+                Text("57 Collections", style: Theme.of(context).textTheme.bodyText2,),
+                SizedBox(width: 20)
+              ],
+            ),
+            preferredSize: Size.fromHeight(20),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10)
+            )
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
+          ),
         backgroundColor: kLightGreyBackgroundColor,
         //Note: ListView makes the page vertically scrollable.
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 15),
-                  Icon(Icons.group),
-                  SizedBox(width: 3),
-                  //TODO: Count the actual number of members
-                  Text("13 members", style: Theme.of(context).textTheme.bodyText1,),
-                  SizedBox(width: 10),
-                  Icon(Icons.equalizer),
-                  SizedBox(width: 3),
-                  //TODO: Count the actual number of collections
-                  Text("57 Collections", style: Theme.of(context).textTheme.bodyText1,)
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     SizedBox(width: 15),
+              //     Icon(Icons.group),
+              //     SizedBox(width: 3),
+              //     //TODO: Count the actual number of members
+              //     Text("13 members", style: Theme.of(context).textTheme.bodyText1,),
+              //     SizedBox(width: 10),
+              //     Icon(Icons.equalizer),
+              //     SizedBox(width: 3),
+              //     //TODO: Count the actual number of collections
+              //     Text("57 Collections", style: Theme.of(context).textTheme.bodyText1,)
+              //   ],
+              // ),
               //TODO: Include list that reflects the undistributed badges/patches
               ReusableCard(title: 'Undistributed', subtitle: '18 items', addIcon: false,
                 cardChild: Column(
