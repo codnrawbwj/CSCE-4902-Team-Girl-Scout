@@ -27,7 +27,7 @@ class _DashboardState extends State<Dashboard> {
     var now = DateTime.now();
     var today = DateTime(now.year, now.month, now.day);
     // ---------------- test data (remove when done testing) ---------------
-
+/*
     _badgeTagsBox.clear();
     print('loading badge data for chart');
     if (_badgeTagsBox.isEmpty) {
@@ -67,7 +67,7 @@ class _DashboardState extends State<Dashboard> {
       }
     }
     // ---------------------------------------------------------------------
-
+*/
     for(int day = 1; day <= 7; ++day) {
       if(today.weekday == DateTime.sunday)
         break;

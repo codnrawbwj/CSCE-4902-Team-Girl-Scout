@@ -135,6 +135,7 @@ class _AddState extends State<MemberInfo> {
   }
 
   void refresh () {
+    print('refreshing...');
     setState(() {});
   }
 }

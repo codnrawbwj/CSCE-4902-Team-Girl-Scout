@@ -27,6 +27,12 @@ class Member extends HiveObject{
   @HiveField(5)
   HiveList badgeTags;
 
+  @HiveField(6)
+  HiveList seasons;
+
+  @HiveField(7)
+  HiveList sales;
+
   Member(this.name, this.grade, this.team, this.birthday, this.photoPath, this.badgeTags);
 }
 
@@ -120,4 +126,108 @@ enum gradeEnum {
 
   @HiveField(6)
   ALL,
+}
+
+@HiveType(typeId: 5)
+class Cookie extends HiveObject {
+  @HiveField(0)
+  String name;
+
+  @HiveField(1)
+  double price;
+
+  @HiveField(2)
+  int quantity;
+
+  @HiveField(3)
+  HiveList seasons;
+
+  @HiveField(4)
+  HiveList sales;
+
+  @HiveField(5)
+  HiveList orders;
+
+  @HiveField(6)
+  HiveList transfers;
+}
+
+@HiveType(typeId: 6)
+class Sale extends HiveObject {
+  @HiveField(0)
+  int quantity;
+
+  @HiveField(1)
+  DateTime dateOfSale;
+
+  @HiveField(2)
+  double salesPrice;
+
+  @HiveField(3)
+  HiveList season;
+
+  @HiveField(4)
+  HiveList member;
+
+  @HiveField(5)
+  HiveList cookie;
+
+}
+
+@HiveType(typeId: 7)
+class Order extends HiveObject {
+  @HiveField(0)
+  int quantity;
+
+  @HiveField(1)
+  DateTime dateOfSale;
+
+  @HiveField(2)
+  HiveList season;
+
+  @HiveField(3)
+  HiveList cookie;
+
+}
+
+@HiveType(typeId: 8)
+class Transfer extends HiveObject {
+  @HiveField(0)
+  int quantity;
+
+  @HiveField(1)
+  DateTime dateOfTransfer;
+
+  @HiveField(2)
+  String receivingTroop;
+
+  @HiveField(3)
+  HiveList season;
+
+  @HiveField(4)
+  HiveList cookie;
+}
+
+@HiveType(typeId: 9)
+class Season extends HiveObject {
+  @HiveField(0)
+  int year;
+
+  @HiveField(1)
+  DateTime startDate;
+
+  @HiveField(2)
+  HiveList members;
+
+  @HiveField(3)
+  HiveList cookies;
+
+  @HiveField(4)
+  HiveList sales;
+
+  @HiveField(5)
+  HiveList orders;
+
+  @HiveField(6)
+  HiveList transfers;
 }

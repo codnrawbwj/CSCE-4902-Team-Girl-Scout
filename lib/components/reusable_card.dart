@@ -46,7 +46,7 @@ class ReusableCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              parentPage == 'Setting' ? ExcludeTitle() : IncludeTitle(title: title, subtitle: subtitle, addIcon: addIcon, data: data),
+              parentPage == 'Setting' ? ExcludeTitle() : IncludeTitle(title: title, subtitle: subtitle, addIcon: addIcon, data: data, callingObj: callingObj),
               //show only if subtitle is not null ('')
               subtitle == '' ? SizedBox(height: 0.0) : SizedBox(height: 10.0),
               subtitle == '' ? SizedBox() : Text(subtitle, style: Theme.of(context).textTheme.bodyText2),
@@ -93,12 +93,12 @@ class _IncludeTitleState extends State<IncludeTitle> {
           ),
           //Note: Place empty container if add icon is not needed.
           widget.addIcon == false ? Container() :
-          GestureDetector( onTap: () async {
+          GestureDetector( onTap: ()  {
             //move to add
             //TODO: Figure out why this is not working >>>>>> Navigator.pushNamed(context, Add.id);
             (widget.title == 'Badges') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddBadge(title: 'Add Badge'))) :
             (widget.title == 'Patches') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddBadge(title: 'Add Patch'))) :
-            (widget.title == 'Scout\'s Badges') ? await Navigator.push(context, MaterialPageRoute(builder: (context) =>  new BadgeListPage(type: 0, data: widget.data)))
+            (widget.title == 'Scout\'s Badges') ?  Navigator.push(context, MaterialPageRoute(builder: (context) =>  new BadgeListPage(type: 0, data: widget.data)))
                 .then((value) => widget.callingObj.refresh()) :
             Navigator.push(context, MaterialPageRoute(builder: (context) =>  new Add(title: 'Add Member')));
           }, child: Icon(Icons.add_circle), ),
