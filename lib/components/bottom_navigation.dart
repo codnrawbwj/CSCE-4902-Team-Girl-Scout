@@ -68,3 +68,5 @@ class _BottomNavigationState extends State<BottomNavigation> {
     );
   }
 }
+
+//cookie tracker options: business_center, attach_money, calendar, pie_chart

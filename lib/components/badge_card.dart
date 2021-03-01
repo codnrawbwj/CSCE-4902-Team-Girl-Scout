@@ -6,11 +6,12 @@ import 'globals.dart';
 import 'package:girl_scout_simple/models.dart';
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/screens/badge_info.dart';
+import 'package:girl_scout_simple/screens/memberBadge_info.dart';
 
 class BadgeCard extends StatelessWidget {
 
   BadgeCard({this.grade, this.name, this.description, this.requirements,
-    this.quantity, this.photoLocation, this.selectable = false, this.memberData});
+    this.quantity, this.photoLocation, this.selectable = false, this.memberData, this.isMemberBadge, this.memberBadge});
 
   final gradeEnum grade;
   final String name;
@@ -20,6 +21,8 @@ class BadgeCard extends StatelessWidget {
   final String photoLocation; //idk if we need this
   final bool selectable;
   final Data memberData;
+  final bool isMemberBadge;
+  final BadgeTag memberBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -105,9 +108,17 @@ class BadgeCard extends StatelessWidget {
                   Navigator.pop(context, true);
                 }
               else {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => new BadgeInfo(badge: db.getBadge(name))));
+                if (isMemberBadge) {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) =>
+                      new MemberBadgeInfo(memberBadge: memberBadge)));
                 }
+                else {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) =>
+                      new BadgeInfo(badge: db.getBadge(name))));
+                }
+              }
             }
         ),
       ),

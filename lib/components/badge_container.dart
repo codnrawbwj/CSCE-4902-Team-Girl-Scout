@@ -111,7 +111,8 @@ List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {Data data}) {
               description: i.description,
               requirements: i.requirements,
               quantity: 0,//getBadgeNum(describeEnum(i.grade), i.name),
-              photoLocation: i.photoLocation),
+              photoLocation: i.photoLocation,
+              isMemberBadge: false),
 
         ]));
   }
@@ -138,7 +139,9 @@ List<Widget> getScoutBadgesWidgetList(String name) {
                 requirements: memberBadge.requirements,
                 quantity: 0,
                 //getBadgeNum(describeEnum(i.grade), i.name),
-                photoLocation: memberBadge.photoPath),
+                photoLocation: memberBadge.photoPath,
+                isMemberBadge: true,
+                memberBadge: i),
           ]));
     }
   }

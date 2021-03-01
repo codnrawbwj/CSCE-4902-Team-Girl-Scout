@@ -15,40 +15,57 @@ import 'package:girl_scout_simple/components/reusable_card.dart';
 import 'package:girl_scout_simple/components/badge_container.dart';
 import 'package:girl_scout_simple/models.dart';
 
-class BadgeInfo extends StatefulWidget {
+class MemberBadgeInfo extends StatefulWidget {
   //TODO: complete parameters
-  BadgeInfo({this.badge});
 
-  final Badge badge; //(ex) Add Member
+  MemberBadgeInfo({this.memberBadge});
+
+  final BadgeTag memberBadge;
 
   static String id = '/MemberInfo';
   @override
   _AddState createState() => _AddState();
 }
 
-class _AddState extends State<BadgeInfo> {
+class _AddState extends State<MemberBadgeInfo> {
 
-  Badge badge;
+  BadgeTag memberBadge;
+  var changedChecks = new Map<String, bool>();
 
   @override
   Widget build(BuildContext context) {
-    badge = widget.badge;
+    memberBadge = widget.memberBadge;
     var requirementList = new List<Widget>();
 
 
-    for (var i in badge.requirements) {
-      if (i != "") {
+    memberBadge.requirementsMet.forEach((req, met) {
+      if (req != "") {
+        changedChecks[req] = (met == 'Yes') ? true : false ;
         requirementList.add(
-          new ListTile(
-              title: Text(i, style: Theme
-                  .of(context)
-                  .textTheme
-                  .subtitle1,),
-              leading: const Icon(Icons.check),
+          new StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return CheckboxListTile(
+                controlAffinity: ListTileControlAffinity.platform,
+                title: Text(req, style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle1,),
+                value: changedChecks[req],
+                onChanged: (bool value) {
+                  setState(() {
+                    changedChecks[req] = value;
+                    memberBadge.requirementsMet[req] = value ? 'Yes' : 'No';
+                    memberBadge.save();
+                    print(changedChecks[req]);
+                    print(req);
+                  });
+                }
+              );
+            }
           )
         );
       }
-    }
+    });
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -59,7 +76,7 @@ class _AddState extends State<BadgeInfo> {
           color: kWhiteColor, //change your color here
         ),
         title: Text(
-          badge.name,
+          (memberBadge.badge.first as Badge).name,
           style: TextStyle(
             color: kWhiteColor,
             fontSize: 20.0,
@@ -82,7 +99,7 @@ class _AddState extends State<BadgeInfo> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: FileImage(File(badge.photoPath)),
+                                  image: FileImage(File((memberBadge.badge.first as Badge).photoPath)),
                                   fit: BoxFit.scaleDown
                               ),
                             ),
@@ -96,7 +113,7 @@ class _AddState extends State<BadgeInfo> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
 
-                                Text(badge.name, style: Theme
+                                Text((memberBadge.badge.first as Badge).name, style: Theme
                                     .of(context)
                                     .textTheme
                                     .headline2,),
@@ -126,7 +143,7 @@ class _AddState extends State<BadgeInfo> {
                       child: new Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          new Text(badge.description, style: Theme
+                          new Text((memberBadge.badge.first as Badge).description, style: Theme
                               .of(context)
                               .textTheme
                               .subtitle1,),
