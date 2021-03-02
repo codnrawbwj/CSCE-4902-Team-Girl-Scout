@@ -191,6 +191,11 @@ class GirlScoutDatabase {
        */
   }
 
+  int getMemberCount () {
+    var badgeTagsBox = Hive.box('badgeTags');
+    return badgeTagsBox.length;
+  }
+
   Future<void> deleteMember(String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
     return;
   }
@@ -235,6 +240,10 @@ class GirlScoutDatabase {
     }
   }
 
+  int getBadgeCount () {
+    var badgeBox = Hive.box('badges');
+    return badgeBox.length;
+  }
 
   Future<dynamic> addBadgeTag (Member member, Badge badge) async{
     //try {

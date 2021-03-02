@@ -4,7 +4,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/components/reusable_card.dart';
 // import 'package:girl_scout_simple/components/default_theme.dart';
-
+import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -135,12 +135,12 @@ class _DashboardState extends State<Dashboard> {
                 Icon(Icons.group, color: Theme.of(context).hintColor),
                 SizedBox(width: 3),
                 //TODO: Count the actual number of members
-                Text("13 members", style: Theme.of(context).textTheme.bodyText2,),
+                Text(globals.db.getMemberCount().toString() +  ' members', style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(width: 10),
                 Icon(Icons.equalizer, color: Theme.of(context).hintColor),
                 SizedBox(width: 3),
                 //TODO: Count the actual number of collections
-                Text("57 Collections", style: Theme.of(context).textTheme.bodyText2,),
+                Text(globals.db.getBadgeCount().toString() + ' Badges', style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(width: 20)
               ],
             ),
