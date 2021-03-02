@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
@@ -55,9 +55,20 @@ class _AddState extends State<MemberBadgeInfo> {
                   setState(() {
                     changedChecks[req] = value;
                     memberBadge.requirementsMet[req] = value ? 'Yes' : 'No';
-                    memberBadge.save();
                     print(changedChecks[req]);
                     print(req);
+                    if( !memberBadge.requirementsMet.containsValue('No') ) {
+                      memberBadge.completedRequirements = 'Yes';
+                      memberBadge.status = 'Awaiting Badge';
+                      this.setState(() {});
+                    }
+                    else {
+                      memberBadge.completedRequirements = 'No';
+                      memberBadge.status = 'Incomplete';
+                      memberBadge.dateAcquired = null;
+                      this.setState(() {});
+                    }
+                    memberBadge.save();
                   });
                 }
               );
@@ -86,8 +97,7 @@ class _AddState extends State<MemberBadgeInfo> {
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: ListView(
-                shrinkWrap: true,
+            child: Column(
                 children: <Widget>[
                   Row(
                       children: <Widget>[
@@ -166,7 +176,67 @@ class _AddState extends State<MemberBadgeInfo> {
                         children: requirementList,
                       )
                     ],
-                  )
+                  ),
+                  SizedBox(height: 10.0),
+                  Row(children: <Widget>[
+                    new Flexible(
+                      child: new Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new Text('Status:  ', style: Theme
+                              .of(context)
+                              .textTheme
+                              .headline5,),
+                          new Text(memberBadge.status, style: Theme
+                              .of(context)
+                              .textTheme
+                              .subtitle1,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ]),
+                  SizedBox(height: 10.0),
+                  Row(children: <Widget>[
+                    new Flexible(
+                      child:
+                        (memberBadge.status == 'Acquired') ?
+                          new Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                              new Text( 'Date Acquired: ', style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5,),
+                              new Text(DateFormat.yMMMMd().format(memberBadge.dateAcquired), style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .subtitle1,)
+                            ]
+                          ) :
+                          (memberBadge.status == 'Awaiting Badge') ?
+                            new Center(
+                              //crossAxisAlignment: CrossAxisAlignment.center,
+                              child: ElevatedButton(
+                                child: Text('Award Badge'),
+                                onPressed: () {
+                                  memberBadge.status = 'Acquired';
+                                  var now = DateTime.now();
+                                  var today = DateTime(now.year, now.month, now.day);
+                                  memberBadge.dateAcquired = today;
+                                  memberBadge.save();
+                                  this.setState(() {});}
+                              )
+                            ) :
+                            new Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[ new Text( '', style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .headline4,)],
+                            ),
+                    )
+                  ]),
                 ]
             )
         ),

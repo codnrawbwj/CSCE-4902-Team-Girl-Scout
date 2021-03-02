@@ -56,7 +56,7 @@ class BadgeTag extends HiveObject{
   @HiveField(5)
   Map<String,String> requirementsMet;
 
-  BadgeTag(this.badge, this.member, this.requirementsMet, {this.status = 'Incomplete', this.completedRequirements = 'no'});
+  BadgeTag(this.badge, this.member, this.requirementsMet, {this.status = 'Incomplete', this.completedRequirements = 'No'});
   BadgeTag.date(this.dateAcquired);
 }
 
