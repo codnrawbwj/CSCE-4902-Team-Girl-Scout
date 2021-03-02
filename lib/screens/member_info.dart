@@ -120,8 +120,7 @@ class _AddState extends State<MemberInfo> {
                 cardChild:
                   Column(
                     children: <Widget>[
-                      ListView(
-                          shrinkWrap: true,
+                      Column(
                           children: getScoutBadgesWidgetList(name)
                           )
                     ],

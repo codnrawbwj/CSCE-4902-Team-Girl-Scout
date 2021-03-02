@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -120,7 +122,10 @@ class _DashboardState extends State<Dashboard> {
                   .of(context)
                   .textTheme
                   .subtitle1,),
-              leading: const Icon(Icons.check_circle),
+              leading: CircleAvatar (
+                backgroundImage: FileImage(File(member.photoPath))
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) =>
@@ -196,7 +201,10 @@ class _DashboardState extends State<Dashboard> {
               //TODO: Include list that reflects the undistributed badges/patches
               ReusableCard(title: 'Undistributed Badges', subtitle: undistributedMemberBadges.length.toString() + ' items', addIcon: false,
                 cardChild: Column(
-                  children: undistributedList,
+                  children: ListTile.divideTiles(
+                    context: context,
+                    tiles: undistributedList
+                  ).toList(),
                 ),),
               //TODO: Replace with graph (probably line for every member?)
               //list of chart: https://google.github.io/charts/flutter/gallery.html

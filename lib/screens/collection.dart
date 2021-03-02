@@ -80,8 +80,7 @@ class _CollectionState extends State<Collection> {
                       title: 'Badges', subtitle: 'All', addIcon: true,
                       cardChild: Column(
                         children: <Widget>[
-                          ListView(
-                            shrinkWrap: true,
+                          Column(
                             children: getBadgeWidgetList(gradeEnum.ALL, false)
                           ),
                         ],
@@ -105,8 +104,7 @@ class _CollectionState extends State<Collection> {
                       title: 'Badges', subtitle: 'Daisy', addIcon: true,
                       cardChild: Column(
                         children: <Widget>[
-                          ListView(
-                              shrinkWrap: true,
+                          Column(
                               children: getBadgeWidgetList(gradeEnum.DAISY, false)
                           ),
                         ],
@@ -130,8 +128,7 @@ class _CollectionState extends State<Collection> {
                       title: 'Badges', subtitle: 'Brownie', addIcon: true,
                       cardChild: Column(
                         children: <Widget>[
-                          ListView(
-                              shrinkWrap: true,
+                          Column(
                               children: getBadgeWidgetList(gradeEnum.BROWNIE, false)
                           ),
                         ],
@@ -155,8 +152,7 @@ class _CollectionState extends State<Collection> {
                       title: 'Badges', subtitle: 'Junior', addIcon: true,
                       cardChild: Column(
                         children: <Widget>[
-                          ListView(
-                              shrinkWrap: true,
+                          Column(
                               children: getBadgeWidgetList(gradeEnum.JUNIOR, false)
                           ),
                         ],
@@ -180,8 +176,7 @@ class _CollectionState extends State<Collection> {
                       title: 'Badges', subtitle: 'Cadette', addIcon: true,
                       cardChild: Column(
                         children: <Widget>[
-                          ListView(
-                              shrinkWrap: true,
+                          Column(
                               children: getBadgeWidgetList(gradeEnum.CADETTE, false)
                           ),
                         ],
@@ -205,8 +200,7 @@ class _CollectionState extends State<Collection> {
                       title: 'Badges', subtitle: 'Senior', addIcon: true,
                       cardChild: Column(
                         children: <Widget>[
-                          ListView(
-                              shrinkWrap: true,
+                          Column(
                               children: getBadgeWidgetList(gradeEnum.SENIOR, false)
                           ),
                         ],
@@ -230,8 +224,7 @@ class _CollectionState extends State<Collection> {
                       title: 'Badges', subtitle: 'Ambassador', addIcon: true,
                       cardChild: Column(
                         children: <Widget>[
-                          ListView(
-                              shrinkWrap: true,
+                          Column(
                               children: getBadgeWidgetList(gradeEnum.AMBASSADOR, false)
                           ),
                         ],
