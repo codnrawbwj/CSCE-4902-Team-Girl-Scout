@@ -25,8 +25,10 @@ class GirlScoutDatabase {
   Future<void> deleteAllData() async{
   var memberBox = Hive.box('members');
   var badgeBox = Hive.box('badges');
+  var badgeTagBox = Hive.box('badgeTags');
   await badgeBox.clear();
   await memberBox.clear();
+  await badgeTagBox.clear();
 
   allList.clear();
   daisyList.clear();
@@ -192,8 +194,8 @@ class GirlScoutDatabase {
   }
 
   int getMemberCount () {
-    var badgeTagsBox = Hive.box('badgeTags');
-    return badgeTagsBox.length;
+    var memberBox = Hive.box('members');
+    return memberBox.length;
   }
 
   Future<void> deleteMember(String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
@@ -310,11 +312,6 @@ class GirlScoutDatabase {
 
     var badgeTagBox = Hive.box('badgeTags');
 
-    for (var i in badgeTagBox.values) {
-      print('badge tag box values');
-      print(i.member.first.name);
-    }
-
     Member member = getMember(name); //get member
     HiveList memberBadges = member.badgeTags; // get member's badges
     print(memberBadges);
@@ -335,4 +332,32 @@ class GirlScoutDatabase {
 
        */
   }
+
+  List<dynamic> getUndistributedMemberBadges() {
+    //try {
+    print('getting undistributed member\'s badges');
+
+    var badgeTagBox = Hive.box('badgeTags');
+
+    var undistributedBadges = badgeTagBox.values.where((badge) =>
+    (badge.status == 'Awaiting Badge'));
+
+    if (undistributedBadges != null) { // if member has badges, return them
+      print('returning undistributed member\'s badges');
+      return undistributedBadges.toList();
+    }
+    print('No undistributed badges');
+    return null; // return null if no badges
+
+    /*
+    }
+    catch (e) {
+      print(e);
+      print("Add member failed");
+      return;
+    }
+
+       */
+  }
+
 }

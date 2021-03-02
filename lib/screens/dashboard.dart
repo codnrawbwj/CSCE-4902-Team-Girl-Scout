@@ -7,7 +7,7 @@ import 'package:girl_scout_simple/components/reusable_card.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+import 'package:girl_scout_simple/screens/memberBadge_info.dart';
 import 'package:girl_scout_simple/models.dart';
 
 class Dashboard extends StatefulWidget {
@@ -103,15 +103,34 @@ class _DashboardState extends State<Dashboard> {
   }
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    var undistributedMemberBadges = globals.db.getUndistributedMemberBadges();
+    var undistributedList = new List<Widget>();
     _badgeTagsBox = Hive.box('badgeTags');
     _seriesWeeklyData = List<charts.Series<_Badge,String>>();
     _getData();
-  }
 
-  @override
-  Widget build(BuildContext context) {
+    for (BadgeTag memberBadge in undistributedMemberBadges) {
+      if (memberBadge != null) {
+        Member member = memberBadge.member.first;
+        Badge badge = memberBadge.badge.first;
+        undistributedList.add(
+            new ListTile(
+              title: Text(member.name + ' - ' + badge.name, style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle1,),
+              leading: const Icon(Icons.check_circle),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) =>
+                    new MemberBadgeInfo(memberBadge: memberBadge))).then((value) => setState(() {}) );
+              }
+            )
+        );
+      }
+    }
+
     return MaterialApp(
       // This removes the 'debug' banner.
       debugShowCheckedModeBanner: false,
@@ -137,7 +156,7 @@ class _DashboardState extends State<Dashboard> {
                 //TODO: Count the actual number of members
                 Text(globals.db.getMemberCount().toString() +  ' members', style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(width: 10),
-                Icon(Icons.equalizer, color: Theme.of(context).hintColor),
+                Icon(Icons.check_circle, color: Theme.of(context).hintColor),
                 SizedBox(width: 3),
                 //TODO: Count the actual number of collections
                 Text(globals.db.getBadgeCount().toString() + ' Badges', style: Theme.of(context).textTheme.bodyText2,),
@@ -175,29 +194,14 @@ class _DashboardState extends State<Dashboard> {
               //   ],
               // ),
               //TODO: Include list that reflects the undistributed badges/patches
-              ReusableCard(title: 'Undistributed', subtitle: '18 items', addIcon: false,
+              ReusableCard(title: 'Undistributed Badges', subtitle: undistributedMemberBadges.length.toString() + ' items', addIcon: false,
                 cardChild: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.attachment),
-                        SizedBox(width: 10.0),
-                        Text('Digital Game Design I', style: Theme.of(context).textTheme.bodyText1,),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.attachment),
-                        SizedBox(width: 10.0),
-                        Text('Digital Game Design II', style: Theme.of(context).textTheme.bodyText1,),
-                      ],
-                    ),
-                  ],
+                  children: undistributedList,
                 ),),
               //TODO: Replace with graph (probably line for every member?)
               //list of chart: https://google.github.io/charts/flutter/gallery.html
               //library: https://pub.dev/packages/charts_flutter
-              ReusableCard(title: 'This Week', subtitle: '', addIcon: false,
+              ReusableCard(title: 'Badges Awarded This Week', subtitle: '', addIcon: false,
                 cardChild: Column(
                   children: [
                     Container(
