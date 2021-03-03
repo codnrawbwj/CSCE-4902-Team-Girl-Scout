@@ -58,6 +58,22 @@ class _AddState extends State<Add> {
     super.dispose();
   }
 
+  List<int> getDays() {
+    List<int> days;
+
+    days = <int>[for(var i = 1; i <= 28; i++) i];
+    if(month != 'February'){
+      days.addAll(<int>[29, 30]);
+    }
+    if(month == 'January' || month == 'March' ||
+        month == 'May' || month == 'July' ||
+        month == 'August' || month == 'October' ||
+        month == 'December') {
+      days.add(31);
+    }
+    return days;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -233,18 +249,7 @@ class _AddState extends State<Add> {
                                   },
                                   validator: (choice) => choice == null ?
                                       "Please choose scout's birth day" : null,
-                                  items: (
-                                      month == null ?
-                                          <int>[for(var i=1; i<=28; i++) i] :
-                                          <int>[for(var i=1; i<=28; i++) i] +
-                                          [
-                                            month != 'February' ? 29 : null,
-                                            month != 'February' ? 30 : null,
-                                            month == 'January' || month == 'March' ||
-                                                month == 'May' || month == 'July' || month ==
-                                                'August' || month == 'October' ||
-                                                month == 'December' ? 31 : null
-                                          ]).map<DropdownMenuItem<int>>((int value) {
+                                  items: getDays().map<DropdownMenuItem<int>>((int value) {
                                     return DropdownMenuItem<int>(
                                       value: value,
                                       child: Text(value.toString()),
