@@ -60,11 +60,6 @@ class _MembersState extends State<Members> {
             title: Text(
               'Members',
               style: Theme.of(context).textTheme.headline1,
-              // style: TextStyle(
-              //   color: kTextColor,
-              //   fontWeight: FontWeight.bold,
-              //   fontSize: 30.0,
-              // ),
             ),
             actions: <Widget>[
               //search, grid, list, export.. do we need list and grid?
@@ -85,7 +80,7 @@ class _MembersState extends State<Members> {
               }, child: Icon(Icons.get_app, color: Theme.of(context).hintColor),),
               SizedBox(width: 10.0),
             ],
-            backgroundColor: kPrimaryColor,
+            backgroundColor: Theme.of(context).primaryColor,
             
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(

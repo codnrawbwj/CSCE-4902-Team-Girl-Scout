@@ -10,6 +10,8 @@ const kWhiteColor = Color(0xFFFFFFFF);
 const kGreenColor = Color(0xFF00B61E);
 const kLightGreenColor = Color(0xFFE5FFCC);
 
+const kCookieColor = Color(0xFFF2E596);
+const kCookieLightColor = Color(0xFF925800);
 
 const kPrimaryColor = Color(0xFF0C9869);
 const kTextColor = Colors.black;

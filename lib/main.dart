@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/bottom_navigation.dart';
+import 'package:girl_scout_simple/models.dart';
 import 'package:girl_scout_simple/screens/dashboard.dart';
 import 'package:girl_scout_simple/screens/members.dart';
 import 'package:girl_scout_simple/screens/collection.dart';
+import 'package:girl_scout_simple/screens/cookie.dart';
 import 'package:girl_scout_simple/screens/settings.dart';
 import 'package:girl_scout_simple/components/globals.dart';
+
 import 'package:hive/hive.dart';
 
 import 'components/default_theme.dart';
@@ -39,6 +42,7 @@ class _HomeState extends State<Home> {
         Dashboard.id: (context) => Dashboard(),
         Members.id: (context) => new Members(),
         Collection.id: (context) => Collection(),
+        Cookie.id: (context) => Cookie(),
         Settings.id: (context) => Settings(),
       },
     );
