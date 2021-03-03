@@ -4,6 +4,7 @@ import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/screens/dashboard.dart';
 import 'package:girl_scout_simple/screens/members.dart';
 import 'package:girl_scout_simple/screens/collection.dart';
+import 'package:girl_scout_simple/screens/cookie.dart';
 import 'package:girl_scout_simple/screens/settings.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -21,6 +22,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     Dashboard(),
     Members(),
     Collection(),
+    Cookie(),
     Settings(),
   ];
 
@@ -52,6 +54,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
             BottomNavigationBarItem(
               icon: Icon(Icons.check_circle),
               title: Text('Badges'),
+              backgroundColor: Theme.of(context).primaryColor
+            ),
+            BottomNavigationBarItem(
+              // icon: Image.asset('images/icons/botNav_cookie.png', width: 30, height: 30, color: Theme.of(context).hintColor,),
+              icon: Icon(Icons.sentiment_satisfied_alt),
+              title: Text('Cookies'),
               backgroundColor: Theme.of(context).primaryColor
             ),
             BottomNavigationBarItem(

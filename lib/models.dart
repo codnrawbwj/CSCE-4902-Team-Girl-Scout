@@ -129,7 +129,7 @@ enum gradeEnum {
 }
 
 @HiveType(typeId: 5)
-class Cookie extends HiveObject {
+class Cookies extends HiveObject {
   @HiveField(0)
   String name;
 

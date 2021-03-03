@@ -17,6 +17,8 @@ class DefaultTheme{
     accentColor: kGreenColor,
     hintColor: kWhiteColor,
     scaffoldBackgroundColor: kLightGreenColor,
+    focusColor: kCookieColor,
+    highlightColor: kCookieLightColor,
     //fontFamily: 'Georgia',
     textTheme: TextTheme(
       //(ex) Title - Dashboard, Collection
@@ -43,6 +45,7 @@ class DefaultTheme{
     accentColor: kGreenColor,
     hintColor: kWhiteColor,
     scaffoldBackgroundColor: kLightGreenColor,
+
     //fontFamily: 'Georgia',
     textTheme: TextTheme(
       //(ex) Title - Dashboard, Collection
