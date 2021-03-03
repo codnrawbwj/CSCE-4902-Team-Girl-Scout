@@ -111,7 +111,7 @@ class _AddState extends State<Add> {
                           SizedBox(height: 5),
                           TextFormField( //name
                               decoration: InputDecoration(
-                                  hintText: 'Enter a name',
+                                  hintText: 'Enter scout\'s name',
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(color: kGreenColor),
                                   ),
