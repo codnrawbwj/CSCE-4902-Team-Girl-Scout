@@ -58,7 +58,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ),
             BottomNavigationBarItem(
               // icon: Image.asset('images/icons/botNav_cookie.png', width: 30, height: 30, color: Theme.of(context).hintColor,),
-              icon: Icon(Icons.sentiment_satisfied_alt),
+              icon: Icon(Icons.attach_money),
               title: Text('Cookies'),
               backgroundColor: Theme.of(context).primaryColor
             ),

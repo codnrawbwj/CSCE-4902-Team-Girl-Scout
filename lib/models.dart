@@ -33,6 +33,9 @@ class Member extends HiveObject{
   @HiveField(7)
   HiveList sales;
 
+  @HiveField(8)
+  String isArchived;
+
   Member(this.name, this.grade, this.team, this.birthday, this.photoPath, this.badgeTags);
 }
 
@@ -85,6 +88,9 @@ class Badge extends HiveObject{
 
   @HiveField(7)
   HiveList badgeTags;
+
+  @HiveField(8)
+  String isArchived;
 
   Badge(this.name, this.description, this.grade, this.requirements, this.photoPath, this.badgeTags);
 }
@@ -150,6 +156,9 @@ class Cookies extends HiveObject {
 
   @HiveField(6)
   HiveList transfers;
+
+  @HiveField(7)
+  String isArchived;
 }
 
 @HiveType(typeId: 6)
