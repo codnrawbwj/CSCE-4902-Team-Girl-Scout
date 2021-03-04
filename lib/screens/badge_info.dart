@@ -65,6 +65,17 @@ class _AddState extends State<BadgeInfo> {
             fontSize: 20.0,
           ),
         ),
+        actions: <Widget>[
+          //search, grid, list, export.. do we need list and grid?
+          GestureDetector(onTap: () {
+            //TODO: implement functionality
+          }, child: Icon(Icons.edit, color: Theme.of(context).hintColor),),
+          SizedBox(width: 15.0),
+          GestureDetector(onTap: () {
+            //TODO: implement functionality
+          }, child: Icon(Icons.archive, color: Theme.of(context).hintColor),),
+          SizedBox(width: 15.0),
+        ],
         backgroundColor: kDarkGreyColor,),
       body: SingleChildScrollView(
         child: Padding(

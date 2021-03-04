@@ -87,13 +87,16 @@ class MemberAdapter extends TypeAdapter<Member> {
       fields[3] as DateTime,
       fields[4] as String,
       (fields[5] as HiveList)?.castHiveList(),
-    );
+      isArchived: fields[8] as String,
+    )
+      ..seasons = (fields[6] as HiveList)?.castHiveList()
+      ..sales = (fields[7] as HiveList)?.castHiveList();
   }
 
   @override
   void write(BinaryWriter writer, Member obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -105,7 +108,13 @@ class MemberAdapter extends TypeAdapter<Member> {
       ..writeByte(4)
       ..write(obj.photoPath)
       ..writeByte(5)
-      ..write(obj.badgeTags);
+      ..write(obj.badgeTags)
+      ..writeByte(6)
+      ..write(obj.seasons)
+      ..writeByte(7)
+      ..write(obj.sales)
+      ..writeByte(8)
+      ..write(obj.isArchived);
   }
 
   @override
@@ -184,6 +193,7 @@ class BadgeAdapter extends TypeAdapter<Badge> {
       (fields[5] as List)?.cast<String>(),
       fields[6] as String,
       (fields[7] as HiveList)?.castHiveList(),
+      isArchived: fields[8] as String,
     )
       ..subtitle = fields[1] as String
       ..type = fields[4] as String;
@@ -192,7 +202,7 @@ class BadgeAdapter extends TypeAdapter<Badge> {
   @override
   void write(BinaryWriter writer, Badge obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -208,7 +218,9 @@ class BadgeAdapter extends TypeAdapter<Badge> {
       ..writeByte(6)
       ..write(obj.photoPath)
       ..writeByte(7)
-      ..write(obj.badgeTags);
+      ..write(obj.badgeTags)
+      ..writeByte(8)
+      ..write(obj.isArchived);
   }
 
   @override
@@ -258,6 +270,247 @@ class GradeAdapter extends TypeAdapter<Grade> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is GradeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class CookiesAdapter extends TypeAdapter<Cookies> {
+  @override
+  final int typeId = 5;
+
+  @override
+  Cookies read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Cookies(
+      fields[0] as dynamic,
+      fields[1] as dynamic,
+      fields[2] as dynamic,
+      fields[3] as dynamic,
+      fields[4] as dynamic,
+      fields[5] as dynamic,
+      fields[6] as dynamic,
+      isArchived: fields[7] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Cookies obj) {
+    writer
+      ..writeByte(8)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.price)
+      ..writeByte(2)
+      ..write(obj.quantity)
+      ..writeByte(3)
+      ..write(obj.seasons)
+      ..writeByte(4)
+      ..write(obj.sales)
+      ..writeByte(5)
+      ..write(obj.orders)
+      ..writeByte(6)
+      ..write(obj.transfers)
+      ..writeByte(7)
+      ..write(obj.isArchived);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CookiesAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class SaleAdapter extends TypeAdapter<Sale> {
+  @override
+  final int typeId = 6;
+
+  @override
+  Sale read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Sale()
+      ..quantity = fields[0] as int
+      ..dateOfSale = fields[1] as DateTime
+      ..salesPrice = fields[2] as double
+      ..season = (fields[3] as HiveList)?.castHiveList()
+      ..member = (fields[4] as HiveList)?.castHiveList()
+      ..cookie = (fields[5] as HiveList)?.castHiveList();
+  }
+
+  @override
+  void write(BinaryWriter writer, Sale obj) {
+    writer
+      ..writeByte(6)
+      ..writeByte(0)
+      ..write(obj.quantity)
+      ..writeByte(1)
+      ..write(obj.dateOfSale)
+      ..writeByte(2)
+      ..write(obj.salesPrice)
+      ..writeByte(3)
+      ..write(obj.season)
+      ..writeByte(4)
+      ..write(obj.member)
+      ..writeByte(5)
+      ..write(obj.cookie);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SaleAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class OrderAdapter extends TypeAdapter<Order> {
+  @override
+  final int typeId = 7;
+
+  @override
+  Order read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Order()
+      ..quantity = fields[0] as int
+      ..dateOfSale = fields[1] as DateTime
+      ..season = (fields[2] as HiveList)?.castHiveList()
+      ..cookie = (fields[3] as HiveList)?.castHiveList();
+  }
+
+  @override
+  void write(BinaryWriter writer, Order obj) {
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.quantity)
+      ..writeByte(1)
+      ..write(obj.dateOfSale)
+      ..writeByte(2)
+      ..write(obj.season)
+      ..writeByte(3)
+      ..write(obj.cookie);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OrderAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class TransferAdapter extends TypeAdapter<Transfer> {
+  @override
+  final int typeId = 8;
+
+  @override
+  Transfer read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Transfer()
+      ..quantity = fields[0] as int
+      ..dateOfTransfer = fields[1] as DateTime
+      ..receivingTroop = fields[2] as String
+      ..season = (fields[3] as HiveList)?.castHiveList()
+      ..cookie = (fields[4] as HiveList)?.castHiveList();
+  }
+
+  @override
+  void write(BinaryWriter writer, Transfer obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.quantity)
+      ..writeByte(1)
+      ..write(obj.dateOfTransfer)
+      ..writeByte(2)
+      ..write(obj.receivingTroop)
+      ..writeByte(3)
+      ..write(obj.season)
+      ..writeByte(4)
+      ..write(obj.cookie);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TransferAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class SeasonAdapter extends TypeAdapter<Season> {
+  @override
+  final int typeId = 9;
+
+  @override
+  Season read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Season()
+      ..year = fields[0] as int
+      ..startDate = fields[1] as DateTime
+      ..members = (fields[2] as HiveList)?.castHiveList()
+      ..cookies = (fields[3] as HiveList)?.castHiveList()
+      ..sales = (fields[4] as HiveList)?.castHiveList()
+      ..orders = (fields[5] as HiveList)?.castHiveList()
+      ..transfers = (fields[6] as HiveList)?.castHiveList();
+  }
+
+  @override
+  void write(BinaryWriter writer, Season obj) {
+    writer
+      ..writeByte(7)
+      ..writeByte(0)
+      ..write(obj.year)
+      ..writeByte(1)
+      ..write(obj.startDate)
+      ..writeByte(2)
+      ..write(obj.members)
+      ..writeByte(3)
+      ..write(obj.cookies)
+      ..writeByte(4)
+      ..write(obj.sales)
+      ..writeByte(5)
+      ..write(obj.orders)
+      ..writeByte(6)
+      ..write(obj.transfers);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SeasonAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

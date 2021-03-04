@@ -28,6 +28,9 @@ class GirlScoutDatabase {
   var badgeTagBox = Hive.box('badgeTags');
   await badgeBox.clear();
   await memberBox.clear();
+  for(Member m in memberBox.values) {
+    File(m.photoPath).delete();
+  }
   await badgeTagBox.clear();
 
   allList.clear();
@@ -61,11 +64,12 @@ class GirlScoutDatabase {
     WidgetsFlutterBinding.ensureInitialized();
     final appDBDirectory = await getApplicationDocumentsDirectory();
     await Hive.initFlutter(appDBDirectory.path);
+    /*
     Hive.registerAdapter(BadgeTagAdapter());
     Hive.registerAdapter(BadgeAdapter());
     Hive.registerAdapter(GradeAdapter());
     Hive.registerAdapter(MemberAdapter());
-    Hive.registerAdapter(gradeEnumAdapter());
+    Hive.registerAdapter(gradeEnumAdapter());*/
 
     await Hive.openBox('members');
     await Hive.openBox('badgeTags');
