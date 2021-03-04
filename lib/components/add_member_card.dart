@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
-import 'package:girl_scout_simple/screens/add.dart';
+import 'package:girl_scout_simple/screens/addEditMember.dart';
 
 class AnimatedAddCard extends StatefulWidget {
   @override

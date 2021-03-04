@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-
+import 'package:girl_scout_simple/components/member_card.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/components/images_by_grade.dart';
 import 'package:girl_scout_simple/components/default_theme.dart';
 import 'package:girl_scout_simple/components/member_container.dart';
-//import 'package:girl_scout_simple/components/globals.dart';
-import 'package:girl_scout_simple/screens/add.dart';
+import 'package:girl_scout_simple/components/globals.dart' as globals;
+import 'package:girl_scout_simple/screens/addEditMember.dart';
 import 'package:girl_scout_simple/models.dart';
 
 class MemberPageRoute extends CupertinoPageRoute {
@@ -36,6 +36,24 @@ class Members extends StatefulWidget {
 class _MembersState extends State<Members> {
 
   bool expanded = true;
+
+
+//this function also add the add member card at the end of the list.
+  List<Widget> getMemberWidgetList(gradeEnum grade) {
+    var returnList = new List<Widget>();
+    List<dynamic> members = globals.db.getMembersByGrade(grade);
+
+    for (Member m in members) {
+      print(m);
+      returnList.add(new Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            new AnimatedMemberCard(member: m),
+          ]));
+    }
+
+    return returnList;
+  }
 
   @override
   Widget build(BuildContext context) {

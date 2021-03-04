@@ -11,11 +11,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:simple_image_crop/simple_image_crop.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/database_operations.dart';
+import 'package:girl_scout_simple/models.dart';
 
 class Add extends StatefulWidget {
   //TODO: complete parameters
-  Add({@required this.title});
+  Add({@required this.title, this.member});
   String title; //(ex) Add Member
+  Member member;
 
   static String id = '/Add';
   @override

@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:intl/intl.dart';
 
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
@@ -14,11 +16,12 @@ import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/components/reusable_card.dart';
 import 'package:girl_scout_simple/components/badge_container.dart';
 import 'package:girl_scout_simple/models.dart';
+import 'package:girl_scout_simple/screens/addEditMember.dart';
 
 class MemberInfo extends StatefulWidget {
   //TODO: complete parameters
-  MemberInfo({@required this.data});
-  final Data data; //(ex) Add Member
+  MemberInfo({@required this.member});
+  final Member member; //(ex) Add Member
 
   static String id = '/MemberInfo';
   @override
@@ -38,13 +41,14 @@ class _AddState extends State<MemberInfo> {
 
   @override
   Widget build(BuildContext context) {
-    name = widget.data.name;
-    team = widget.data.team;
-    gradeString = widget.data.grade.toString();
-    month = widget.data.birthMonth;
-    day = widget.data.birthDay;
-    year = widget.data.birthYear;
-    imageLocation = widget.data.photoLocation;
+    name = widget.member.name;
+    team = widget.member.team;
+    gradeString = describeEnum((widget.member.grade.first as Grade).name);
+    gradeString = gradeString[0] + gradeString.substring(1).toLowerCase();
+    month = DateFormat.MMMM().format(widget.member.birthday);
+    day = widget.member.birthday.day;
+    year = widget.member.birthday.year;
+    imageLocation = widget.member.photoPath;
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -64,7 +68,11 @@ class _AddState extends State<MemberInfo> {
         actions: <Widget>[
           //search, grid, list, export.. do we need list and grid?
           GestureDetector(onTap: () {
-            //TODO: implement functionality
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => new Add(title: 'Edit Member', member: widget.member))).then((
+                value) {
+              setState(() {});
+            });
           }, child: Icon(Icons.edit, color: Theme.of(context).hintColor),),
           SizedBox(width: 15.0),
           GestureDetector(onTap: () {
@@ -127,7 +135,7 @@ class _AddState extends State<MemberInfo> {
                 title: 'Scout\'s Badges',
                 subtitle: 'All',
                 addIcon: true,
-                data: widget.data,
+                member: widget.member,
                 cardChild:
                   Column(
                     children: <Widget>[

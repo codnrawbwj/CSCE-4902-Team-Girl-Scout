@@ -94,7 +94,7 @@ int getBadgeNum(String grade, String name) {
 }
 
 //this function also add the add member card at the end of the list. selectable should mainly be false if you want it to bring up the infromation
-List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {Data data}) {
+List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {Member member}) {
   var returnList = new List<Widget>();
   var gradeList;
 
@@ -107,7 +107,7 @@ List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {Data data}) {
           new BadgeCard(grade: i.grade,
               name: i.name,
               selectable: selectable,
-              memberData: data,
+              member: member,
               description: i.description,
               requirements: i.requirements,
               quantity: 0,//getBadgeNum(describeEnum(i.grade), i.name),

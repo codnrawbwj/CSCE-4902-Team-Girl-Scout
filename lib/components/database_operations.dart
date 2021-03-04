@@ -64,12 +64,12 @@ class GirlScoutDatabase {
     WidgetsFlutterBinding.ensureInitialized();
     final appDBDirectory = await getApplicationDocumentsDirectory();
     await Hive.initFlutter(appDBDirectory.path);
-    /*
+
     Hive.registerAdapter(BadgeTagAdapter());
     Hive.registerAdapter(BadgeAdapter());
     Hive.registerAdapter(GradeAdapter());
     Hive.registerAdapter(MemberAdapter());
-    Hive.registerAdapter(gradeEnumAdapter());*/
+    Hive.registerAdapter(gradeEnumAdapter());
 
     await Hive.openBox('members');
     await Hive.openBox('badgeTags');
@@ -151,7 +151,38 @@ class GirlScoutDatabase {
 
       Grade gradeObj = gradeBox.get(grade); // get grade from db
       gradeObj.members.add(member); // add member to grade
+      gradeObj.save();
       /*
+    }
+    catch (e) {
+      print(e);
+      print("Add member failed");
+      return;
+    }
+
+       */
+  }
+
+  Future<void> editMember (String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
+    //try {
+    print('adding member');
+    var memberBox = Hive.box('members'); //open boxes
+    var gradeBox = Hive.box('grades');
+    var badgeTagBox = Hive.box('badgeTags');
+
+    var gradeLink = HiveList(gradeBox); // create a hive list to hold 1 grade
+    print(gradeBox.get(grade));
+    gradeLink.add(gradeBox.get(grade)); // add the member's grade to the list
+
+    var badgeTagHiveList = HiveList(badgeTagBox); // HiveList to initialize member's BadgeTags
+
+    var date = DateTime(birthYear, monthNums[birthMonth], birthDay); // create a datetime object from string inputs
+    Member member = Member(name, gradeLink, team, date, photoPath, badgeTagHiveList); // create member object based on data
+    memberBox.put(name, member); // add member to db
+
+    Grade gradeObj = gradeBox.get(grade); // get grade from db
+    gradeObj.members.add(member); // add member to grade
+    /*
     }
     catch (e) {
       print(e);
@@ -195,6 +226,30 @@ class GirlScoutDatabase {
     }
 
        */
+  }
+
+  List<dynamic> getMembersByGrade(gradeEnum gradeE) {
+    var gradeBox = Hive.box('grades');
+    var memberBox = Hive.box('members');
+    Grade grade;
+    HiveList gradeMembersList;
+
+    String gradeString = describeEnum(gradeE);
+    gradeString = gradeString[0] + gradeString.substring(1).toLowerCase();
+    print(gradeString);
+
+    if(gradeString == 'All') {
+      gradeMembersList = HiveList(memberBox);
+      for(grade in gradeBox.values) {
+        gradeMembersList.addAll(grade.members);
+      }
+    }
+    else {
+      grade = gradeBox.get(gradeString);
+      gradeMembersList = grade.members;
+    }
+    print(gradeMembersList.length);
+    return gradeMembersList.toList();
   }
 
   int getMemberCount () {

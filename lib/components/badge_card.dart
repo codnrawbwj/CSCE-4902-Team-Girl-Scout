@@ -11,7 +11,7 @@ import 'package:girl_scout_simple/screens/memberBadge_info.dart';
 class BadgeCard extends StatelessWidget {
 
   BadgeCard({this.grade, this.name, this.description, this.requirements,
-    this.quantity, this.photoLocation, this.selectable = false, this.memberData, this.isMemberBadge, this.memberBadge});
+    this.quantity, this.photoLocation, this.selectable = false, this.member, this.isMemberBadge, this.memberBadge});
 
   final gradeEnum grade;
   final String name;
@@ -20,7 +20,7 @@ class BadgeCard extends StatelessWidget {
   final int quantity;
   final String photoLocation; //idk if we need this
   final bool selectable;
-  final Data memberData;
+  final Member member;
   final bool isMemberBadge;
   final BadgeTag memberBadge;
 
@@ -94,12 +94,12 @@ class BadgeCard extends StatelessWidget {
               //TODO create funtion so that if state is triggered, bring up edit page with populated information for tapped scout
               if (selectable) {
                   //add badge to scout list
-                if (memberData == null) {
+                if (member == null) {
                   print(
                       'YOU NEED TO PASS A  MEMBER IF YOU MAKE THE BADGECARD SELECTABLE!');
                   return;
-                }
-                Member member = db.getMember(memberData.name); //get member
+                }; //get member
+
                 Badge badge = db.getBadge(name);
 
                 if (await db.addBadgeTag(member, badge) == null) //if member already has badge, alert user

@@ -10,9 +10,9 @@ import 'package:girl_scout_simple/screens/member_info.dart';
 
 class AnimatedMemberCard extends StatefulWidget {
 
-  final Data data;
+  final Member member;
 
-  AnimatedMemberCard({@required this.data});
+  AnimatedMemberCard({@required this.member});
   @override
   _AnimatedMemberCard createState() => _AnimatedMemberCard();
 }
@@ -25,9 +25,9 @@ class _AnimatedMemberCard extends State<AnimatedMemberCard> {
 
   @override
   Widget build(BuildContext context) {
-    name = widget.data.name;
-    team = widget.data.team;
-    imageLocation = widget.data.photoLocation;
+    name = widget.member.name;
+    team = widget.member.team;
+    imageLocation = widget.member.photoPath;
 
     return AnimatedContainer(
       margin: EdgeInsets.fromLTRB(15, 15, 15, 0),
@@ -103,7 +103,7 @@ class _AnimatedMemberCard extends State<AnimatedMemberCard> {
             ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => new MemberInfo(data: widget.data)));
+                  builder: (context) => new MemberInfo(member: widget.member)));
               setState(() {
                 //update();
               });
