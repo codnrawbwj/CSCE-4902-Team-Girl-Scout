@@ -11,8 +11,9 @@ import 'package:girl_scout_simple/screens/member_info.dart';
 class AnimatedMemberCard extends StatefulWidget {
 
   final Member member;
+  final dynamic callingObj;
 
-  AnimatedMemberCard({@required this.member});
+  AnimatedMemberCard({@required this.member, this.callingObj});
   @override
   _AnimatedMemberCard createState() => _AnimatedMemberCard();
 }
@@ -103,10 +104,7 @@ class _AnimatedMemberCard extends State<AnimatedMemberCard> {
             ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => new MemberInfo(member: widget.member)));
-              setState(() {
-                //update();
-              });
+                  builder: (context) => new MemberInfo(callingObj: widget.callingObj, member: widget.member)));
               //TODO create funtion so that if state is triggered, bring up edit page with populated information for tapped scout
             }
         ),

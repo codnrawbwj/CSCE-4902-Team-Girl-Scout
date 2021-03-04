@@ -18,9 +18,10 @@ import 'package:girl_scout_simple/models.dart';
 class MemberBadgeInfo extends StatefulWidget {
   //TODO: complete parameters
 
-  MemberBadgeInfo({this.memberBadge});
+  MemberBadgeInfo({this.memberBadge, this.callingObj});
 
   final BadgeTag memberBadge;
+  final dynamic callingObj;
 
   static String id = '/MemberInfo';
   @override
@@ -31,6 +32,36 @@ class _AddState extends State<MemberBadgeInfo> {
 
   BadgeTag memberBadge;
   var changedChecks = new Map<String, bool>();
+
+  Future<String> alertPopup(BuildContext context) async {
+    String result = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Notice'),
+            content: Text('Do you wish to delete this badge from the member?'),
+            actions: <Widget>[
+                FlatButton(
+                    child: Text('Yes'),
+                    onPressed: ()async {
+                        memberBadge.delete();
+                        Navigator.pop(context, 'Yes');
+                        widget.callingObj.refresh();
+                    },
+                ),
+                FlatButton(
+                    child: Text('No'),
+                    onPressed: ()async {
+                        Navigator.pop(context, 'No');
+                    },
+                  ),
+            ],
+          );
+        }
+    );
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +126,10 @@ class _AddState extends State<MemberBadgeInfo> {
         ),
         actions: <Widget>[
           //search, grid, list, export.. do we need list and grid?
-          GestureDetector(onTap: () {
-            //TODO: implement functionality
-          }, child: Icon(Icons.edit, color: Theme.of(context).hintColor),),
-          SizedBox(width: 15.0),
-          GestureDetector(onTap: () {
-            //TODO: implement functionality
+          GestureDetector(onTap: () async{
+              if(await alertPopup(context) == 'Yes') {
+                  Navigator.pop(context);
+              }
           }, child: Icon(Icons.delete, color: Theme.of(context).hintColor),),
           SizedBox(width: 15.0),
         ],
@@ -182,8 +211,7 @@ class _AddState extends State<MemberBadgeInfo> {
                           .textTheme
                           .headline2,),
                       SizedBox(height: 10.0),
-                      ListView(
-                        shrinkWrap: true,
+                      Column(
                         children: requirementList,
                       )
                     ],

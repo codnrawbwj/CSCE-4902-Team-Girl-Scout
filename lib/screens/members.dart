@@ -39,20 +39,42 @@ class _MembersState extends State<Members> {
 
 
 //this function also add the add member card at the end of the list.
-  List<Widget> getMemberWidgetList(gradeEnum grade) {
-    var returnList = new List<Widget>();
-    List<dynamic> members = globals.db.getMembersByGrade(grade);
+  List<Widget> getMemberWidgetList({@required gradeEnum grade, bool archive = false}) {
+      var returnList = new List<Widget>();
 
-    for (Member m in members) {
-      print(m);
-      returnList.add(new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            new AnimatedMemberCard(member: m),
-          ]));
-    }
+      if(archive) {
+          List<dynamic> members = globals.db.getMembersByGrade(grade);
+          for (Member m in members) {
+              if (m.isArchived == 'Yes') {
+                print(m);
+                returnList.add(new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      new AnimatedMemberCard(callingObj: this, member: m),
+                    ]));
+              }
+          }
+      }
+      else {
+          List<dynamic> members = globals.db.getMembersByGrade(grade);
+          for (Member m in members) {
+              if (m.isArchived == 'No') {
+                print(m);
+                returnList.add(new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      new AnimatedMemberCard(callingObj: this, member: m),
+                    ]));
+              }
+          }
+      }
 
-    return returnList;
+      return returnList;
+  }
+
+  void refresh () {
+    print('refreshing members page...');
+    setState(() {});
   }
 
   @override
@@ -60,7 +82,7 @@ class _MembersState extends State<Members> {
 
     return MaterialApp(
       home: DefaultTabController(
-        length: 7,
+        length: 8,
         child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
@@ -73,6 +95,7 @@ class _MembersState extends State<Members> {
                 Tab(text: "CADETTE"),
                 Tab(text: "SENIOR"),
                 Tab(text: "AMBASSADOR"),
+                Tab(text: "ARCHIVED"),
               ],
             ),
             title: Text(
@@ -104,19 +127,21 @@ class _MembersState extends State<Members> {
           body: TabBarView(
             children: [
               ListView( //all
-                  children: getMemberWidgetList(gradeEnum.ALL)),
+                  children: getMemberWidgetList(grade: gradeEnum.ALL)),
               ListView( //daisy
-                  children: getMemberWidgetList(gradeEnum.DAISY)),
+                  children: getMemberWidgetList(grade: gradeEnum.DAISY)),
               ListView( //bownie
-                  children: getMemberWidgetList(gradeEnum.BROWNIE)),
+                  children: getMemberWidgetList(grade: gradeEnum.BROWNIE)),
               ListView( //cadette
-                  children: getMemberWidgetList(gradeEnum.JUNIOR)),
+                  children: getMemberWidgetList(grade: gradeEnum.JUNIOR)),
               ListView( //senior
-                  children: getMemberWidgetList(gradeEnum.CADETTE)),
+                  children: getMemberWidgetList(grade: gradeEnum.CADETTE)),
               ListView( //senior
-                  children: getMemberWidgetList(gradeEnum.SENIOR)),
+                  children: getMemberWidgetList(grade: gradeEnum.SENIOR)),
               ListView( //ambassador
-                  children: getMemberWidgetList(gradeEnum.AMBASSADOR)),
+                  children: getMemberWidgetList(grade: gradeEnum.AMBASSADOR)),
+              ListView( //ambassador
+                  children: getMemberWidgetList(grade: gradeEnum.ALL, archive: true)),
             ],
           ),
           floatingActionButton: FloatingActionButton( //pressing this creates options for editing members. its fancy. im sorry, i got carried away

@@ -17,11 +17,13 @@ import 'package:girl_scout_simple/components/reusable_card.dart';
 import 'package:girl_scout_simple/components/badge_container.dart';
 import 'package:girl_scout_simple/models.dart';
 import 'package:girl_scout_simple/screens/addEditMember.dart';
+import 'package:girl_scout_simple/components/badge_card.dart';
 
 class MemberInfo extends StatefulWidget {
   //TODO: complete parameters
-  MemberInfo({@required this.member});
+  MemberInfo({@required this.member, this.callingObj});
   final Member member; //(ex) Add Member
+  final dynamic callingObj;
 
   static String id = '/MemberInfo';
   @override
@@ -38,6 +40,75 @@ class _AddState extends State<MemberInfo> {
   int day;
   int year;
   String imageLocation;
+
+  Future<String> alertPopupArchive(BuildContext context) async {
+    String result = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+            return AlertDialog(
+                title: Text('Notice'),
+                content: Text((widget.member.isArchived == 'Yes') ? 'Do you wish to unarchive this member?' : 'Do you wish to archive this member?'),
+                actions: <Widget>[
+                    FlatButton(
+                        child: Text('Yes'),
+                        onPressed: ()async {
+                            if(widget.member.isArchived == 'Yes')
+                                widget.member.isArchived = 'No';
+                            else
+                                widget.member.isArchived = 'Yes';
+                            widget.member.save();
+                            widget.callingObj.refresh();
+                            Navigator.pop(context, 'Yes');
+                        },
+                    ),
+                    FlatButton(
+                        child: Text('No'),
+                        onPressed: ()async {
+                            Navigator.pop(context, 'No');
+                        },
+                    ),
+                ],
+            );
+        }
+    );
+    return result;
+  }
+
+  List<Widget> getScoutBadgesWidgetList(String name) {
+    var returnList = new List<Widget>();
+    var memberBadgesList = globals.db.getMemberBadges(name);
+
+    if (memberBadgesList != null) {
+      print('creating member\'s badges widgets');
+      for (var i in memberBadgesList) {
+        print(i.status);
+        Badge memberBadge = i.badge.first;
+        Grade badgeGrade = memberBadge.grade.first;
+        returnList.add(new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              new BadgeCard(grade: badgeGrade.name,
+                  name: memberBadge.name,
+                  description: memberBadge.description,
+                  requirements: memberBadge.requirements,
+                  quantity: 0,
+                  //getBadgeNum(describeEnum(i.grade), i.name),
+                  photoLocation: memberBadge.photoPath,
+                  isMemberBadge: true,
+                  memberBadge: i,
+                  callingObj: this),
+            ]));
+      }
+    }
+    print('returning member\'s badges widgets');
+    return returnList;
+  }
+
+  void refresh () {
+    print('refreshing members info...');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +140,20 @@ class _AddState extends State<MemberInfo> {
           //search, grid, list, export.. do we need list and grid?
           GestureDetector(onTap: () {
             Navigator.push(context, MaterialPageRoute(
-                builder: (context) => new Add(title: 'Edit Member', member: widget.member))).then((
-                value) {
-              setState(() {});
+                builder: (context) => new Add(title: 'Edit Member', member: widget.member, callingObj: widget.callingObj))).
+                          then((value) {setState(() {});
             });
           }, child: Icon(Icons.edit, color: Theme.of(context).hintColor),),
           SizedBox(width: 15.0),
-          GestureDetector(onTap: () {
-            //TODO: implement functionality
-          }, child: Icon(Icons.archive, color: Theme.of(context).hintColor),),
+          GestureDetector(
+              onTap: () async {
+                if(await alertPopupArchive(context) == 'Yes') {
+                  Navigator.pop(context);
+                }
+              },
+              child: Icon(
+                  (widget.member.isArchived == 'Yes') ? Icons.unarchive : Icons.archive ,
+                  color: Theme.of(context).hintColor),),
           SizedBox(width: 15.0),
         ],
         backgroundColor: kDarkGreyColor,),
@@ -150,10 +226,5 @@ class _AddState extends State<MemberInfo> {
         ),
       ),
     );
-  }
-
-  void refresh () {
-    print('refreshing...');
-    setState(() {});
   }
 }

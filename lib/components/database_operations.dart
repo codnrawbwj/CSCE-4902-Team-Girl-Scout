@@ -163,34 +163,40 @@ class GirlScoutDatabase {
        */
   }
 
-  Future<void> editMember (String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
+  Future<void> editMember (Member member, String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
     //try {
-    print('adding member');
+    print('editing member');
     var memberBox = Hive.box('members'); //open boxes
     var gradeBox = Hive.box('grades');
-    var badgeTagBox = Hive.box('badgeTags');
+    var newGrade = gradeBox.get(grade);
+    var gradeLink;
 
-    var gradeLink = HiveList(gradeBox); // create a hive list to hold 1 grade
-    print(gradeBox.get(grade));
-    gradeLink.add(gradeBox.get(grade)); // add the member's grade to the list
+    if(member.grade.first != newGrade){ //if grade changed, remove member from old grade and add member to new grade
+        Grade oldGrade = member.grade.first;
+        oldGrade.members.remove(member); // remove member from old grade
+        oldGrade.save();
 
-    var badgeTagHiveList = HiveList(badgeTagBox); // HiveList to initialize member's BadgeTags
+        gradeLink = HiveList(gradeBox); // create a hive list to hold 1 grade
+        print(grade);
+        gradeLink.add(newGrade); // add the member's grade to the list
 
-    var date = DateTime(birthYear, monthNums[birthMonth], birthDay); // create a datetime object from string inputs
-    Member member = Member(name, gradeLink, team, date, photoPath, badgeTagHiveList); // create member object based on data
-    memberBox.put(name, member); // add member to db
+        member.grade = gradeLink; //link grade to member
 
-    Grade gradeObj = gradeBox.get(grade); // get grade from db
-    gradeObj.members.add(member); // add member to grade
-    /*
-    }
-    catch (e) {
-      print(e);
-      print("Add member failed");
-      return;
+        Grade gradeObj = gradeBox.get(grade); // get new grade from db
+        gradeObj.members.add(member); // add member to grade
+        gradeObj.save();
     }
 
-       */
+    member.name = name;
+    member.team = team;
+    member.birthday = DateTime(birthYear, monthNums[birthMonth], birthDay);
+
+    if(member.photoPath != photoPath) { // if the photo is changed
+        File(member.photoPath).delete(); // delete old photo
+        member.photoPath = photoPath; //set new photo
+    }
+
+    member.save();
   }
 
   Badge getBadge(String name)
@@ -292,7 +298,7 @@ class GirlScoutDatabase {
 
       Grade gradeObj = gradeBox.get(grade); // get grade from db
       gradeObj.badges.add(badge); // add member to grades
-
+      gradeObj.save();
 
     }
     catch (e) {
