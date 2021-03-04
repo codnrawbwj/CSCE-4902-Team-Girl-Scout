@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-
+import 'package:girl_scout_simple/components/member_card.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/components/images_by_grade.dart';
 import 'package:girl_scout_simple/components/default_theme.dart';
 import 'package:girl_scout_simple/components/member_container.dart';
-//import 'package:girl_scout_simple/components/globals.dart';
-import 'package:girl_scout_simple/screens/add.dart';
+import 'package:girl_scout_simple/components/globals.dart' as globals;
+import 'package:girl_scout_simple/screens/addEditMember.dart';
 import 'package:girl_scout_simple/models.dart';
 
 class MemberPageRoute extends CupertinoPageRoute {
@@ -37,12 +37,52 @@ class _MembersState extends State<Members> {
 
   bool expanded = true;
 
+
+//this function also add the add member card at the end of the list.
+  List<Widget> getMemberWidgetList({@required gradeEnum grade, bool archive = false}) {
+      var returnList = new List<Widget>();
+
+      if(archive) {
+          List<dynamic> members = globals.db.getMembersByGrade(grade);
+          for (Member m in members) {
+              if (m.isArchived == 'Yes') {
+                print(m);
+                returnList.add(new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      new AnimatedMemberCard(callingObj: this, member: m),
+                    ]));
+              }
+          }
+      }
+      else {
+          List<dynamic> members = globals.db.getMembersByGrade(grade);
+          for (Member m in members) {
+              if (m.isArchived == 'No') {
+                print(m);
+                returnList.add(new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      new AnimatedMemberCard(callingObj: this, member: m),
+                    ]));
+              }
+          }
+      }
+
+      return returnList;
+  }
+
+  void refresh () {
+    print('refreshing members page...');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
 
     return MaterialApp(
       home: DefaultTabController(
-        length: 7,
+        length: 8,
         child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
@@ -55,6 +95,7 @@ class _MembersState extends State<Members> {
                 Tab(text: "CADETTE"),
                 Tab(text: "SENIOR"),
                 Tab(text: "AMBASSADOR"),
+                Tab(text: "ARCHIVED"),
               ],
             ),
             title: Text(
@@ -66,14 +107,6 @@ class _MembersState extends State<Members> {
               GestureDetector(onTap: () {
                 //TODO: implement functionality
               }, child: Icon(Icons.search, color: Theme.of(context).hintColor),),
-              SizedBox(width: 10.0),
-              GestureDetector(onTap: () {
-                //TODO: implement functionality
-              }, child: Icon(Icons.apps, color: Theme.of(context).hintColor),),
-              SizedBox(width: 10.0),
-              GestureDetector(onTap: () {
-                //TODO: implement functionality
-              }, child: Icon(Icons.format_list_bulleted, color: Theme.of(context).hintColor),),
               SizedBox(width: 10.0),
               GestureDetector(onTap: () {
                 //TODO: implement functionality
@@ -94,19 +127,21 @@ class _MembersState extends State<Members> {
           body: TabBarView(
             children: [
               ListView( //all
-                  children: getMemberWidgetList(gradeEnum.ALL)),
+                  children: getMemberWidgetList(grade: gradeEnum.ALL)),
               ListView( //daisy
-                  children: getMemberWidgetList(gradeEnum.DAISY)),
+                  children: getMemberWidgetList(grade: gradeEnum.DAISY)),
               ListView( //bownie
-                  children: getMemberWidgetList(gradeEnum.BROWNIE)),
+                  children: getMemberWidgetList(grade: gradeEnum.BROWNIE)),
               ListView( //cadette
-                  children: getMemberWidgetList(gradeEnum.JUNIOR)),
+                  children: getMemberWidgetList(grade: gradeEnum.JUNIOR)),
               ListView( //senior
-                  children: getMemberWidgetList(gradeEnum.CADETTE)),
+                  children: getMemberWidgetList(grade: gradeEnum.CADETTE)),
               ListView( //senior
-                  children: getMemberWidgetList(gradeEnum.SENIOR)),
+                  children: getMemberWidgetList(grade: gradeEnum.SENIOR)),
               ListView( //ambassador
-                  children: getMemberWidgetList(gradeEnum.AMBASSADOR)),
+                  children: getMemberWidgetList(grade: gradeEnum.AMBASSADOR)),
+              ListView( //ambassador
+                  children: getMemberWidgetList(grade: gradeEnum.ALL, archive: true)),
             ],
           ),
           floatingActionButton: FloatingActionButton( //pressing this creates options for editing members. its fancy. im sorry, i got carried away

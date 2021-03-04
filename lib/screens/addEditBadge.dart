@@ -155,7 +155,7 @@ class _AddState extends State<AddBadge> {
                   SizedBox(height: 5),
                   TextFormField( //name
                     decoration: InputDecoration(
-                      hintText: 'Enter a name for the badge',
+                      hintText: 'Enter badge\'s name',
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: kGreenColor),
                       ),
@@ -178,7 +178,7 @@ class _AddState extends State<AddBadge> {
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration: InputDecoration(
-                      hintText: 'Enter a description for the badge',
+                      hintText: 'Enter badge\'s description',
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: kGreenColor),
                       ),

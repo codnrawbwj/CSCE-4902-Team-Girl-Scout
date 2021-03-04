@@ -28,6 +28,9 @@ class GirlScoutDatabase {
   var badgeTagBox = Hive.box('badgeTags');
   await badgeBox.clear();
   await memberBox.clear();
+  for(Member m in memberBox.values) {
+    File(m.photoPath).delete();
+  }
   await badgeTagBox.clear();
 
   allList.clear();
@@ -61,6 +64,7 @@ class GirlScoutDatabase {
     WidgetsFlutterBinding.ensureInitialized();
     final appDBDirectory = await getApplicationDocumentsDirectory();
     await Hive.initFlutter(appDBDirectory.path);
+
     Hive.registerAdapter(BadgeTagAdapter());
     Hive.registerAdapter(BadgeAdapter());
     Hive.registerAdapter(GradeAdapter());
@@ -147,6 +151,7 @@ class GirlScoutDatabase {
 
       Grade gradeObj = gradeBox.get(grade); // get grade from db
       gradeObj.members.add(member); // add member to grade
+      gradeObj.save();
       /*
     }
     catch (e) {
@@ -156,6 +161,42 @@ class GirlScoutDatabase {
     }
 
        */
+  }
+
+  Future<void> editMember (Member member, String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
+    //try {
+    print('editing member');
+    var memberBox = Hive.box('members'); //open boxes
+    var gradeBox = Hive.box('grades');
+    var newGrade = gradeBox.get(grade);
+    var gradeLink;
+
+    if(member.grade.first != newGrade){ //if grade changed, remove member from old grade and add member to new grade
+        Grade oldGrade = member.grade.first;
+        oldGrade.members.remove(member); // remove member from old grade
+        oldGrade.save();
+
+        gradeLink = HiveList(gradeBox); // create a hive list to hold 1 grade
+        print(grade);
+        gradeLink.add(newGrade); // add the member's grade to the list
+
+        member.grade = gradeLink; //link grade to member
+
+        Grade gradeObj = gradeBox.get(grade); // get new grade from db
+        gradeObj.members.add(member); // add member to grade
+        gradeObj.save();
+    }
+
+    member.name = name;
+    member.team = team;
+    member.birthday = DateTime(birthYear, monthNums[birthMonth], birthDay);
+
+    if(member.photoPath != photoPath) { // if the photo is changed
+        File(member.photoPath).delete(); // delete old photo
+        member.photoPath = photoPath; //set new photo
+    }
+
+    member.save();
   }
 
   Badge getBadge(String name)
@@ -191,6 +232,30 @@ class GirlScoutDatabase {
     }
 
        */
+  }
+
+  List<dynamic> getMembersByGrade(gradeEnum gradeE) {
+    var gradeBox = Hive.box('grades');
+    var memberBox = Hive.box('members');
+    Grade grade;
+    HiveList gradeMembersList;
+
+    String gradeString = describeEnum(gradeE);
+    gradeString = gradeString[0] + gradeString.substring(1).toLowerCase();
+    print(gradeString);
+
+    if(gradeString == 'All') {
+      gradeMembersList = HiveList(memberBox);
+      for(grade in gradeBox.values) {
+        gradeMembersList.addAll(grade.members);
+      }
+    }
+    else {
+      grade = gradeBox.get(gradeString);
+      gradeMembersList = grade.members;
+    }
+    print(gradeMembersList.length);
+    return gradeMembersList.toList();
   }
 
   int getMemberCount () {
@@ -233,7 +298,7 @@ class GirlScoutDatabase {
 
       Grade gradeObj = gradeBox.get(grade); // get grade from db
       gradeObj.badges.add(badge); // add member to grades
-
+      gradeObj.save();
 
     }
     catch (e) {

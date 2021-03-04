@@ -11,7 +11,7 @@ import 'package:girl_scout_simple/screens/memberBadge_info.dart';
 class BadgeCard extends StatelessWidget {
 
   BadgeCard({this.grade, this.name, this.description, this.requirements,
-    this.quantity, this.photoLocation, this.selectable = false, this.memberData, this.isMemberBadge, this.memberBadge});
+    this.quantity, this.photoLocation, this.selectable = false, this.member, this.isMemberBadge, this.memberBadge, this.callingObj});
 
   final gradeEnum grade;
   final String name;
@@ -20,9 +20,10 @@ class BadgeCard extends StatelessWidget {
   final int quantity;
   final String photoLocation; //idk if we need this
   final bool selectable;
-  final Data memberData;
+  final Member member;
   final bool isMemberBadge;
   final BadgeTag memberBadge;
+  final dynamic callingObj;
 
   @override
   Widget build(BuildContext context) {
@@ -92,32 +93,31 @@ class BadgeCard extends StatelessWidget {
             ),
             onTap: () async{
               //TODO create funtion so that if state is triggered, bring up edit page with populated information for tapped scout
-              if (selectable) {
-                  //add badge to scout list
-                if (memberData == null) {
-                  print(
-                      'YOU NEED TO PASS A  MEMBER IF YOU MAKE THE BADGECARD SELECTABLE!');
-                  return;
-                }
-                Member member = db.getMember(memberData.name); //get member
-                Badge badge = db.getBadge(name);
+              Badge badge = db.getBadge(name);
+              if (selectable) { //for adding member badges from badgelist
+                    //add badge to scout list
+                  if (member == null) {
+                      print(
+                          'YOU NEED TO PASS A  MEMBER IF YOU MAKE THE BADGECARD SELECTABLE!');
+                      return;
+                  }; //get member
 
-                if (await db.addBadgeTag(member, badge) == null) //if member already has badge, alert user
-                  AlertPopup(context);
-                else
-                  Navigator.pop(context, true);
-                }
+                  if (await db.addBadgeTag(member, badge) == null) //if member already has badge, alert user
+                      alertPopup(context);
+                  else
+                      Navigator.pop(context, true);
+              }
               else {
-                if (isMemberBadge) {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) =>
-                      new MemberBadgeInfo(memberBadge: memberBadge)));
-                }
-                else {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) =>
-                      new BadgeInfo(badge: db.getBadge(name))));
-                }
+                  if (isMemberBadge) {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                          new MemberBadgeInfo(memberBadge: memberBadge, callingObj: callingObj)));
+                  }
+                  else {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                          new BadgeInfo(badge: badge)));
+                  }
               }
             }
         ),
@@ -126,7 +126,7 @@ class BadgeCard extends StatelessWidget {
   }
 }
 
-void AlertPopup(BuildContext context) async {
+void alertPopup(BuildContext context) async {
   String result = await showDialog(
       context: context,
       barrierDismissible: false,

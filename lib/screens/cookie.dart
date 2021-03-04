@@ -13,23 +13,24 @@ class _CookieState extends State<Cookie> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
-        length: 5,
+        length: 6,
         child: Scaffold(
-          backgroundColor: Theme.of(context).focusColor,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
             title: Text(
-              'Cookies',
+              'Cookie Tracker',
               style: Theme.of(context).textTheme.headline1,
             ),
             backgroundColor: Theme.of(context).primaryColor,
           bottom: TabBar(
             isScrollable: true,
             tabs: [
+              Tab(text: "Tracker"),
               Tab(text: "Cookies"),
-              Tab(text: "Sale"),
-              Tab(text: "Order"),
-              Tab(text: "Transfer"),
-              Tab(text: "Season"),
+              Tab(text: "Sales"),
+              Tab(text: "Orders"),
+              Tab(text: "Transfers"),
+              Tab(text: "Seasons"),
             ]
           ),
             actions: <Widget>[
@@ -40,20 +41,13 @@ class _CookieState extends State<Cookie> {
               SizedBox(width: 10.0),
               GestureDetector(onTap: () {
                 //TODO: implement functionality
-              }, child: Icon(Icons.apps, color: Theme.of(context).hintColor),),
-              SizedBox(width: 10.0),
-              GestureDetector(onTap: () {
-                //TODO: implement functionality
-              }, child: Icon(Icons.format_list_bulleted, color: Theme.of(context).hintColor),),
-              SizedBox(width: 10.0),
-              GestureDetector(onTap: () {
-                //TODO: implement functionality
               }, child: Icon(Icons.get_app, color: Theme.of(context).hintColor),),
               SizedBox(width: 10.0),
             ],
         ),
         body: TabBarView(
               children: [
+                ListView(),
                 ListView(),
                 ListView(),
                 ListView(),
