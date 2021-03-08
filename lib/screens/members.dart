@@ -95,7 +95,7 @@ class _MembersState extends State<Members> {
                 Tab(text: "CADETTE"),
                 Tab(text: "SENIOR"),
                 Tab(text: "AMBASSADOR"),
-                Tab(text: "ARCHIVED"),
+                Tab(text: "INACTIVE"),
               ],
             ),
             title: Text(

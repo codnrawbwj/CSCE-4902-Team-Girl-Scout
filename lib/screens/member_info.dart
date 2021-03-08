@@ -48,7 +48,7 @@ class _AddState extends State<MemberInfo> {
         builder: (BuildContext context) {
             return AlertDialog(
                 title: Text('Notice'),
-                content: Text((widget.member.isArchived == 'Yes') ? 'Do you wish to unarchive this member?' : 'Do you wish to archive this member?'),
+                content: Text((widget.member.isArchived == 'Yes') ? 'Do you wish to set this member to active?' : 'Do you wish to set this member to inactive?'),
                 actions: <Widget>[
                     FlatButton(
                         child: Text('Yes'),
