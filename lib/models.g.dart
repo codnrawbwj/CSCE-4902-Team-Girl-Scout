@@ -274,17 +274,17 @@ class GradeAdapter extends TypeAdapter<Grade> {
           typeId == other.typeId;
 }
 
-class CookiesAdapter extends TypeAdapter<Cookies> {
+class CookieAdapter extends TypeAdapter<Cookie> {
   @override
   final int typeId = 5;
 
   @override
-  Cookies read(BinaryReader reader) {
+  Cookie read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Cookies(
+    return Cookie(
       fields[0] as dynamic,
       fields[1] as dynamic,
       fields[2] as dynamic,
@@ -297,7 +297,7 @@ class CookiesAdapter extends TypeAdapter<Cookies> {
   }
 
   @override
-  void write(BinaryWriter writer, Cookies obj) {
+  void write(BinaryWriter writer, Cookie obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)
@@ -324,7 +324,7 @@ class CookiesAdapter extends TypeAdapter<Cookies> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CookiesAdapter &&
+      other is CookieAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

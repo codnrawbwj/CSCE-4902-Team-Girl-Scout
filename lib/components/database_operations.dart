@@ -70,11 +70,21 @@ class GirlScoutDatabase {
     Hive.registerAdapter(GradeAdapter());
     Hive.registerAdapter(MemberAdapter());
     Hive.registerAdapter(gradeEnumAdapter());
+    Hive.registerAdapter(CookieAdapter());
+    Hive.registerAdapter(SaleAdapter());
+    Hive.registerAdapter(OrderAdapter());
+    Hive.registerAdapter(TransferAdapter());
+    Hive.registerAdapter(SeasonAdapter());
 
     await Hive.openBox('members');
     await Hive.openBox('badgeTags');
     await Hive.openBox('grades');
     await Hive.openBox('badges');
+    await Hive.openBox('sales');
+    await Hive.openBox('badges');
+    await Hive.openBox('orders');
+    await Hive.openBox('transfers');
+    await Hive.openBox('seasons');
 
     /*
     var gradeBox = Hive.box('grades');
@@ -94,6 +104,8 @@ class GirlScoutDatabase {
 
     imageCache.clear();
 
+    var seasonsBox = Hive.box('seasons');
+    if (seasonsBox.get('isStarted') == null) seasonsBox.put('isStarted', false);
   }
 
   Future<void> loadGrades() async {
@@ -398,6 +410,34 @@ class GirlScoutDatabase {
        */
   }
 
+
+  List<dynamic> getCookieRestock() {
+    //try {
+    print('getting undistributed member\'s badges');
+
+    var badgeTagBox = Hive.box('badgeTags');
+
+    var undistributedBadges = badgeTagBox.values.where((badge) =>
+    (badge.status == 'Awaiting Badge'));
+
+    if (undistributedBadges != null) { // if member has badges, return them
+      print('returning undistributed member\'s badges');
+      return undistributedBadges.toList();
+    }
+    print('No undistributed badges');
+    return null; // return null if no badges
+
+    /*
+    }
+    catch (e) {
+      print(e);
+      print("Add member failed");
+      return;
+    }
+
+       */
+  }
+
   List<dynamic> getUndistributedMemberBadges() {
     //try {
     print('getting undistributed member\'s badges');
@@ -423,6 +463,18 @@ class GirlScoutDatabase {
     }
 
        */
+  }
+
+  Future<dynamic> startSeason () async {
+    var seasonBox = Hive.box('seasons');
+
+    seasonBox.put('isStarted', true);
+  }
+
+  bool isSeasonStarted() {
+    var seasonBox = Hive.box('seasons');
+
+    return seasonBox.get('isStarted');
   }
 
 }

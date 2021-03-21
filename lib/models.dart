@@ -135,7 +135,7 @@ enum gradeEnum {
 }
 
 @HiveType(typeId: 5)
-class Cookies extends HiveObject {
+class Cookie extends HiveObject {
   @HiveField(0)
   String name;
 
@@ -146,21 +146,24 @@ class Cookies extends HiveObject {
   int quantity;
 
   @HiveField(3)
-  HiveList seasons;
+  String photoPath;
 
   @HiveField(4)
-  HiveList sales;
+  HiveList seasons;
 
   @HiveField(5)
-  HiveList orders;
+  HiveList sales;
 
   @HiveField(6)
-  HiveList transfers;
+  HiveList orders;
 
   @HiveField(7)
+  HiveList transfers;
+
+  @HiveField(8)
   String isArchived;
 
-  Cookies(name, price, quantity, seasons, sales, orders, transfers, {this.isArchived = 'No'});
+  Cookie(name, price, quantity, seasons, sales, orders, transfers, {this.isArchived = 'No'});
 }
 
 @HiveType(typeId: 6)
