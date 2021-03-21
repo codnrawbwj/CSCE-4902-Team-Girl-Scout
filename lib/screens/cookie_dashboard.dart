@@ -26,7 +26,7 @@ class _CookieDashboardState extends State<CookieDashboard> {
 
   _getCookieRestock() {
     var cookieRestock = globals.db.getCookieRestock();
-    var _restockList = new List<Widget>();
+    _restockList = new List<Widget>();
 
     for (Cookie cookie in cookieRestock) {
       if (cookie != null) {
@@ -60,17 +60,18 @@ class _CookieDashboardState extends State<CookieDashboard> {
     var now = DateTime.now();
     var today = DateTime(now.year, now.month, now.day);
 
+    /*
     for (int day = 1; day <= 7; ++day) {
       if (today.weekday == DateTime.sunday)
         break;
-/*
+
       var earnedBadges = _badgeTagsBox.values.where((badge) =>
       (badge.dateAcquired ==
           (today.subtract(new Duration(days: today.weekday - day + 1)))));
       weeklyCookieSales[day - 1] = earnedBadges.length;
     }
 */
-      var weeklyBadges = [
+      var cookieSales = [
         _Day('Sun', weeklyCookieSales[0]),
         _Day('Mon', weeklyCookieSales[1]),
         _Day('Tues', weeklyCookieSales[2]),
@@ -82,16 +83,14 @@ class _CookieDashboardState extends State<CookieDashboard> {
 
       _seriesCookieSalesData.add(
           charts.Series(
-              domainFn: (_Day cookie, _) => cookie.day,
-              measureFn: (_Day cookie, _) => cookie.quantity,
+              domainFn: (_Day day, _) => day.day,
+              measureFn: (_Day day, _) => day.quantity,
               id: 'Week',
-              data: weeklyBadges,
+              data: cookieSales,
               fillPatternFn: (_, __) => charts.FillPatternType.solid,
-              colorFn: (_Day cookie, _) =>
-                  charts.ColorUtil.fromDartColor(Colors.black)
+              colorFn: (_Day cookie, _) => charts.ColorUtil.fromDartColor(Colors.black)
           )
       );
-    }
   }
 
   _getCookieSalesPerFlavorData() {
@@ -234,7 +233,26 @@ class _CookieDashboardState extends State<CookieDashboard> {
                 ),
               ],
             ),),
-          SizedBox(height: 15.0),
+          SizedBox(height: 50.0),
+          Center( // display buttons
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50.0),
+              child: MaterialButton(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("End Season", style: TextStyle(fontSize: 20.0),),
+                ),
+                textColor: kWhiteColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(8.0),
+                ),
+                color: kGreenColor,
+                onPressed: () async { //enable button
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 20.0),
         ],
       ),
     );

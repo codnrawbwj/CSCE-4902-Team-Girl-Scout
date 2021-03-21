@@ -28,48 +28,7 @@ class _DashboardState extends State<Dashboard> {
      ///*
     var now = DateTime.now();
     var today = DateTime(now.year, now.month, now.day);
-    // ---------------- test data (remove when done testing) ---------------
-/*
-    _badgeTagsBox.clear();
-    print('loading badge data for chart');
-    if (_badgeTagsBox.isEmpty) {
-      var yesterday = today.subtract(new Duration(days: 1));
-      var twodaysago = today.subtract(new Duration(days: 2));
-      var threedaysago = today.subtract(new Duration(days: 3));
-      var fourdaysago = today.subtract(new Duration(days: 4));
-      var fivedaysago = today.subtract(new Duration(days: 5));
-      var sixdaysago = today.subtract(new Duration(days: 6));
 
-      for (int day = 0; day < 6; ++day) {
-        _badgeTagsBox.add(BadgeTag.date(today));
-      }
-
-      for (int day = 0; day < 15; ++day) {
-        _badgeTagsBox.add(BadgeTag.date(yesterday));
-      }
-
-      for (int day = 0; day < 10; ++day) {
-        _badgeTagsBox.add(BadgeTag.date(twodaysago));
-      }
-
-      for (int day = 0; day < 12; ++day) {
-        _badgeTagsBox.add(BadgeTag.date(threedaysago));
-      }
-
-      for (int day = 0; day < 7; ++day) {
-        _badgeTagsBox.add(BadgeTag.date(fourdaysago));
-      }
-
-      for (int day = 0; day < 11; ++day) {
-        _badgeTagsBox.add(BadgeTag.date(fivedaysago));
-      }
-
-      for (int day = 0; day < 8; ++day) {
-        _badgeTagsBox.add(BadgeTag.date(sixdaysago));
-      }
-    }
-    // ---------------------------------------------------------------------
-*/
     for(int day = 1; day <= 7; ++day) {
       if(today.weekday == DateTime.sunday)
         break;
@@ -158,12 +117,10 @@ class _DashboardState extends State<Dashboard> {
                 SizedBox(width: 15),
                 Icon(Icons.group, color: Theme.of(context).hintColor),
                 SizedBox(width: 3),
-                //TODO: Count the actual number of members
                 Text(globals.db.getMemberCount().toString() +  ' members', style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(width: 10),
                 Icon(Icons.check_circle, color: Theme.of(context).hintColor),
                 SizedBox(width: 3),
-                //TODO: Count the actual number of collections
                 Text(globals.db.getBadgeCount().toString() + ' Badges', style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(width: 20)
               ],
@@ -183,22 +140,6 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             children: <Widget>[
               SizedBox(height: 10),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     SizedBox(width: 15),
-              //     Icon(Icons.group),
-              //     SizedBox(width: 3),
-              //     //TODO: Count the actual number of members
-              //     Text("13 members", style: Theme.of(context).textTheme.bodyText1,),
-              //     SizedBox(width: 10),
-              //     Icon(Icons.equalizer),
-              //     SizedBox(width: 3),
-              //     //TODO: Count the actual number of collections
-              //     Text("57 Collections", style: Theme.of(context).textTheme.bodyText1,)
-              //   ],
-              // ),
-              //TODO: Include list that reflects the undistributed badges/patches
               ReusableCard(title: 'Undistributed Badges', subtitle: undistributedMemberBadges.length.toString() + ' items', addIcon: false,
                 cardChild: Column(
                   children: ListTile.divideTiles(
@@ -206,7 +147,6 @@ class _DashboardState extends State<Dashboard> {
                     tiles: undistributedList
                   ).toList(),
                 ),),
-              //TODO: Replace with graph (probably line for every member?)
               //list of chart: https://google.github.io/charts/flutter/gallery.html
               //library: https://pub.dev/packages/charts_flutter
               ReusableCard(title: 'Badges Awarded This Week', subtitle: '', addIcon: false,

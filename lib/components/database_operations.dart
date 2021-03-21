@@ -80,8 +80,8 @@ class GirlScoutDatabase {
     await Hive.openBox('badgeTags');
     await Hive.openBox('grades');
     await Hive.openBox('badges');
+    await Hive.openBox('cookies');
     await Hive.openBox('sales');
-    await Hive.openBox('badges');
     await Hive.openBox('orders');
     await Hive.openBox('transfers');
     await Hive.openBox('seasons');
@@ -413,10 +413,11 @@ class GirlScoutDatabase {
 
   List<dynamic> getCookieRestock() {
     //try {
-    print('getting undistributed member\'s badges');
+    print('getting cookie restock');
 
-    var badgeTagBox = Hive.box('badgeTags');
-
+    var cookieBox = Hive.box('cookies');
+    var cookieRestock = cookieBox.values;
+    /*
     var undistributedBadges = badgeTagBox.values.where((badge) =>
     (badge.status == 'Awaiting Badge'));
 
@@ -424,18 +425,9 @@ class GirlScoutDatabase {
       print('returning undistributed member\'s badges');
       return undistributedBadges.toList();
     }
-    print('No undistributed badges');
-    return null; // return null if no badges
-
-    /*
-    }
-    catch (e) {
-      print(e);
-      print("Add member failed");
-      return;
-    }
-
-       */
+    */
+    print('No cookies to restock');
+    return cookieRestock.toList(); // return null if no
   }
 
   List<dynamic> getUndistributedMemberBadges() {
