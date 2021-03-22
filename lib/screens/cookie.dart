@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:girl_scout_simple/components/globals.dart';
-import 'package:girl_scout_simple/screens/cookie_dashboard.dart';
+import 'file:///C:/Users/jonat/OneDrive/Desktop/CSCE-4902-Team-Girl-Scout/lib/components/cookie_dashboard.dart';
 import 'package:girl_scout_simple/screens/seasonSetup.dart';
 
 
