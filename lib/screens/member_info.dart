@@ -13,7 +13,6 @@ import 'package:simple_image_crop/simple_image_crop.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/components/reusable_card.dart';
-import 'package:girl_scout_simple/components/badge_container.dart';
 import 'package:girl_scout_simple/models.dart';
 import 'package:girl_scout_simple/screens/addEditMember.dart';
 import 'package:girl_scout_simple/components/badge_widgets.dart';

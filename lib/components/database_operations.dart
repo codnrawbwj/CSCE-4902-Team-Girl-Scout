@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 
 //import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/globals.dart';
-import 'package:girl_scout_simple/components/badge_container.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -495,16 +494,18 @@ class GirlScoutDatabase {
     seasonBox.put('isStarted', true);
   }
 
+  void endSeason () {
+    var seasonBox = Hive.box('seasons');
+
+    seasonBox.put('isStarted', false);
+  }
+
+
   bool isSeasonStarted() {
     var seasonBox = Hive.box('seasons');
 
     return seasonBox.get('isStarted');
   }
-
-  Future<dynamic> endSeason() {
-
-  }
-
 
 
 }

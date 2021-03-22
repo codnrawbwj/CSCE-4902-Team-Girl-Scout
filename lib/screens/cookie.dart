@@ -6,6 +6,8 @@ import 'package:girl_scout_simple/components/constants.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/screens/cookie_dashboard.dart';
+import 'package:girl_scout_simple/screens/seasonSetup.dart';
+
 
 import 'package:girl_scout_simple/models.dart';
 import 'package:flutter/foundation.dart';
@@ -19,10 +21,15 @@ class Cookie extends StatefulWidget {
 }
 
 class _CookieState extends State<Cookie> {
-  bool isSeasonStarted = db.isSeasonStarted();
+  void refresh () {
+    print('refreshing members info...');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    bool isSeasonStarted = db.isSeasonStarted();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
@@ -57,8 +64,8 @@ class _CookieState extends State<Cookie> {
         ),
         body: TabBarView(
               children: [
-                  !isSeasonStarted ?
-                      CookieDashboard() // display dashboard
+                  isSeasonStarted ?
+                      CookieDashboard(callingObj: this) // display dashboard
                           :
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,6 +89,11 @@ class _CookieState extends State<Cookie> {
                                         ),
                                         color: kGreenColor,
                                         onPressed: () async { //enable button
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => new SeasonSetup()
+                                                )
+                                            ).then((value) => setState(() {}));
                                         },
                                     ),
                                 ),

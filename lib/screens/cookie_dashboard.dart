@@ -13,6 +13,10 @@ import 'package:girl_scout_simple/screens/memberBadge_info.dart';
 import 'package:girl_scout_simple/models.dart';
 
 class CookieDashboard extends StatefulWidget {
+  CookieDashboard({this.callingObj});
+
+  final dynamic callingObj;
+
   @override
   _CookieDashboardState createState() => _CookieDashboardState();
 }
@@ -165,6 +169,7 @@ class _CookieDashboardState extends State<CookieDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    dynamic callingObj = widget.callingObj;
 
     _salesBox = Hive.box('sales');
 
@@ -255,7 +260,9 @@ class _CookieDashboardState extends State<CookieDashboard> {
                   borderRadius: new BorderRadius.circular(8.0),
                 ),
                 color: kGreenColor,
-                onPressed: () async { //enable button
+                onPressed: () async { //end season button
+                    globals.db.endSeason();
+                    callingObj.refresh();
                 },
               ),
             ),

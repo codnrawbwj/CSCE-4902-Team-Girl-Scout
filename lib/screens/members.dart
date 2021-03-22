@@ -144,7 +144,6 @@ class _MembersState extends State<Members> {
           ),
           floatingActionButton: FloatingActionButton( //pressing this creates options for editing members. its fancy. im sorry, i got carried away
             onPressed: () {
-              //TODO manage team members with actions such as add, delete, move, and edit
               Navigator.push(context, MaterialPageRoute(
                   builder: (context) => new Add(title: 'Add Member'))).then((
                   value) {
@@ -153,8 +152,7 @@ class _MembersState extends State<Members> {
             },
             child: Icon(Icons.add),
             backgroundColor: Colors.green,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            shape: CircleBorder(
             ),
           ),
         ),
