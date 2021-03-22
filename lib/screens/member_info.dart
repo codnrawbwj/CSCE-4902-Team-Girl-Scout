@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:girl_scout_simple/components/member_container.dart';
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/screens/members.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,7 +16,7 @@ import 'package:girl_scout_simple/components/reusable_card.dart';
 import 'package:girl_scout_simple/components/badge_container.dart';
 import 'package:girl_scout_simple/models.dart';
 import 'package:girl_scout_simple/screens/addEditMember.dart';
-import 'package:girl_scout_simple/components/badge_card.dart';
+import 'package:girl_scout_simple/components/badge_widgets.dart';
 
 class MemberInfo extends StatefulWidget {
   //TODO: complete parameters
@@ -81,22 +80,16 @@ class _AddState extends State<MemberInfo> {
 
     if (memberBadgesList != null) {
       print('creating member\'s badges widgets');
-      for (var i in memberBadgesList) {
-        print(i.status);
-        Badge memberBadge = i.badge.first;
-        Grade badgeGrade = memberBadge.grade.first;
+      for (var memberBadge in memberBadgesList) {
+        print(memberBadge.status);
+        Badge badge = memberBadge.badge.first;
         returnList.add(new Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              new BadgeCard(grade: badgeGrade.name,
-                  name: memberBadge.name,
-                  description: memberBadge.description,
-                  requirements: memberBadge.requirements,
-                  quantity: 0,
-                  //getBadgeNum(describeEnum(i.grade), i.name),
-                  photoLocation: memberBadge.photoPath,
+              new BadgeCard(
+                  badge: badge,
                   isMemberBadge: true,
-                  memberBadge: i,
+                  memberBadge: memberBadge,
                   callingObj: this),
             ]));
       }

@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:girl_scout_simple/components/member_container.dart';
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/screens/cookie_dashboard.dart';
 

@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 
 //import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/globals.dart';
-import 'package:girl_scout_simple/components/member_container.dart';
 import 'package:girl_scout_simple/components/badge_container.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -27,12 +26,15 @@ class GirlScoutDatabase {
   var badgeBox = Hive.box('badges');
   var badgeTagBox = Hive.box('badgeTags');
   await badgeBox.clear();
+  for(Badge b in badgeBox.values) {
+    File(b.photoPath).delete();
+  }
   await memberBox.clear();
   for(Member m in memberBox.values) {
     File(m.photoPath).delete();
   }
   await badgeTagBox.clear();
-
+/*
   allList.clear();
   daisyList.clear();
   brownieList.clear();
@@ -56,7 +58,7 @@ class GirlScoutDatabase {
   cadetteListPatch.clear();
   seniorListPatch.clear();
   ambassadorListPatch.clear();
-
+*/
   //cant delete other two boxes
 }
 
@@ -93,12 +95,14 @@ class GirlScoutDatabase {
     await badgeBox.clear();
     await memberBox.clear();
     await gradeBox.clear();
-    */
+
 
     print('loading members');
     await db.loadMembers();
     print('loading badges');
     await db.loadBadges();
+
+     */
     print('loading grades');
     await loadGrades();
 
@@ -126,7 +130,7 @@ class GirlScoutDatabase {
       gradeBox.put('Ambassador', Grade(gradeEnum.AMBASSADOR, memberHiveList, badgeHiveList));
     }
   }
-
+/*
   Future<void> loadMembers() async{
     try {
       var memberBox = Hive.box('members');
@@ -143,7 +147,7 @@ class GirlScoutDatabase {
       return;
     }
   }
-
+*/
   Future<void> addMember (String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
     //try {
     print('adding member');
@@ -211,22 +215,6 @@ class GirlScoutDatabase {
     member.save();
   }
 
-  Badge getBadge(String name)
-  {
-    print('getting badge');
-    var badgeBox = Hive.box('badges'); //open member box
-    Badge i;
-    for (i in badgeBox.values) {
-      if (i.name == name) break;
-    }
-
-
-
-    //Badge badge = badgeBox.get('cyc'); // get member
-    return i;
-
-  }
-
 
   Member getMember (String name) {
     //try {
@@ -278,7 +266,7 @@ class GirlScoutDatabase {
   Future<void> deleteMember(String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
     return;
   }
-
+/*
   Future<void> loadBadges() async {
     try {
       var badgeBox = Hive.box('badges');
@@ -294,7 +282,9 @@ class GirlScoutDatabase {
     }
   }
 
-  Future<void> addBadge(String grade, String name, String description, List<String> requirements, String photoLocation) async{
+ */
+
+  void addBadge(String grade, String name, String description, List<String> requirements, String photoLocation) {
     try {
       var badgeBox = Hive.box('badges'); //open boxes
       var gradeBox = Hive.box('grades');
@@ -319,12 +309,52 @@ class GirlScoutDatabase {
     }
   }
 
+  Badge getBadge(String name)
+  {
+    print('getting badge');
+    var badgeBox = Hive.box('badges'); //open member box
+    Badge i;
+    for (i in badgeBox.values) {
+      if (i.name == name) break;
+    }
+
+
+
+    //Badge badge = badgeBox.get('cyc'); // get member
+    return i;
+
+  }
+
+  List<dynamic> getBadgesByGrade(gradeEnum gradeE) {
+    var badgeBox = Hive.box('badges');
+    var gradeBox = Hive.box('grades');
+    Grade grade;
+    HiveList gradeBadgesList;
+
+    String gradeString = describeEnum(gradeE);
+    gradeString = gradeString[0] + gradeString.substring(1).toLowerCase();
+    print(gradeString);
+
+    if(gradeString == 'All') {
+      gradeBadgesList = HiveList(badgeBox);
+      for(grade in gradeBox.values) {
+        gradeBadgesList.addAll(grade.badges);
+      }
+    }
+    else {
+      grade = gradeBox.get(gradeString);
+      gradeBadgesList = grade.badges;
+    }
+    print(gradeBadgesList.length);
+    return gradeBadgesList.toList();
+  }
+
   int getBadgeCount () {
     var badgeBox = Hive.box('badges');
     return badgeBox.length;
   }
 
-  Future<dynamic> addBadgeTag (Member member, Badge badge) async{
+  dynamic addBadgeTag (Member member, Badge badge) {
     //try {
     print('adding member badge');
     var memberBox = Hive.box('members'); //open boxes
@@ -411,25 +441,6 @@ class GirlScoutDatabase {
   }
 
 
-  List<dynamic> getCookieRestock() {
-    //try {
-    print('getting cookie restock');
-
-    var cookieBox = Hive.box('cookies');
-    var cookieRestock = cookieBox.values;
-    /*
-    var undistributedBadges = badgeTagBox.values.where((badge) =>
-    (badge.status == 'Awaiting Badge'));
-
-    if (undistributedBadges != null) { // if member has badges, return them
-      print('returning undistributed member\'s badges');
-      return undistributedBadges.toList();
-    }
-    */
-    print('No cookies to restock');
-    return cookieRestock.toList(); // return null if no
-  }
-
   List<dynamic> getUndistributedMemberBadges() {
     //try {
     print('getting undistributed member\'s badges');
@@ -457,7 +468,28 @@ class GirlScoutDatabase {
        */
   }
 
-  Future<dynamic> startSeason () async {
+  List<dynamic> getCookieRestock() {
+    //try {
+    print('getting cookie restock');
+
+    var cookieBox = Hive.box('cookies');
+    var cookieRestock = cookieBox.values;
+    /*
+    var undistributedBadges = badgeTagBox.values.where((badge) =>
+    (badge.status == 'Awaiting Badge'));
+
+    if (undistributedBadges != null) { // if member has badges, return them
+      print('returning undistributed member\'s badges');
+      return undistributedBadges.toList();
+    }
+    */
+    print('No cookies to restock');
+    return cookieRestock.toList(); // return null if no
+  }
+
+
+
+  void startSeason () {
     var seasonBox = Hive.box('seasons');
 
     seasonBox.put('isStarted', true);
@@ -468,5 +500,11 @@ class GirlScoutDatabase {
 
     return seasonBox.get('isStarted');
   }
+
+  Future<dynamic> endSeason() {
+
+  }
+
+
 
 }

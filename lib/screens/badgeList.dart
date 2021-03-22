@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:girl_scout_simple/components/member_container.dart';
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/screens/members.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +11,7 @@ import 'package:simple_image_crop/simple_image_crop.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/components/reusable_card.dart';
-import 'package:girl_scout_simple/components/badge_container.dart';
+import 'package:girl_scout_simple/components/badge_widgets.dart';
 import 'package:girl_scout_simple/models.dart';
 
 class BadgeListPage extends StatefulWidget {

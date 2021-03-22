@@ -5,8 +5,7 @@
 import 'dart:io';
 
 import 'package:girl_scout_simple/components/database_operations.dart';
-import 'package:girl_scout_simple/components/badge_card.dart';
-import 'package:girl_scout_simple/components/globals.dart' as globals;
+import 'package:girl_scout_simple/components/badge_widgets.dart';
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/models.dart';
 
@@ -15,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+/*
 //returns 0 if scout is placed in a list, this can be used my the add_member_card to verify that all fields are filled out
 void addBadgeToList(String grade, String name, String description, List<String> requirements, String photoLocation) {
   if (name == '') return null;
@@ -93,31 +93,10 @@ int getBadgeNum(String grade, String name) {
   return 0;
 }
 
+ */
+
 //this function also add the add member card at the end of the list. selectable should mainly be false if you want it to bring up the infromation
-List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {Member member}) {
-  var returnList = new List<Widget>();
-  var gradeList;
 
-  gradeList = globals.getGradeBadges(grade);
-
-  for (var i in gradeList) {
-    returnList.add(new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new BadgeCard(grade: i.grade,
-              name: i.name,
-              selectable: selectable,
-              member: member,
-              description: i.description,
-              requirements: i.requirements,
-              quantity: 0,//getBadgeNum(describeEnum(i.grade), i.name),
-              photoLocation: i.photoLocation,
-              isMemberBadge: false),
-
-        ]));
-  }
-  return returnList;
-}
 
 //this function also add the add member card at the end of the list.
 

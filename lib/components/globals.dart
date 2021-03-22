@@ -37,7 +37,7 @@ var monthNums = {
   'November': 11,
   'December': 12
 };
-
+/*
 class Data {
   gradeEnum grade;
   String name;
@@ -86,6 +86,7 @@ class BadgeData {
   }
 }
 
+
 List<BadgeData> getGradeBadges(gradeEnum grade) {
   var gradeList;
 
@@ -116,7 +117,7 @@ List<BadgeData> getGradeBadges(gradeEnum grade) {
 
   return gradeList;
 }
-
+*/
 gradeEnum gradeStringtoEnum(String grade) {
   var g;
 
@@ -150,7 +151,7 @@ gradeEnum gradeStringtoEnum(String grade) {
 
 }
 
-
+/*
 int count = 0;
 var allList = new List<Data>();
 var daisyList = new List<Data>();
@@ -175,3 +176,5 @@ var juniorListPatch = new List<BadgeData>();
 var cadetteListPatch = new List<BadgeData>();
 var seniorListPatch = new List<BadgeData>();
 var ambassadorListPatch = new List<BadgeData>();
+
+ */

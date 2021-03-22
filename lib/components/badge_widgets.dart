@@ -7,18 +7,33 @@ import 'package:girl_scout_simple/models.dart';
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/screens/badge_info.dart';
 import 'package:girl_scout_simple/screens/memberBadge_info.dart';
+import 'package:girl_scout_simple/components/globals.dart' as globals;
+
+
+List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {Member member}) {
+  var returnList = new List<Widget>();
+  List<dynamic> badges = globals.db.getBadgesByGrade(grade);
+
+  for (Badge badge in badges) {
+    returnList.add(new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          new BadgeCard(
+              badge: badge,
+              selectable: selectable,
+              member: member,
+              isMemberBadge: false),
+
+        ]));
+  }
+  return returnList;
+}
 
 class BadgeCard extends StatelessWidget {
 
-  BadgeCard({this.grade, this.name, this.description, this.requirements,
-    this.quantity, this.photoLocation, this.selectable = false, this.member, this.isMemberBadge, this.memberBadge, this.callingObj});
+  BadgeCard({this.badge, this.selectable = false, this.member, this.isMemberBadge, this.memberBadge, this.callingObj});
 
-  final gradeEnum grade;
-  final String name;
-  final String description;
-  final List<String> requirements;
-  final int quantity;
-  final String photoLocation; //idk if we need this
+  final Badge badge;
   final bool selectable;
   final Member member;
   final bool isMemberBadge;
@@ -65,7 +80,7 @@ class BadgeCard extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: FileImage(File(photoLocation)),
+                    image: FileImage(File(badge.photoPath)),
                     fit: BoxFit.scaleDown
                 ),
               ),
@@ -78,11 +93,11 @@ class BadgeCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text(name, style: Theme
+                        Text(badge.name, style: Theme
                             .of(context)
                             .textTheme
                             .headline2,),
-                        Text(description, style: Theme
+                        Text(badge.description, style: Theme
                             .of(context)
                             .textTheme
                             .subtitle1,),
@@ -92,8 +107,6 @@ class BadgeCard extends StatelessWidget {
               ],
             ),
             onTap: () async{
-              //TODO create funtion so that if state is triggered, bring up edit page with populated information for tapped scout
-              Badge badge = db.getBadge(name);
               if (selectable) { //for adding member badges from badgelist
                     //add badge to scout list
                   if (member == null) {

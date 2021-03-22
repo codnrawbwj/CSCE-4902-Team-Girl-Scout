@@ -176,7 +176,15 @@ class _CookieDashboardState extends State<CookieDashboard> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          SizedBox(height: 10),
+          SizedBox(height: 25),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(' Weekly Sales:  \$' + globals.db.getMemberCount().toString(), style: Theme.of(context).textTheme.bodyText2,),
+              SizedBox(width: 50),
+              Text(' Cookies Sold:  ' + globals.db.getBadgeCount().toString(), style: Theme.of(context).textTheme.bodyText2,),
+            ]
+          ),
           ReusableCard(title: 'Cookie Restock',
             subtitle: _restockList.length.toString() + ' items',
             addIcon: false,

@@ -4,8 +4,9 @@ import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/components/images_by_grade.dart';
 
 //import 'package:girl_scout_simple/components/globals.dart';
-import 'package:girl_scout_simple/components/badge_container.dart';
+import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/reusable_card.dart';
+import 'package:girl_scout_simple/components/badge_widgets.dart';
 import 'package:girl_scout_simple/models.dart';
 
 class Collection extends StatefulWidget {
@@ -16,6 +17,8 @@ class Collection extends StatefulWidget {
 }
 
 class _CollectionState extends State<Collection> {
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

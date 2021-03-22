@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:girl_scout_simple/components/member_container.dart';
 import 'package:girl_scout_simple/components/badge_container.dart';
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/screens/members.dart';
@@ -301,8 +300,8 @@ class _AddState extends State<AddBadge> {
                             if(_formKey.currentState.validate()) {
                                 final crop = cropKey.currentState;
                                 final file = await crop.cropCompleted(
-                                _image, pictureQuality: 800
-                                );
+                                    _image, pictureQuality: 800
+                                    );
                                 final directory = await getApplicationDocumentsDirectory();
                                 String name = file.path;
                                 List<String> fileName = name.split('/');
@@ -312,13 +311,15 @@ class _AddState extends State<AddBadge> {
                                 final File localFile = await file.copy('$path');
 
                                 print(path);
+                                /*
                                 addBadgeToList(
                                     gradeString,
                                     nameController.text,
                                     descriptionController.text,
                                     getRequirements(),
                                     path);
-                                await db.addBadge(gradeString,
+                                 */
+                                db.addBadge(gradeString,
                                     nameController.text,
                                     descriptionController.text,
                                     getRequirements(),
