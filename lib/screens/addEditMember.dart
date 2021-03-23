@@ -118,12 +118,9 @@ class _AddState extends State<Add> {
           ),
           title: Text(
             widget.title,
-            style: TextStyle(
-              color: kWhiteColor,
-              fontSize: 20.0,
-            ),
+            style: Theme.of(context).textTheme.headline3
           ),
-          backgroundColor: kDarkGreyColor,),
+          backgroundColor: Theme.of(context).primaryColor,),
         body: SingleChildScrollView(
             child: Form (
               key: _formKey,
