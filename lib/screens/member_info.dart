@@ -114,7 +114,6 @@ class _AddState extends State<MemberInfo> {
     imageLocation = widget.member.photoPath;
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
 

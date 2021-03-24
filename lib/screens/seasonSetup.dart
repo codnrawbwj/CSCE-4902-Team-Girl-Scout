@@ -29,7 +29,6 @@ class _AddState extends State<SeasonSetup> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
 

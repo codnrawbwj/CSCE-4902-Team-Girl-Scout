@@ -108,7 +108,6 @@ class _AddState extends State<MemberBadgeInfo> {
     });
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
 

@@ -38,7 +38,6 @@ class _AddState extends State<BadgeListPage> {
     grade = (widget.member.grade.first as Grade).name;
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
 

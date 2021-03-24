@@ -124,7 +124,6 @@ class _AddState extends State<AddBadge> {
 
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(

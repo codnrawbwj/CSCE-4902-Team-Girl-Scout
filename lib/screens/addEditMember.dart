@@ -108,7 +108,6 @@ class _AddState extends State<Add> {
         widget.member.photoPath == _image.path)); //enable button if on edit mode and changes were made or on add member mode
 
       return Scaffold(
-        resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
 
