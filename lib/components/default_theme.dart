@@ -26,7 +26,7 @@ class DefaultTheme{
       //(ex) ReusableCard Title - Undistributed, Badge, This Month
       headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: kBlackColor),
       //(ex) Setting - About Us
-      headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kBlackColor),
+      headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kWhiteColor),
       //(ex) develop an app, annabelle enjoyed...
       bodyText1: TextStyle(
         fontSize: 15.0,

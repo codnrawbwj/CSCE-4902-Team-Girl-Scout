@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:girl_scout_simple/components/globals.dart';
+import 'package:girl_scout_simple/components/default_theme.dart';
 import 'package:girl_scout_simple/screens/members.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:simple_image_crop/simple_image_crop.dart';
 //import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/models.dart';
+
 
 class AddBadge extends StatefulWidget {
   //TODO: complete parameters
@@ -125,6 +127,7 @@ class _AddState extends State<AddBadge> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         iconTheme: IconThemeData(
           color: kWhiteColor, //change your color here
@@ -136,7 +139,7 @@ class _AddState extends State<AddBadge> {
             fontSize: 20.0,
           ),
         ),
-        backgroundColor: kDarkGreyColor,),
+        backgroundColor: Theme.of(context).primaryColor,),
       body: SingleChildScrollView(
         child: Form(
             key: _formKey,
