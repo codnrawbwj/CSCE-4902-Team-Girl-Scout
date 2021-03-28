@@ -28,6 +28,45 @@ class _AddState extends State<BadgeInfo> {
 
   Badge badge;
 
+  Future<String> alertPopupArchive(BuildContext context) async {
+    String result = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Notice'),
+            content: Text((widget.badge.isArchived == 'Yes') ? 'Do you wish to set this badge to active?' : 'Do you wish to set this badge to inactive?'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: ()async {
+                  if(widget.badge.isArchived == 'Yes')
+                    widget.badge.isArchived = 'No';
+                  else
+                    widget.badge.isArchived = 'Yes';
+                  widget.badge.save();
+                  widget.callingObj.refresh();
+                  Navigator.pop(context, 'Yes');
+                },
+              ),
+              FlatButton(
+                child: Text('No'),
+                onPressed: ()async {
+                  Navigator.pop(context, 'No');
+                },
+              ),
+            ],
+          );
+        }
+    );
+    return result;
+  }
+
+  void refresh () {
+    print('refreshing badge info...');
+    setState(() {});
+  }
+  
   @override
   Widget build(BuildContext context) {
     badge = widget.badge;
@@ -68,9 +107,13 @@ class _AddState extends State<BadgeInfo> {
             //TODO: implement functionality
           }, child: Icon(Icons.edit, color: Theme.of(context).hintColor),),
           SizedBox(width: 15.0),
-          GestureDetector(onTap: () {
-            //TODO: implement functionality
-          }, child: Icon(Icons.archive, color: Theme.of(context).hintColor),),
+          GestureDetector(onTap: () async {
+            if(await alertPopupArchive(context) == 'Yes') {
+              Navigator.pop(context);
+            }
+          }, child: Icon(
+                 (widget.badge.isArchived == 'Yes') ? Icons.unarchive  :  Icons.archive,
+                color: Theme.of(context).hintColor),),
           SizedBox(width: 15.0),
         ],
         backgroundColor: kDarkGreyColor,),
