@@ -10,21 +10,41 @@ import 'package:girl_scout_simple/screens/memberBadge_info.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
 
 
-List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {Member member}) {
+List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {bool archive = false, Member member}) {
   var returnList = new List<Widget>();
   List<dynamic> badges = globals.db.getBadgesByGrade(grade);
 
-  for (Badge badge in badges) {
-    returnList.add(new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new BadgeCard(
-              badge: badge,
-              selectable: selectable,
-              member: member,
-              isMemberBadge: false),
-
-        ]));
+  if (archive) {
+    for (Badge badge in badges) {
+      if (badge.isArchived == 'Yes') {
+        print(badge);
+        returnList.add(new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              new BadgeCard(
+                  badge: badge,
+                  selectable: selectable,
+                  member: member,
+                  isMemberBadge: false),
+            ]));
+      }
+    }
+  }
+  else {
+    for (Badge badge in badges) {
+      if (badge.isArchived == 'No') {
+        print(badge);
+        returnList.add(new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              new BadgeCard(
+                  badge: badge,
+                  selectable: selectable,
+                  member: member,
+                  isMemberBadge: false),
+            ]));
+      }
+    }
   }
   return returnList;
 }
