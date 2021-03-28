@@ -23,7 +23,7 @@ class _CollectionState extends State<Collection> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 7,
+        length: 8,
         child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
@@ -36,6 +36,7 @@ class _CollectionState extends State<Collection> {
                 Tab(text: "CADETTE"),
                 Tab(text: "SENIOR"),
                 Tab(text: "AMBASSADOR"),
+                Tab(text: "INACTIVE"),
               ],
             ),
             title: Text(
@@ -236,7 +237,32 @@ class _CollectionState extends State<Collection> {
                     ///  ),
                     ///),
                   ]
-              ),],
+              ),
+              ListView(
+                  children: <Widget>[
+                    ReusableCard(
+                      title: 'Badges', subtitle: 'Inactive', addIcon: true,
+                      cardChild: Column(
+                        children: <Widget>[
+                          Column(
+                              children: getBadgeWidgetList(gradeEnum.ALL, false, archive: true)
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    ///THIS IS USED FOR PATCHES
+                    ///ReusableCard(
+                    ///  title: 'Patches', subtitle: 'Ambassador', addIcon: true,
+                    ///  cardChild:
+                    ///  ListView(
+                    ///      shrinkWrap: true,
+                    ///      children: getBadgeWidgetList(gradeEnum.AMBASSADOR, false)
+                    ///  ),
+                    ///),
+                  ]
+                ),
+            ],
           ),
         ),
       ),
