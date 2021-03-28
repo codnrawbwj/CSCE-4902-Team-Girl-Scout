@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:girl_scout_simple/components/cookie_cookies.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +101,42 @@ class _CookieState extends State<Cookie> {
                             ),
                         ]
                     ),
-                ListView(),
+                isSeasonStarted ?
+                CookieCookies(callingObj: this)
+                    :
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center( // display buttons
+                        child: Text("Cookie season has not been started", style: TextStyle(fontSize: 20.0),),
+                      ),
+                      SizedBox(height: 20.0),
+                      Center( // display buttons
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                          child: MaterialButton(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Start Season", style: TextStyle(fontSize: 20.0),),
+                            ),
+                            textColor: kWhiteColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(8.0),
+                            ),
+                            color: kGreenColor,
+                            onPressed: () async { //enable button
+                              Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (context) => new SeasonSetup()
+                                  )
+                              ).then((value) => setState(() {}));
+                            },
+                          ),
+                        ),
+                      ),
+                    ]
+                ),
                 ListView(),
           ],
         ),
