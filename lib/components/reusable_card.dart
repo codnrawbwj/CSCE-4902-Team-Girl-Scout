@@ -96,11 +96,11 @@ class _IncludeTitleState extends State<IncludeTitle> {
           GestureDetector( onTap: ()  {
             //move to add
             //TODO: Figure out why this is not working >>>>>> Navigator.pushNamed(context, Add.id);
-            (widget.title == 'Badges') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddBadge(title: 'Add Badge'))) :
-            (widget.title == 'Patches') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddBadge(title: 'Add Patch'))) :
+            (widget.title == 'Badges') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddEditBadge(title: 'Add Badge'))) :
+            (widget.title == 'Patches') ? Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddEditBadge(title: 'Add Patch'))) :
             (widget.title == 'Scout\'s Badges') ?  Navigator.push(context, MaterialPageRoute(builder: (context) =>  new BadgeListPage(type: 0, member: widget.member)))
                 .then((value) => widget.callingObj.refresh()) :
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>  new Add(title: 'Add Member')));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  new AddEditMember(title: 'Add Member')));
           }, child: Icon(Icons.add_circle), ),
         ],
       );

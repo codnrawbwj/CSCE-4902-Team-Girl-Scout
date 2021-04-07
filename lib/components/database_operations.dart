@@ -153,15 +153,19 @@ class GirlScoutDatabase {
       var memberBox = Hive.box('members'); //open boxes
       var gradeBox = Hive.box('grades');
       var badgeTagBox = Hive.box('badgeTags');
+      var seasonBox = Hive.box('seasons');
+      var saleBox = Hive.box('sales');
 
       var gradeLink = HiveList(gradeBox); // create a hive list to hold 1 grade
       print(gradeBox.get(grade));
       gradeLink.add(gradeBox.get(grade)); // add the member's grade to the list
 
       var badgeTagHiveList = HiveList(badgeTagBox); // HiveList to initialize member's BadgeTags
+      var seasonHiveList = HiveList(seasonBox);
+      var saleHiveList = HiveList(saleBox);
 
       var date = DateTime(birthYear, monthNums[birthMonth], birthDay); // create a datetime object from string inputs
-      Member member = Member(name, gradeLink, team, date, photoPath, badgeTagHiveList); // create member object based on data
+      Member member = Member(name, gradeLink, team, date, photoPath, badgeTagHiveList, seasonHiveList, saleHiveList); // create member object based on data
       memberBox.put(name, member); // add member to db
 
       Grade gradeObj = gradeBox.get(grade); // get grade from db
@@ -231,6 +235,14 @@ class GirlScoutDatabase {
     }
 
        */
+  }
+
+  List<dynamic> getMembers () {
+
+    print('getting member');
+    var memberBox = Hive.box('members'); //open member box
+    return memberBox.values.toList();
+
   }
 
   List<dynamic> getMembersByGrade(gradeEnum gradeE) {
@@ -465,6 +477,22 @@ class GirlScoutDatabase {
     }
 
        */
+  }
+
+  dynamic getCookie() {
+    //try {
+    print('getting cookie names');
+
+    var cookieBox = Hive.box('cookies');
+    return;
+  }
+
+  List<dynamic> getCookies() {
+    //try {
+    print('getting cookie names');
+
+    var cookieBox = Hive.box('cookies');
+    return cookieBox.values.toList();
   }
 
   List<dynamic> getCookieRestock() {

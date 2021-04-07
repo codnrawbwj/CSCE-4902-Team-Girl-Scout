@@ -87,10 +87,10 @@ class MemberAdapter extends TypeAdapter<Member> {
       fields[3] as DateTime,
       fields[4] as String,
       (fields[5] as HiveList)?.castHiveList(),
+      (fields[6] as HiveList)?.castHiveList(),
+      (fields[7] as HiveList)?.castHiveList(),
       isArchived: fields[8] as String,
-    )
-      ..seasons = (fields[6] as HiveList)?.castHiveList()
-      ..sales = (fields[7] as HiveList)?.castHiveList();
+    );
   }
 
   @override
@@ -285,21 +285,22 @@ class CookieAdapter extends TypeAdapter<Cookie> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Cookie(
-      fields[0] as dynamic,
-      fields[1] as dynamic,
-      fields[2] as dynamic,
-      fields[3] as dynamic,
-      fields[4] as dynamic,
-      fields[5] as dynamic,
-      fields[6] as dynamic,
-      isArchived: fields[7] as String,
+      fields[0] as String,
+      fields[1] as double,
+      fields[2] as int,
+      fields[3] as String,
+      (fields[4] as HiveList)?.castHiveList(),
+      (fields[5] as HiveList)?.castHiveList(),
+      (fields[6] as HiveList)?.castHiveList(),
+      (fields[7] as HiveList)?.castHiveList(),
+      isArchived: fields[8] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Cookie obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -307,14 +308,16 @@ class CookieAdapter extends TypeAdapter<Cookie> {
       ..writeByte(2)
       ..write(obj.quantity)
       ..writeByte(3)
-      ..write(obj.seasons)
+      ..write(obj.photoPath)
       ..writeByte(4)
-      ..write(obj.sales)
+      ..write(obj.seasons)
       ..writeByte(5)
-      ..write(obj.orders)
+      ..write(obj.sales)
       ..writeByte(6)
-      ..write(obj.transfers)
+      ..write(obj.orders)
       ..writeByte(7)
+      ..write(obj.transfers)
+      ..writeByte(8)
       ..write(obj.isArchived);
   }
 
@@ -339,13 +342,14 @@ class SaleAdapter extends TypeAdapter<Sale> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Sale()
-      ..quantity = fields[0] as int
-      ..dateOfSale = fields[1] as DateTime
-      ..salesPrice = fields[2] as double
-      ..season = (fields[3] as HiveList)?.castHiveList()
-      ..member = (fields[4] as HiveList)?.castHiveList()
-      ..cookie = (fields[5] as HiveList)?.castHiveList();
+    return Sale(
+      fields[0] as int,
+      fields[1] as DateTime,
+      fields[2] as double,
+      (fields[3] as HiveList)?.castHiveList(),
+      (fields[4] as HiveList)?.castHiveList(),
+      (fields[5] as HiveList)?.castHiveList(),
+    );
   }
 
   @override
@@ -387,11 +391,12 @@ class OrderAdapter extends TypeAdapter<Order> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Order()
-      ..quantity = fields[0] as int
-      ..dateOfSale = fields[1] as DateTime
-      ..season = (fields[2] as HiveList)?.castHiveList()
-      ..cookie = (fields[3] as HiveList)?.castHiveList();
+    return Order(
+      fields[0] as int,
+      fields[1] as DateTime,
+      (fields[2] as HiveList)?.castHiveList(),
+      (fields[3] as HiveList)?.castHiveList(),
+    );
   }
 
   @override
@@ -429,12 +434,13 @@ class TransferAdapter extends TypeAdapter<Transfer> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Transfer()
-      ..quantity = fields[0] as int
-      ..dateOfTransfer = fields[1] as DateTime
-      ..receivingTroop = fields[2] as String
-      ..season = (fields[3] as HiveList)?.castHiveList()
-      ..cookie = (fields[4] as HiveList)?.castHiveList();
+    return Transfer(
+      fields[0] as int,
+      fields[1] as DateTime,
+      fields[2] as String,
+      (fields[3] as HiveList)?.castHiveList(),
+      (fields[4] as HiveList)?.castHiveList(),
+    );
   }
 
   @override
@@ -474,14 +480,15 @@ class SeasonAdapter extends TypeAdapter<Season> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Season()
-      ..year = fields[0] as int
-      ..startDate = fields[1] as DateTime
-      ..members = (fields[2] as HiveList)?.castHiveList()
-      ..cookies = (fields[3] as HiveList)?.castHiveList()
-      ..sales = (fields[4] as HiveList)?.castHiveList()
-      ..orders = (fields[5] as HiveList)?.castHiveList()
-      ..transfers = (fields[6] as HiveList)?.castHiveList();
+    return Season(
+      fields[0] as int,
+      fields[1] as DateTime,
+      (fields[2] as HiveList)?.castHiveList(),
+      (fields[3] as HiveList)?.castHiveList(),
+      (fields[4] as HiveList)?.castHiveList(),
+      (fields[5] as HiveList)?.castHiveList(),
+      (fields[6] as HiveList)?.castHiveList(),
+    );
   }
 
   @override

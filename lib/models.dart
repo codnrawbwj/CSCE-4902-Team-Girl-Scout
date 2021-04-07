@@ -36,7 +36,7 @@ class Member extends HiveObject{
   @HiveField(8)
   String isArchived;
 
-  Member(this.name, this.grade, this.team, this.birthday, this.photoPath, this.badgeTags, {this.isArchived = 'No'});
+  Member(this.name, this.grade, this.team, this.birthday, this.photoPath, this.badgeTags, this.seasons, this.sales, {this.isArchived = 'No'});
 }
 
 @HiveType(typeId: 1)
@@ -163,7 +163,7 @@ class Cookie extends HiveObject {
   @HiveField(8)
   String isArchived;
 
-  Cookie(name, price, quantity, seasons, sales, orders, transfers, {this.isArchived = 'No'});
+  Cookie(this.name, this.price, this.quantity, this.photoPath, this.seasons, this.sales, this.orders, this.transfers, {this.isArchived = 'No'});
 }
 
 @HiveType(typeId: 6)
@@ -186,6 +186,8 @@ class Sale extends HiveObject {
   @HiveField(5)
   HiveList cookie;
 
+  Sale(this.quantity, this.dateOfSale, this.salesPrice, this.season, this.member, this.cookie);
+
 }
 
 @HiveType(typeId: 7)
@@ -202,6 +204,7 @@ class Order extends HiveObject {
   @HiveField(3)
   HiveList cookie;
 
+  Order(this.quantity, this.dateOfSale, this.season, this.cookie);
 }
 
 @HiveType(typeId: 8)
@@ -220,6 +223,8 @@ class Transfer extends HiveObject {
 
   @HiveField(4)
   HiveList cookie;
+
+  Transfer(this.quantity, this.dateOfTransfer, this.receivingTroop, this.season, this.cookie);
 }
 
 @HiveType(typeId: 9)
@@ -244,4 +249,6 @@ class Season extends HiveObject {
 
   @HiveField(6)
   HiveList transfers;
+
+  Season(this.year, this.startDate, this.members, this.cookies, this.sales, this.orders, this.transfers);
 }
