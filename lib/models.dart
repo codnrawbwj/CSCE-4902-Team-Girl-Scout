@@ -245,3 +245,17 @@ class Season extends HiveObject {
   @HiveField(6)
   HiveList transfers;
 }
+
+@HiveType(typeId: 10)
+class Cookies extends HiveObject{
+  @HiveField(0)
+  String cookieName;
+
+  @HiveField(1)
+  String amount;
+
+  @HiveField(2)
+  String cost;
+
+  Cookies(this.cookieName, this.amount, this.cost);
+}

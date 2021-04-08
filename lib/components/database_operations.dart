@@ -308,6 +308,32 @@ class GirlScoutDatabase {
     }
   }
 
+  Future<void> addCookie (String cookie, String amount, String price) async{
+    //try {
+    print('adding cookie');
+    var cookieBox = Hive.box('cookie'); //open boxes
+    var amountBox = Hive.box('amount');
+    var priceTagBox = Hive.box('price');
+
+    var cookieLink = HiveList(cookieBox); // create a hive list to hold 1 grade
+    print(cookieBox.get(cookie));
+    cookieLink.add(cookieBox.get(cookie)); // add the member's grade to the list
+
+    Cookies cookies = Cookies(cookie, amount, price);
+    priceTagBox.add(cookies);
+
+    var priceTagHiveList = HiveList(priceTagBox); // HiveList to initialize member's BadgeTags
+    /*
+    }
+    catch (e) {
+      print(e);
+      print("Add member failed");
+      return;
+    }
+
+       */
+  }
+
   Badge getBadge(String name)
   {
     print('getting badge');
@@ -506,6 +532,7 @@ class GirlScoutDatabase {
 
     return seasonBox.get('isStarted');
   }
+
 
 
 }
