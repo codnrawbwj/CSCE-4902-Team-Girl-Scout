@@ -62,11 +62,6 @@ class _AddState extends State<BadgeInfo> {
     );
     return result;
   }
-
-  void refresh () {
-    print('refreshing badge info...');
-    setState(() {});
-  }
   
   @override
   Widget build(BuildContext context) {
