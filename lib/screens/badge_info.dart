@@ -12,6 +12,7 @@ import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/components/reusable_card.dart';
 import 'package:girl_scout_simple/models.dart';
+import 'addEditBadge.dart';
 
 class BadgeInfo extends StatefulWidget {
   //TODO: complete parameters
