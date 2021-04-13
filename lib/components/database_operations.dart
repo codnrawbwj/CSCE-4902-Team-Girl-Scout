@@ -319,6 +319,42 @@ class GirlScoutDatabase {
       return;
     }
   }
+  
+  void editBadge(Badge badge, String grade, String name, String description, List<String> requirements, String photoLocation) async {
+    print('Editing badge');
+    var badgeBox = Hive.box('badges'); //open boxes
+    var gradeBox = Hive.box('grades');
+    var newGrade = gradeBox.get(grade);
+    var gradeLink;
+
+    if(badge.grade.first != newGrade){ //if grade changed, remove badge from old grade and add badge to new grade
+      Grade oldGrade = badge.grade.first;
+      oldGrade.badges.remove(badge); // remove badge from old grade
+      oldGrade.save();
+
+      gradeLink = HiveList(gradeBox); // create a hive list to hold 1 grade
+      print(grade);
+      gradeLink.add(newGrade); // add the badge's grade to the list
+
+      badge.grade = gradeLink; //link grade to member
+
+      Grade gradeObj = gradeBox.get(grade); // get new grade from db
+      gradeObj.badges.add(badge); // add badge to grade
+      gradeObj.save();
+    }
+
+    badge.name = name;
+    badge.description = description;
+    badge.requirements = requirements;
+
+    if(badge.photoPath != photoLocation) { // if the photo is changed
+      File(badge.photoPath).delete(); // delete old photo
+      badge.photoPath = photoLocation; //set new photo
+    }
+
+    badge.save();
+
+    }
 
   Badge getBadge(String name)
   {
