@@ -15,9 +15,10 @@ import 'package:girl_scout_simple/models.dart';
 
 class BadgeInfo extends StatefulWidget {
   //TODO: complete parameters
-  BadgeInfo({this.badge});
+  BadgeInfo({this.badge, this.callingObj});
 
   final Badge badge; //(ex) Add Member
+  final dynamic callingObj;
 
   static String id = '/BadgeInfo';
   @override
@@ -60,11 +61,6 @@ class _AddState extends State<BadgeInfo> {
         }
     );
     return result;
-  }
-
-  void refresh () {
-    print('refreshing badge info...');
-    setState(() {});
   }
   
   @override

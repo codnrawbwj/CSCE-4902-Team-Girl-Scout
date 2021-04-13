@@ -131,7 +131,7 @@ class _AddState extends State<MemberInfo> {
           //search, grid, list, export.. do we need list and grid?
           GestureDetector(onTap: () {
             Navigator.push(context, MaterialPageRoute(
-                builder: (context) => new Add(title: 'Edit Member', member: widget.member, callingObj: widget.callingObj))).
+                builder: (context) => new AddEditMember(title: 'Edit Member', member: widget.member, callingObj: widget.callingObj))).
                           then((value) {setState(() {});
             });
           }, child: Icon(Icons.edit, color: Theme.of(context).hintColor),),

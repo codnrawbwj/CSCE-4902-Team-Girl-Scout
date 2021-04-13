@@ -13,9 +13,9 @@ import 'package:simple_image_crop/simple_image_crop.dart';
 import 'package:girl_scout_simple/models.dart';
 
 
-class AddBadge extends StatefulWidget {
+class AddEditBadge extends StatefulWidget {
   //TODO: complete parameters
-  AddBadge({@required this.title, @required this.grade});
+  AddEditBadge({@required this.title, @required this.grade});
   final String title; //(ex) Add Member
   final gradeEnum grade;
 
@@ -24,7 +24,7 @@ class AddBadge extends StatefulWidget {
   _AddState createState() => _AddState();
 }
 
-class _AddState extends State<AddBadge> {
+class _AddState extends State<AddEditBadge> {
 
   String name;
   String description;
@@ -200,7 +200,7 @@ class _AddState extends State<AddBadge> {
                   DropdownButtonFormField<String>(
                     isExpanded: true,
                     value: gradeString,
-                    hint: Text('Choose Grade'),
+                    hint: Text('Choose grade'),
                     elevation: 10,
                     style: TextStyle(fontSize: 16, color: kDarkGreyColor),
                     onChanged: (String newValue) {

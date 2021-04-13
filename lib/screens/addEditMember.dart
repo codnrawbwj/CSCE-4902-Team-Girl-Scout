@@ -13,19 +13,19 @@ import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/models.dart';
 import 'package:flutter/foundation.dart';
 
-class Add extends StatefulWidget {
+class AddEditMember extends StatefulWidget {
   //TODO: complete parameters
-  Add({@required this.title, this.member, this.callingObj});
+  AddEditMember({@required this.title, this.member, this.callingObj});
   String title; //(ex) Add Member
   Member member;
   final dynamic callingObj;
 
   static String id = '/Add';
   @override
-  _AddState createState() => _AddState();
+  _AddEditMemberState createState() => _AddEditMemberState();
 }
 
-class _AddState extends State<Add> {
+class _AddEditMemberState extends State<AddEditMember> {
 
   String name;
   String team;
@@ -177,7 +177,7 @@ class _AddState extends State<Add> {
                     DropdownButtonFormField<String>(
                       isExpanded: true,
                       value: gradeString,
-                      hint: Text('Choose Grade'),
+                      hint: Text('Choose grade'),
                       elevation: 10,
                       style: TextStyle(fontSize: 16, color: kDarkGreyColor),
                       onChanged: (String newValue) {
@@ -389,8 +389,7 @@ class _AddState extends State<Add> {
                                         String name = file.path;
                                         List<String> fileName = name.split('/');
                                         path = directory.path;
-                                        path +=
-                                            '/' + fileName[fileName.length - 1];
+                                        path += '/' + fileName[fileName.length - 1];
                                         final File localFile = await file.copy(
                                             '$path');
                                     }

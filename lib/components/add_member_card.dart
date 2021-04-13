@@ -42,7 +42,7 @@ class _AnimatedAddCard extends State<AnimatedAddCard> {
               ]
           ),
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Add(title: 'Add Member')));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AddEditMember(title: 'Add Member')));
           },
         ),
       ),

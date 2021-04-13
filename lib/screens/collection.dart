@@ -18,6 +18,10 @@ class Collection extends StatefulWidget {
 
 class _CollectionState extends State<Collection> {
 
+  void refresh () {
+    print('refreshing members page...');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +81,7 @@ class _CollectionState extends State<Collection> {
                       cardChild: Column(
                         children: <Widget>[
                           Column(
-                            children: getBadgeWidgetList(gradeEnum.ALL, false)
+                            children: getBadgeWidgetList(gradeEnum.ALL, false, callingObj: this)
                           ),
                         ],
                       ),
@@ -101,7 +105,7 @@ class _CollectionState extends State<Collection> {
                       cardChild: Column(
                         children: <Widget>[
                           Column(
-                              children: getBadgeWidgetList(gradeEnum.DAISY, false)
+                              children: getBadgeWidgetList(gradeEnum.DAISY, false, callingObj: this)
                           ),
                         ],
                       ),
@@ -125,7 +129,7 @@ class _CollectionState extends State<Collection> {
                       cardChild: Column(
                         children: <Widget>[
                           Column(
-                              children: getBadgeWidgetList(gradeEnum.BROWNIE, false)
+                              children: getBadgeWidgetList(gradeEnum.BROWNIE, false, callingObj: this)
                           ),
                         ],
                       ),
@@ -149,7 +153,7 @@ class _CollectionState extends State<Collection> {
                       cardChild: Column(
                         children: <Widget>[
                           Column(
-                              children: getBadgeWidgetList(gradeEnum.JUNIOR, false)
+                              children: getBadgeWidgetList(gradeEnum.JUNIOR, false, callingObj: this)
                           ),
                         ],
                       ),
@@ -173,7 +177,7 @@ class _CollectionState extends State<Collection> {
                       cardChild: Column(
                         children: <Widget>[
                           Column(
-                              children: getBadgeWidgetList(gradeEnum.CADETTE, false)
+                              children: getBadgeWidgetList(gradeEnum.CADETTE, false, callingObj: this)
                           ),
                         ],
                       ),
@@ -197,7 +201,7 @@ class _CollectionState extends State<Collection> {
                       cardChild: Column(
                         children: <Widget>[
                           Column(
-                              children: getBadgeWidgetList(gradeEnum.SENIOR, false)
+                              children: getBadgeWidgetList(gradeEnum.SENIOR, false, callingObj: this)
                           ),
                         ],
                       ),
@@ -221,7 +225,7 @@ class _CollectionState extends State<Collection> {
                       cardChild: Column(
                         children: <Widget>[
                           Column(
-                              children: getBadgeWidgetList(gradeEnum.AMBASSADOR, false)
+                              children: getBadgeWidgetList(gradeEnum.AMBASSADOR, false, callingObj: this)
                           ),
                         ],
                       ),
@@ -245,7 +249,7 @@ class _CollectionState extends State<Collection> {
                       cardChild: Column(
                         children: <Widget>[
                           Column(
-                              children: getBadgeWidgetList(gradeEnum.ALL, false, archive: true)
+                              children: getBadgeWidgetList(gradeEnum.ALL, false, archive: true, callingObj: this)
                           ),
                         ],
                       ),

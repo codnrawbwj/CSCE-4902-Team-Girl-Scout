@@ -10,7 +10,7 @@ import 'package:girl_scout_simple/screens/memberBadge_info.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
 
 
-List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {bool archive = false, Member member}) {
+List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {bool archive = false, Member member, dynamic callingObj}) {
   var returnList = new List<Widget>();
   List<dynamic> badges = globals.db.getBadgesByGrade(grade);
 
@@ -25,7 +25,8 @@ List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {bool archive 
                   badge: badge,
                   selectable: selectable,
                   member: member,
-                  isMemberBadge: false),
+                  isMemberBadge: false,
+                  callingObj: callingObj),
             ]));
       }
     }
@@ -41,7 +42,8 @@ List<Widget> getBadgeWidgetList(gradeEnum grade, bool selectable, {bool archive 
                   badge: badge,
                   selectable: selectable,
                   member: member,
-                  isMemberBadge: false),
+                  isMemberBadge: false,
+                  callingObj: callingObj),
             ]));
       }
     }
@@ -149,7 +151,7 @@ class BadgeCard extends StatelessWidget {
                   else {
                       Navigator.push(context, MaterialPageRoute(
                           builder: (context) =>
-                          new BadgeInfo(badge: badge)));
+                          new BadgeInfo(badge: badge, callingObj: callingObj,)));
                   }
               }
             }

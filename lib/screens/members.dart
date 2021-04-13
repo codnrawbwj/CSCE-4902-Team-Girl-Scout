@@ -7,6 +7,8 @@ import 'package:girl_scout_simple/components/images_by_grade.dart';
 import 'package:girl_scout_simple/components/default_theme.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/screens/addEditMember.dart';
+import 'package:girl_scout_simple/screens/recordSale.dart';
+
 import 'package:girl_scout_simple/models.dart';
 
 class MemberPageRoute extends CupertinoPageRoute {
@@ -144,11 +146,18 @@ class _MembersState extends State<Members> {
           ),
           floatingActionButton: FloatingActionButton( //pressing this creates options for editing members. its fancy. im sorry, i got carried away
             onPressed: () {
+
+              Navigator
+                  .push(context, MaterialPageRoute(
+                      builder: (context) => new AddEditMember(title: 'Add Member')))
+                  .then((value) {
+                      setState(() {});
+                  });
+              /*
               Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => new Add(title: 'Add Member'))).then((
-                  value) {
-                setState(() {});
-              });
+                  builder: (context) => new RecordSale()));
+
+               */
             },
             child: Icon(Icons.add),
             backgroundColor: Colors.green,
