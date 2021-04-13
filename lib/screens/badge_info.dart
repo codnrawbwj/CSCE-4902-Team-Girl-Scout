@@ -100,7 +100,10 @@ class _AddState extends State<BadgeInfo> {
         actions: <Widget>[
           //search, grid, list, export.. do we need list and grid?
           GestureDetector(onTap: () {
-            //TODO: implement functionality
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => new AddEditBadge(title: 'Edit Badge', badge: widget.badge, callingObj: widget.callingObj))).
+                          then((value) {setState(() {});
+            });
           }, child: Icon(Icons.edit, color: Theme.of(context).hintColor),),
           SizedBox(width: 15.0),
           GestureDetector(onTap: () async {
