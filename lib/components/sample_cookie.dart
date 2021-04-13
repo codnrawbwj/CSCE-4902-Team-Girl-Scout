@@ -4,13 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/screens/seasonSetup.dart';
+import 'package:girl_scout_simple/components/globals.dart';
 
 import '../models.dart';
 
 class SampleCookie extends StatefulWidget {
-  SampleCookie({@required this.title, this.member, this.callingObj});
+  SampleCookie({@required this.title, this.cookie, this.callingObj});
   String title;
-  Member member;
+  Cookie cookie;
   final dynamic callingObj;
 
   static String id = '/SampleCookie';
@@ -19,6 +20,14 @@ class SampleCookie extends StatefulWidget {
 }
 
 class _SampleCookieState extends State<SampleCookie> {
+
+  String name;
+  int amount;
+  double price;
+
+  final cookieNameController = TextEditingController();
+  final amountController = TextEditingController();
+  final priceController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   bool enableButton;
@@ -57,7 +66,7 @@ class _SampleCookieState extends State<SampleCookie> {
                     ),
                     validator: (text) => text.isEmpty ?
                     "Please enter cookie's type" : null,
-                    //controller: nameController,
+                    controller: cookieNameController,
                     style: TextStyle(color: kDarkGreyColor, fontSize: 16),
                   ),
                   SizedBox(height: 10),
@@ -78,7 +87,7 @@ class _SampleCookieState extends State<SampleCookie> {
                     ),
                     validator: (text) => text.isEmpty ?
                     "Please enter amount needed" : null,
-                    //controller: teamController ,
+                    controller: amountController ,
                     style: TextStyle(color: kDarkGreyColor, fontSize: 16),
                   ),
                   SizedBox(height: 10),
@@ -99,9 +108,10 @@ class _SampleCookieState extends State<SampleCookie> {
                     ),
                     validator: (text) => text.isEmpty ?
                     "Please enter price" : null,
-                    //controller: teamController ,
+                    controller: priceController,
                     style: TextStyle(color: kDarkGreyColor, fontSize: 16),
                   ),
+                  SizedBox(height: 20),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 50.0),
@@ -116,7 +126,11 @@ class _SampleCookieState extends State<SampleCookie> {
                           borderRadius: new BorderRadius.circular(8.0),
                         ),
                         color: kGreenColor,
-                        onPressed: () async {
+                        onPressed:
+                            () async {
+                          if(widget.cookie == null) {
+                            await db.addCookie(cookieNameController.text, amountController.text, priceController.text);
+                          }
                           //add to database
 
                           Navigator.of(context).pop(

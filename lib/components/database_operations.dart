@@ -82,6 +82,8 @@ class GirlScoutDatabase {
     await Hive.openBox('grades');
     await Hive.openBox('badges');
     await Hive.openBox('cookies');
+    await Hive.openBox('amount');
+    await Hive.openBox('price');
     await Hive.openBox('sales');
     await Hive.openBox('orders');
     await Hive.openBox('transfers');
@@ -311,18 +313,18 @@ class GirlScoutDatabase {
   Future<void> addCookie (String cookie, String amount, String price) async{
     //try {
     print('adding cookie');
-    var cookieBox = Hive.box('cookie'); //open boxes
-    var amountBox = Hive.box('amount');
-    var priceTagBox = Hive.box('price');
+    var cookieBox = Hive.box('cookies'); //open boxes
+    // var amountBox = Hive.box('amount');
+    // var priceTagBox = Hive.box('price');
 
     var cookieLink = HiveList(cookieBox); // create a hive list to hold 1 grade
     print(cookieBox.get(cookie));
     cookieLink.add(cookieBox.get(cookie)); // add the member's grade to the list
 
     Cookies cookies = Cookies(cookie, amount, price);
-    priceTagBox.add(cookies);
-
-    var priceTagHiveList = HiveList(priceTagBox); // HiveList to initialize member's BadgeTags
+    // priceTagBox.add(cookies);
+    //
+    // var priceTagHiveList = HiveList(priceTagBox); // HiveList to initialize member's BadgeTags
     /*
     }
     catch (e) {
@@ -334,6 +336,21 @@ class GirlScoutDatabase {
        */
   }
 
+  List<dynamic> getAllCookie() {
+    var cookieBox = Hive.box('cookies');
+    HiveList allCookieList;
+    Sale sale;
+
+    print('Getting a list of all cookies');
+
+    allCookieList = HiveList(cookieBox);
+    for(sale in cookieBox.values) {
+      allCookieList.addAll(sale.cookie);
+    }
+
+    return allCookieList.toList();
+  }
+
   Badge getBadge(String name)
   {
     print('getting badge');
@@ -342,9 +359,6 @@ class GirlScoutDatabase {
     for (i in badgeBox.values) {
       if (i.name == name) break;
     }
-
-
-
     //Badge badge = badgeBox.get('cyc'); // get member
     return i;
 

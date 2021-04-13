@@ -22,7 +22,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     Dashboard(),
     Members(),
     Collection(),
-    Cookie(),
+    Cookies(),
     Settings(),
   ];
 
