@@ -8,18 +8,18 @@ import 'package:girl_scout_simple/components/globals.dart';
 
 import '../models.dart';
 
-class SampleCookie extends StatefulWidget {
-  SampleCookie({@required this.title, this.cookie, this.callingObj});
+class AddCookie extends StatefulWidget {
+  AddCookie({@required this.title, this.cookie, this.callingObj});
   String title;
   Cookie cookie;
   final dynamic callingObj;
 
   static String id = '/SampleCookie';
   @override
-  _SampleCookieState createState() => _SampleCookieState();
+  _AddCookieState createState() => _AddCookieState();
 }
 
-class _SampleCookieState extends State<SampleCookie> {
+class _AddCookieState extends State<AddCookie> {
 
   String name;
   int amount;
@@ -43,11 +43,11 @@ class _SampleCookieState extends State<SampleCookie> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text("Cookie Name", style: Theme
@@ -143,9 +143,9 @@ class _SampleCookieState extends State<SampleCookie> {
                     ),
                   ),
                 ],
+              ),
             ),
-          ),
-        )
+          )
       ),
     );
   }

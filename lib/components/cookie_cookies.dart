@@ -34,7 +34,7 @@ class _CookieCookiesState extends State<CookieCookies> {
               value: '2',
             ),
             PopupMenuItem<String>(
-              child: const Text('Record Tansfer'),
+              child: const Text('Record Transfer'),
               value: '3',
             ),
             PopupMenuItem<String>(

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:girl_scout_simple/components/sample_cookie.dart';
+import 'package:girl_scout_simple/screens/addCookie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
@@ -83,7 +83,7 @@ class _AddState extends State<SeasonSetup> {
                           //TODO: send to add cookie page
                           Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => new SampleCookie()
+                                  builder: (context) => new AddCookie()
                               )
                           ).then((value) => {
                           setState(() {})

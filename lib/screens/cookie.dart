@@ -15,13 +15,7 @@ import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/models.dart';
 import 'package:flutter/foundation.dart';
 
-import '../components/constants.dart';
-import '../components/constants.dart';
-import '../components/constants.dart';
-import '../components/constants.dart';
-import '../components/constants.dart';
-import '../components/constants.dart';
-import '../components/sample_cookie.dart';
+import 'package:girl_scout_simple/screens/addCookie.dart';
 
 
 class Cookies extends StatefulWidget {
@@ -31,10 +25,55 @@ class Cookies extends StatefulWidget {
   _CookiesState createState() => _CookiesState();
 }
 
-class _CookiesState extends State<Cookies> {
+class _CookiesState extends State<Cookies>  with SingleTickerProviderStateMixin {
+
+  TabController _controller;
+  bool isSeasonStarted;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TabController(vsync: this, length: 3, initialIndex: 0);
+    _controller.addListener(refresh);
+  }
+
+  @override
+  void dispose() {
+    //_controller.removeListener(refresh);
+    _controller.dispose();
+    super.dispose();
+  }
+
   void refresh () {
-    print('refreshing members info...');
+    print('refreshing cookie tracker...');
+    print("tab index " + _controller.index.toString());
     setState(() {});
+  }
+
+  FloatingActionButton addCookieButton() {
+    return _controller.index == 1 ?
+        isSeasonStarted ?
+            FloatingActionButton(
+                onPressed: () {
+                _showCookieMenu();
+                },
+                child: Icon(Icons.add),
+                backgroundColor: kGreenColor,
+                shape: CircleBorder(),
+            ) :
+            FloatingActionButton(
+                onPressed: () {
+                Navigator.push(context,
+                MaterialPageRoute(
+                builder: (context) => new AddCookie()
+                )
+                ).then((value) => setState(() {}));
+                },
+                child: Icon(Icons.add),
+                backgroundColor: kGreenColor,
+                shape: CircleBorder(),
+            ) :
+      null;
   }
 
   List<Widget> getCookieWidgetList({bool archive = false}) {
@@ -94,7 +133,7 @@ class _CookiesState extends State<Cookies> {
         //TODO: Implement a functionality
         print("Add Cookie");
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => new SampleCookie())
+          MaterialPageRoute(builder: (context) => new AddCookie())
         ).then((value) => {
           setState(() {})
         },);
@@ -104,7 +143,7 @@ class _CookiesState extends State<Cookies> {
 
   @override
   Widget build(BuildContext context) {
-    bool isSeasonStarted = db.isSeasonStarted();
+    isSeasonStarted = db.isSeasonStarted();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -113,33 +152,24 @@ class _CookiesState extends State<Cookies> {
         child: Scaffold(
             backgroundColor: kLightGreenColor,
             appBar: AppBar(
-              title: Text(
-                'Cookie Tracker',
-                style: TextStyle(fontSize: 33, fontWeight: FontWeight.bold, color: kWhiteColor),
-              ),
-              backgroundColor: kPrimaryColor,
-            bottom: TabBar(
-              isScrollable: true,
-              tabs: [
-                Tab(text: "Tracker"),
-                Tab(text: "Cookies"),
-                Tab(text: "Seasons"),
-              ]
+                title: Text(
+                  'Cookie Tracker',
+                  style: TextStyle(fontSize: 33, fontWeight: FontWeight.bold, color: kWhiteColor),
+                ),
+                backgroundColor: kPrimaryColor,
+                bottom: TabBar(
+                    controller: _controller,
+                    isScrollable: true,
+                    tabs: [
+                      Tab(text: "Tracker"),
+                      Tab(text: "Cookies"),
+                      Tab(text: "Seasons"),
+                    ]
+                ),
             ),
-              actions: <Widget>[
-                //search, grid, list, export.. do we need list and grid?
-                GestureDetector(onTap: () {
-                  //TODO: implement functionality
-                }, child: Icon(Icons.search, color: kWhiteColor),),
-                SizedBox(width: 10.0),
-                GestureDetector(onTap: () {
-                  //TODO: implement functionality
-                }, child: Icon(Icons.get_app, color: kWhiteColor),),
-                SizedBox(width: 10.0),
-              ],
-          ),
-          body: TabBarView(
-                children: [
+            body: TabBarView(
+              controller: _controller,
+              children: [
                     isSeasonStarted ?
                         CookieDashboard(callingObj: this) // display dashboard
                             :
@@ -182,16 +212,9 @@ class _CookiesState extends State<Cookies> {
                   ListView(),
             ],
           ),
-            floatingActionButton: isSeasonStarted ? FloatingActionButton(
-              onPressed: () {
-                _showCookieMenu();
-              },
-              child: Icon(Icons.add),
-              backgroundColor: kGreenColor,
-              shape: CircleBorder(),
-            ) : null
-            )
+            floatingActionButton: addCookieButton()
         ),
-      );
+      )
+    );
   }
 }
