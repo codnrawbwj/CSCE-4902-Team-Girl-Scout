@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+import 'package:girl_scout_simple/components/sample_cookie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
@@ -12,11 +14,11 @@ import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/components/reusable_card.dart';
 import 'package:girl_scout_simple/models.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class SeasonSetup extends StatefulWidget {
   //TODO: complete parameters
   SeasonSetup();
-
 
   static String id = '/SeasonSetup';
   @override
@@ -24,7 +26,6 @@ class SeasonSetup extends StatefulWidget {
 }
 
 class _AddState extends State<SeasonSetup> {
-
   @override
   Widget build(BuildContext context) {
 
@@ -80,10 +81,17 @@ class _AddState extends State<SeasonSetup> {
                         color: kGreenColor,
                         onPressed: () async { //enable button
                           //TODO: send to add cookie page
+                          Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => new SampleCookie()
+                              )
+                          ).then((value) => {
+                          setState(() {})
+                          },);
                         },
                       ),
                     ),
-                  SizedBox(height: 30.0),
+                    SizedBox(height: 30.0),
                 ],
                   )
             )

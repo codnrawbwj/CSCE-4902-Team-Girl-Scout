@@ -47,7 +47,7 @@ class _AddState extends State<BadgeInfo> {
                   else
                     widget.badge.isArchived = 'Yes';
                   widget.badge.save();
-                  widget.callingObj.refresh();
+                 // widget.callingObj.refresh();
                   Navigator.pop(context, 'Yes');
                 },
               ),

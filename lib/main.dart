@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
         Dashboard.id: (context) => Dashboard(),
         Members.id: (context) => new Members(),
         Collection.id: (context) => Collection(),
-        Cookie.id: (context) => Cookie(),
+        Cookies.id: (context) => Cookies(),
         Settings.id: (context) => Settings(),
       },
     );
