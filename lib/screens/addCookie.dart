@@ -1,12 +1,17 @@
 import 'dart:io';
-
+import 'package:moneytextformfield/moneytextformfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
 import 'package:girl_scout_simple/screens/seasonSetup.dart';
 import 'package:girl_scout_simple/components/globals.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:simple_image_crop/simple_image_crop.dart';
+import 'package:path_provider/path_provider.dart';
 
-import '../models.dart';
+
+import 'package:girl_scout_simple/models.dart';
+
 
 class AddCookie extends StatefulWidget {
   AddCookie({@required this.title, this.cookie, this.callingObj});
@@ -24,13 +29,29 @@ class _AddCookieState extends State<AddCookie> {
   String name;
   int amount;
   double price;
-
-  final cookieNameController = TextEditingController();
-  final amountController = TextEditingController();
-  final priceController = TextEditingController();
-
+  File _image;
   final _formKey = GlobalKey<FormState>();
+
+  final nameController = TextEditingController();
+  final quantityController = TextEditingController();
+  final priceController = TextEditingController();
+  final picker = ImagePicker();
+  final cropKey = GlobalKey<ImgCropState>();
+
   bool enableButton;
+
+  Future getImage(ImageSource source) async {
+    final pickedFile = await picker.getImage(source: source);
+    print(pickedFile);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,13 +71,16 @@ class _AddCookieState extends State<AddCookie> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Cookie Name", style: Theme
+
+                  //---------------------------Name--------------------------------
+
+                  Text("Name", style: Theme
                       .of(context)
                       .textTheme.headline2,),
                   SizedBox(height: 5),
                   TextFormField(
                     decoration: InputDecoration(
-                      hintText: 'Enter type of cookie',
+                      hintText: 'Enter name of cookie',
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: kGreenColor),
                       ),
@@ -65,11 +89,14 @@ class _AddCookieState extends State<AddCookie> {
                       ),
                     ),
                     validator: (text) => text.isEmpty ?
-                    "Please enter cookie's type" : null,
-                    controller: cookieNameController,
+                    "Please enter cookie's name" : null,
+                    controller: nameController,
                     style: TextStyle(color: kDarkGreyColor, fontSize: 16),
                   ),
                   SizedBox(height: 10),
+
+                  //---------------------------Quantity----------------------------
+
                   Text("Quantity", style: Theme
                       .of(context)
                       .textTheme
@@ -77,7 +104,7 @@ class _AddCookieState extends State<AddCookie> {
                   SizedBox(height: 5),
                   TextFormField(
                     decoration: InputDecoration(
-                      hintText: 'Enter amount to order',
+                      hintText: 'Enter quantity on hand',
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: kGreenColor),
                       ),
@@ -85,20 +112,36 @@ class _AddCookieState extends State<AddCookie> {
                         borderSide: BorderSide(color: kGreenColor),
                       ),
                     ),
-                    validator: (text) => text.isEmpty ?
-                    "Please enter amount needed" : null,
-                    controller: amountController ,
+                    validator: (text) =>
+                        text.isEmpty ? "Please enter the amount on hand" :
+                        int.tryParse(text) == null ? "Please enter a valid number": null,
+                    controller: quantityController ,
                     style: TextStyle(color: kDarkGreyColor, fontSize: 16),
                   ),
                   SizedBox(height: 10),
+
+                  //---------------------------Price-------------------------------
+
                   Text("Price", style: Theme
                       .of(context)
                       .textTheme
                       .headline2,),
                   SizedBox(height: 5),
-                  TextFormField(
+                  MoneyTextFormField(
+                    settings: MoneyTextFormFieldSettings(
+                        controller: priceController,
+                        validator: (text) => text.isEmpty ?
+                            "Please enter price" : null,
+                        appearanceSettings: AppearanceSettings(
+                            labelText: null,
+                            inputStyle: TextStyle(color: kDarkGreyColor, fontSize: 16),
+                            //formattedStyle: ,
+                            hintText: 'Enter cost of one unit',
+                        )
+
+                    )
+                    /*
                     decoration: InputDecoration(
-                      hintText: 'Enter cost of 1 unit',
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: kGreenColor),
                       ),
@@ -106,12 +149,63 @@ class _AddCookieState extends State<AddCookie> {
                         borderSide: BorderSide(color: kGreenColor),
                       ),
                     ),
-                    validator: (text) => text.isEmpty ?
-                    "Please enter price" : null,
-                    controller: priceController,
-                    style: TextStyle(color: kDarkGreyColor, fontSize: 16),
+
+                     */
+
                   ),
                   SizedBox(height: 20),
+
+                  //---------------------------Choose Image------------------------
+
+                  Row(
+                      children: <Widget>[
+                        TextButton(
+                            onPressed: () {
+                              getImage(ImageSource.camera);
+                            },
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.black12,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(8.0),
+                                )
+                            ),
+                            child: Icon(Icons.camera_alt, size: 120.0,)
+                        ),
+                        SizedBox(width: 15),
+                        TextButton(
+                          onPressed: () {
+                            getImage(ImageSource.gallery);
+                          },
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.black12,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(8.0),
+                              )
+                          ),
+                          child : Icon(Icons.folder, size: 120.0,),
+                        ),
+                      ]
+                  ),
+
+                  //---------------------------Image-------------------------------
+
+                  Column(
+                      children: <Widget>[
+                        SizedBox(
+                            width: _image == null ? 1 : 250,
+                            height: _image == null ? 1 : 250,
+                            child: _image == null ? SizedBox(width: 1) : ImgCrop(
+                                image: FileImage(_image),
+                                key: cropKey,
+                                chipShape: 'circle'
+                            )
+                        )
+                      ]
+                  ),
+                  SizedBox(height: 20),
+
+                  //---------------------------Submit------------------------------
+
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 50.0),
@@ -126,18 +220,30 @@ class _AddCookieState extends State<AddCookie> {
                           borderRadius: new BorderRadius.circular(8.0),
                         ),
                         color: kGreenColor,
-                        onPressed:
-                            () async {
-                          if(widget.cookie == null) {
-                            await db.addCookie(cookieNameController.text, amountController.text, priceController.text);
-                          }
-                          //add to database
+                        onPressed: () async {
+                            if(_formKey.currentState.validate()) {
+                                String path;
+                                print('saving photo');
+                                final crop = cropKey.currentState;
+                                final file = await crop.cropCompleted(
+                                    _image, pictureQuality: 800
+                                );
+                                final directory = await getApplicationDocumentsDirectory();
+                                String name = file.path;
+                                List<String> fileName = name.split('/');
+                                path = directory.path;
+                                path += '/' + fileName[fileName.length - 1];
+                                final File localFile = await file.copy(
+                                    '$path');
 
-                          Navigator.of(context).pop(
-                              MaterialPageRoute(
-                                  builder: (context) => SeasonSetup()
-                              )
-                          );
+                                await db.addCookie(nameController.text,
+                                                  int.parse(quantityController.text),
+                                                  double.parse(priceController.text),
+                                                  path
+                                );
+
+                                Navigator.pop(context);
+                            }
                         },
                       ),
                     ),

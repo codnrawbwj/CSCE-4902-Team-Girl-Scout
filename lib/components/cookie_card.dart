@@ -88,14 +88,12 @@ class _AnimatedCookieCard extends State<AnimatedCookieCard> {
                         Text(name, style: Theme
                             .of(context)
                             .textTheme
-                            .headline2,),
+                            .headline4,),
                         SizedBox(height: 20.0),
-                        widget.isSetup ?
-                            Text('\$ ' + price + '  Qty: ' + quantity, style: Theme
-                                .of(context)
-                                .textTheme
-                                .subtitle1,) :
-                            null,
+                        Text('\$ ' + price + '       Qty: ' + quantity, style: Theme
+                            .of(context)
+                            .textTheme
+                            .subtitle1,)
                       ]
                   ),
                 ),

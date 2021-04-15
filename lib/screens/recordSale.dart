@@ -65,7 +65,6 @@ class _RecordSaleState extends State<RecordSale> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
 

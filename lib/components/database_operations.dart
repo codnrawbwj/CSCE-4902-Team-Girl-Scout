@@ -297,7 +297,7 @@ class GirlScoutDatabase {
 
  */
 
-  void addBadge(String grade, String name, String description, List<String> requirements, String photoLocation) {
+  void addBadge(String grade, String name, String description, List<String> requirements, String photoPath) {
     try {
       var badgeBox = Hive.box('badges'); //open boxes
       var gradeBox = Hive.box('grades');
@@ -308,7 +308,7 @@ class GirlScoutDatabase {
 
       var badgeTagLink = HiveList(badgeTagBox); // HiveList to initialize badge's BadgeTags
 
-      Badge badge = Badge(name, description, gradeLink, requirements, photoLocation, badgeTagLink); // create member object based on data
+      Badge badge = Badge(name, description, gradeLink, requirements, photoPath, badgeTagLink); // create member object based on data
       badgeBox.add(badge); // add member to db
 
       Grade gradeObj = gradeBox.get(grade); // get grade from db
@@ -322,7 +322,7 @@ class GirlScoutDatabase {
     }
   }
   
-  void editBadge(Badge badge, String grade, String name, String description, List<String> requirements, String photoLocation) async {
+  void editBadge(Badge badge, String grade, String name, String description, List<String> requirements, String photoPath) async {
     print('Editing badge');
     var badgeBox = Hive.box('badges'); //open boxes
     var gradeBox = Hive.box('grades');
@@ -349,55 +349,14 @@ class GirlScoutDatabase {
     badge.description = description;
     badge.requirements = requirements;
 
-    if(badge.photoPath != photoLocation) { // if the photo is changed
+    if(badge.photoPath != photoPath) { // if the photo is changed
       File(badge.photoPath).delete(); // delete old photo
-      badge.photoPath = photoLocation; //set new photo
+      badge.photoPath = photoPath; //set new photo
     }
 
     badge.save();
 
     }
-
-  Future<void> addCookie (String cookie, String amount, String price) async{
-    //try {
-    print('adding cookie');
-    var cookieBox = Hive.box('cookies'); //open boxes
-    // var amountBox = Hive.box('amount');
-    // var priceTagBox = Hive.box('price');
-
-    var cookieLink = HiveList(cookieBox); // create a hive list to hold 1 grade
-    print(cookieBox.get(cookie));
-    cookieLink.add(cookieBox.get(cookie)); // add the member's grade to the list
-
-    Cookies cookies = Cookies(cookie, amount, price);
-    // priceTagBox.add(cookies);
-    //
-    // var priceTagHiveList = HiveList(priceTagBox); // HiveList to initialize member's BadgeTags
-    /*
-    }
-    catch (e) {
-      print(e);
-      print("Add member failed");
-      return;
-    }
-
-       */
-  }
-
-  List<dynamic> getAllCookie() {
-    var cookieBox = Hive.box('cookies');
-    HiveList allCookieList;
-    Sale sale;
-
-    print('Getting a list of all cookies');
-
-    allCookieList = HiveList(cookieBox);
-    for(sale in cookieBox.values) {
-      allCookieList.addAll(sale.cookie);
-    }
-
-    return allCookieList.toList();
-  }
 
   Badge getBadge(String name)
   {
@@ -471,37 +430,15 @@ class GirlScoutDatabase {
     BadgeTag badgeTag = BadgeTag(badgeLink, memberLink, requirementsMet); // create badgeTag
 
     badgeTagBox.add(badgeTag); // add badgeTag to db
-
-    /*
-    for (var i in badgeTagBox.values) {
-      print('badge tag box values');
-      print(i.status);
-    }
-  */
-
     badge.badgeTags.add(badgeTag); // link badgeTag to badge
     member.badgeTags.add(badgeTag); // link badgeTag to member
     member.save();
     badge.save();
     return 1;
-    /*
-    BadgeTag memberbadge = member.badgeTags.first;
-    print(memberbadge.status);
-    */
 
-    /*
-    }
-    catch (e) {
-      print(e);
-      print("Add member failed");
-      return;
-    }
-
-       */
   }
 
   List<dynamic> getMemberBadges (String name) {
-    //try {
     print('getting member\'s badges');
 
     var badgeTagBox = Hive.box('badgeTags');
@@ -516,20 +453,10 @@ class GirlScoutDatabase {
     print('member has no badges');
     return null; // return null if no badges
 
-    /*
-    }
-    catch (e) {
-      print(e);
-      print("Add member failed");
-      return;
-    }
-
-       */
   }
 
 
   List<dynamic> getUndistributedMemberBadges() {
-    //try {
     print('getting undistributed member\'s badges');
 
     var badgeTagBox = Hive.box('badgeTags');
@@ -544,15 +471,41 @@ class GirlScoutDatabase {
     print('No undistributed badges');
     return null; // return null if no badges
 
-    /*
-    }
-    catch (e) {
-      print(e);
-      print("Add member failed");
-      return;
+  }
+
+  Future<void> addCookie (String name, int quantity, double price, String photoPath) async{
+    print('adding cookie');
+    var cookieBox = Hive.box('cookies'); //open boxes
+    var seasonBox = Hive.box('seasons');
+    var saleBox = Hive.box('sales');
+    var orderBox = Hive.box('orders');
+    var transferBox = Hive.box('transfers');
+
+    var seasonLink = HiveList(seasonBox); // HiveList to initialize cookie's seasons
+    var saleLink = HiveList(saleBox); // HiveList to initialize cookie's seasons
+    var orderLink = HiveList(orderBox); // HiveList to initialize cookie's seasons
+    var transferLink = HiveList(transferBox); // HiveList to initialize cookie's seasons
+
+
+    Cookie cookie = Cookie(name, price, quantity, photoPath, seasonLink, saleLink, orderLink, transferLink);
+    cookieBox.add(cookie); //open boxes
+
+
+  }
+
+  List<dynamic> getAllCookie() {
+    var cookieBox = Hive.box('cookies');
+    HiveList allCookieList;
+    Sale sale;
+
+    print('Getting a list of all cookies');
+
+    allCookieList = HiveList(cookieBox);
+    for(sale in cookieBox.values) {
+      allCookieList.addAll(sale.cookie);
     }
 
-       */
+    return allCookieList.toList();
   }
 
   dynamic getCookie() {
@@ -565,7 +518,7 @@ class GirlScoutDatabase {
 
   List<dynamic> getCookies() {
     //try {
-    print('getting cookie names');
+    print('getting cookies');
 
     var cookieBox = Hive.box('cookies');
     return cookieBox.values.toList();

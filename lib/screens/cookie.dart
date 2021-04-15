@@ -78,16 +78,18 @@ class _CookiesState extends State<Cookies>  with SingleTickerProviderStateMixin 
 
   List<Widget> getCookieWidgetList({bool archive = false}) {
     var returnList = new List<Widget>();
-    List<dynamic> cookies = globals.db.getAllCookie();
+    List<dynamic> cookies = globals.db.getCookies();
 
     for (Cookie c in cookies) {
       returnList.add(new Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          new AnimatedCookieCard(callingObj: this, cookie: c)
+          new AnimatedCookieCard(callingObj: this, isSetup: false, cookie: c)
         ],
       ));
     }
+
+    return returnList;
   }
 
   _showCookieMenu() {
@@ -207,7 +209,7 @@ class _CookiesState extends State<Cookies>  with SingleTickerProviderStateMixin 
                           ]
                       ),
                   ListView(
-                    // children: getCookieWidgetList(),
+                    children: getCookieWidgetList(),
                   ),
                   ListView(),
             ],
