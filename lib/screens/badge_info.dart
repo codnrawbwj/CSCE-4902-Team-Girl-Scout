@@ -12,6 +12,7 @@ import 'package:girl_scout_simple/components/globals.dart' as globals;
 import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/components/reusable_card.dart';
 import 'package:girl_scout_simple/models.dart';
+import 'addEditBadge.dart';
 
 class BadgeInfo extends StatefulWidget {
   //TODO: complete parameters
@@ -100,7 +101,10 @@ class _AddState extends State<BadgeInfo> {
         actions: <Widget>[
           //search, grid, list, export.. do we need list and grid?
           GestureDetector(onTap: () {
-            //TODO: implement functionality
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => new AddEditBadge(title: 'Edit Badge', badge: widget.badge, callingObj: widget.callingObj))).
+                          then((value) {setState(() {});
+            });
           }, child: Icon(Icons.edit, color: Theme.of(context).hintColor),),
           SizedBox(width: 15.0),
           GestureDetector(onTap: () async {

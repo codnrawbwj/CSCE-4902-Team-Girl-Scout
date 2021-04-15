@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:intl/intl.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/constants.dart';
@@ -15,27 +16,31 @@ import 'package:girl_scout_simple/models.dart';
 
 class AddEditBadge extends StatefulWidget {
   //TODO: complete parameters
-  AddEditBadge({@required this.title, @required this.grade});
-  final String title; //(ex) Add Member
-  final gradeEnum grade;
+  AddEditBadge({@required this.title, @required this.badge, this.callingObj});
+  String title; //(ex) Add Member
+  Badge badge;
+  final dynamic callingObj;
 
   static String id = '/Add';
   @override
-  _AddState createState() => _AddState();
+  _AddEditBadgeState createState() => _AddEditBadgeState();
 }
 
-class _AddState extends State<AddEditBadge> {
+class _AddEditBadgeState extends State<AddEditBadge> {
 
   String name;
   String description;
   String quantity;
+  String g;
   String gradeString;
+  List<String> requirements;
   final _formKey = GlobalKey<FormState>();
 
   int requirementIndex = 1;
   List<Widget> requirementFields = [];
   List<TextEditingController> requirementTextControllers = [];
   File _image;
+  bool enableButton;
 
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -110,6 +115,17 @@ class _AddState extends State<AddEditBadge> {
   void initState() {
     addRequirement();
     super.initState();
+    if (widget.badge != null) { //initialize form fields to badge's data if edit mode
+      gradeString = describeEnum((widget.badge.grade.first as Grade).name);
+      gradeString = gradeString[0] + gradeString.substring(1).toLowerCase();
+      g = describeEnum((widget.badge.grade.first as Grade).name);
+      g = gradeString[0] + gradeString.substring(1).toLowerCase();
+      nameController..text = widget.badge.name;
+      descriptionController..text = widget.badge.description;
+      requirements = getRequirements();
+      //getRequirements();
+      _image = File(widget.badge.photoPath);
+    }
   }
 
   //dispose of your text controllers? idk if we need to do this for all objects...
@@ -123,6 +139,9 @@ class _AddState extends State<AddEditBadge> {
   @override
   Widget build(BuildContext context) {
 
+    enableButton = (widget.badge == null || !(widget.badge.name == nameController.text && g == gradeString &&
+        widget.badge.description == descriptionController.text && widget.badge.requirements == getRequirements() &&
+        widget.badge.photoPath == _image.path)); //enable button if on edit mode and changes were made or on add badge mode
 
 
     return Scaffold(
@@ -133,7 +152,7 @@ class _AddState extends State<AddEditBadge> {
           color: kWhiteColor, //change your color here
         ),
         title: Text(
-          "Add Badge", ///USE BOOLEAN TO CHECK IF WE ARE ADDING A BADGE OR PATCH
+          widget.title,
           style: TextStyle(
             color: kWhiteColor,
             fontSize: 20.0,
@@ -295,44 +314,51 @@ class _AddState extends State<AddEditBadge> {
                           borderRadius: new BorderRadius.circular(8.0),
                         ),
                         color: kGreenColor,
-                        onPressed: () async {
-                          //TODO make it so that pictures are optional
-                          //TODO add error messages for unpopulated fields
-                            if(_formKey.currentState.validate()) {
-                                final crop = cropKey.currentState;
-                                final file = await crop.cropCompleted(
-                                    _image, pictureQuality: 800
-                                    );
-                                final directory = await getApplicationDocumentsDirectory();
-                                String name = file.path;
-                                List<String> fileName = name.split('/');
-                                String path = directory.path;
-                                path += '/' + fileName[fileName.length - 1];
+                        onPressed:  enableButton?
+                            () async { //enable button
+                              if(_formKey.currentState.validate()) {
 
-                                final File localFile = await file.copy('$path');
+                                String path;
+                                if (widget.badge == null || widget.badge.photoPath != _image.path) { //if adding badge or editing photo
+                                  print('Saving photo');
+                                  final crop = cropKey.currentState;
+                                  final file = await crop.cropCompleted(
+                                      _image, pictureQuality: 800
+                                  );
+                                  final directory = await getApplicationDocumentsDirectory();
+                                  String name = file.path;
+                                  List<String> fileName = name.split('/');
+                                  path = directory.path;
+                                  path += '/' + fileName[fileName.length - 1];
 
-                                print(path);
-                                /*
-                                addBadgeToList(
-                                    gradeString,
-                                    nameController.text,
-                                    descriptionController.text,
-                                    getRequirements(),
-                                    path);
-                                 */
-                                db.addBadge(gradeString,
-                                    nameController.text,
-                                    descriptionController.text,
-                                    getRequirements(),
-                                    path);
-                                //Navigator.push(context, MaterialPageRoute(builder: (
-                                //+context) => Members()));
+                                  final File localFile = await file.copy(
+                                      '$path');
+                                }
+                                else { //edit mode without changing photo
+                                  print('photo unchanged');
+                                  path = _image.path;
+                                }
+
+                                if(widget.badge == null) { // if adding badge
+                                      db.addBadge(gradeString, nameController.text,
+                                      descriptionController.text, getRequirements(), path);
+                                }
+                                else if(!(widget.badge.name == nameController.text && g == gradeString &&
+                                    widget.badge.description == descriptionController.text &&
+                                    widget.badge.photoPath == _image.path)){ //if changes were made
+                                        db.editBadge(widget.badge, gradeString, nameController.text,
+                                        descriptionController.text, getRequirements(), path);
+                                        widget.callingObj.refresh();
+                                }
+                                else { // no changes
+                                  print('no edits');
+                                }
                                 Navigator.pop(context);
                             }
-                            else {
+                            else { //form invalid
                               print('no bacon');
                             }
-                          }
+                          } : null,//Disable button if on edit mode and no changes
                         ),
                       ),
                     ),
