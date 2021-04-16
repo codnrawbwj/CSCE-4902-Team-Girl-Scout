@@ -8,7 +8,7 @@ import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/screens/members.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:simple_image_crop/simple_image_crop.dart';
-import 'package:girl_scout_simple/components/globals.dart' as globals;
+import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/components/database_operations.dart';
 import 'package:girl_scout_simple/models.dart';
 import 'package:flutter/foundation.dart';
@@ -28,8 +28,7 @@ class RecordSale extends StatefulWidget {
 class _RecordSaleState extends State<RecordSale> {
 
   String cookie;
-  String  quantity;
-  DateTime date;
+  DateTime dateOfSale;
   String typeOfSale;
   String member;
   Map<String, Cookie> cookies;
@@ -165,7 +164,7 @@ class _RecordSaleState extends State<RecordSale> {
                                   elevation: 7
                               ),
                               onPressed: () async{
-                                  date = await showDatePicker(
+                                  dateOfSale = await showDatePicker(
                                       context: context,
                                       initialDate: now,
                                       firstDate: oneYearAgo,
@@ -174,8 +173,8 @@ class _RecordSaleState extends State<RecordSale> {
                               }
                           ),
                           SizedBox(width: 10),
-                          date != null ?
-                          Text(monthNames[date.month] + ' ' + date.day.toString() + ', ' + date.year.toString()) : null
+                          dateOfSale != null ?
+                          Text(monthNames[dateOfSale.month] + ' ' + dateOfSale.day.toString() + ', ' + dateOfSale.year.toString()) : SizedBox(width: 0)
                       ]),
                     SizedBox(height: 10),
 
@@ -240,55 +239,6 @@ class _RecordSaleState extends State<RecordSale> {
                     ),
                     SizedBox(height: 20),
 
-                    //---------------------------Choose Image------------------------
-
-                    Row(
-                        children: <Widget>[
-                          TextButton(
-                              onPressed: () {
-                                getImage(ImageSource.camera);
-                              },
-                              style: TextButton.styleFrom(
-                                  backgroundColor: Colors.black12,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: new BorderRadius.circular(8.0),
-                                  )
-                              ),
-                              child: Icon(Icons.camera_alt, size: 120.0,)
-                          ),
-                          SizedBox(width: 15),
-                          TextButton(
-                            onPressed: () {
-                              getImage(ImageSource.gallery);
-                            },
-                            style: TextButton.styleFrom(
-                                backgroundColor: Colors.black12,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(8.0),
-                                )
-                            ),
-                            child : Icon(Icons.folder, size: 120.0,),
-                          ),
-                        ]
-                    ),
-
-                    //---------------------------Image-------------------------------
-
-                    Column(
-                        children: <Widget>[
-                          SizedBox(
-                              width: _image == null ? 1 : 250,
-                              height: _image == null ? 1 : 250,
-                              child: _image == null ? SizedBox(width: 1) : ImgCrop(
-                                  image: FileImage(_image),
-                                  key: cropKey,
-                                  chipShape: 'circle'
-                              )
-                          )
-                        ]
-                    ),
-                    SizedBox(height: 20),
-
                     //---------------------------Submit------------------------------
 
                     Center(
@@ -307,22 +257,11 @@ class _RecordSaleState extends State<RecordSale> {
                           color: kGreenColor,
                           onPressed: () async {
                                 if(_formKey.currentState.validate()) {
-                                  /*
-                                    final crop = cropKey.currentState;
-                                    final file = await crop.cropCompleted(
-                                    _image, pictureQuality: 800
-                                    );
-                                    final directory = await getApplicationDocumentsDirectory();
-                                    String name = file.path;
-                                    List<String> fileName = name.split('/');
-                                    String path = directory.path;
-                                    path += '/' + fileName[fileName.length - 1];
-                                    final File localFile = await file.copy(
-                                        '$path');
-
-
-                                   */
-
+                                    db.recordSale(int.parse(quantityController.text),
+                                                  dateOfSale,
+                                                  typeOfSale,
+                                                  members[member],
+                                                  cookies[cookie]);
                                     Navigator.pop(context);
                                 }
                                 else { // form invalid

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:girl_scout_simple/components/cookie_card.dart';
 import 'package:girl_scout_simple/components/cookie_cookies.dart';
+import 'package:girl_scout_simple/screens/recordSale.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:girl_scout_simple/components/constants.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:girl_scout_simple/components/globals.dart';
 import 'package:girl_scout_simple/components/cookie_dashboard.dart';
+import 'package:girl_scout_simple/components/cookie_widgets.dart';
 import 'package:girl_scout_simple/screens/seasonSetup.dart';
 import 'package:girl_scout_simple/components/globals.dart' as globals;
 
@@ -29,6 +31,7 @@ class _CookiesState extends State<Cookies>  with SingleTickerProviderStateMixin 
 
   TabController _controller;
   bool isSeasonStarted;
+  bool isSeasonOver;
 
   @override
   void initState() {
@@ -48,6 +51,45 @@ class _CookiesState extends State<Cookies>  with SingleTickerProviderStateMixin 
     print('refreshing cookie tracker...');
     print("tab index " + _controller.index.toString());
     setState(() {});
+  }
+
+  List<Widget> getSeasonWidgetList() {
+      List<Widget> returnList = new List<Widget>();
+      List<dynamic> seasons = globals.db.getSeasons();
+      String title;
+
+      seasons.sort((a, b) => b.year.compareTo(a.year));
+      for (Season season in seasons) {
+        if (DateTime.now().year == season.year)
+          title = 'Current Season';
+        else
+          title = season.year.toString();
+        print(season);
+        returnList.add(new Card(
+            elevation: 5,
+            margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: ListTile(
+                title: Text(title,
+                            textAlign: TextAlign.center,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline4),
+                trailing: Icon(Icons.keyboard_arrow_right),
+                onTap: () {
+                  /*
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) =>
+                        new MemberBadgeInfo(memberBadge: memberBadge))).then((value) => setState(() {}) );
+
+                     */
+                },
+                contentPadding: EdgeInsets.all(15.0),
+            )
+        ));
+      }
+
+      return returnList;
   }
 
   FloatingActionButton addCookieButton() {
@@ -76,75 +118,61 @@ class _CookiesState extends State<Cookies>  with SingleTickerProviderStateMixin 
       null;
   }
 
-  List<Widget> getCookieWidgetList({bool archive = false}) {
-    var returnList = new List<Widget>();
-    List<dynamic> cookies = globals.db.getCookies();
-
-    for (Cookie c in cookies) {
-      returnList.add(new Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          new AnimatedCookieCard(callingObj: this, isSetup: false, cookie: c)
-        ],
-      ));
-    }
-
-    return returnList;
-  }
-
   _showCookieMenu() {
     showMenu<String>(
-      context: context,
-      position: RelativeRect.fromLTRB(200.0, 450.0, 40.0, 0.0),
-      items: [
-        PopupMenuItem<String>(
-          child: const Text('Record Sale'),
-          value: '1',
-        ),
-        PopupMenuItem<String>(
-          child: const Text('Record Order'),
-          value: '2',
-        ),
-        PopupMenuItem<String>(
-          child: const Text('Record Tansfer'),
-          value: '3',
-        ),
-        PopupMenuItem<String>(
-          child: const Text('Add Cookie'),
-          value: '4',
-        ),
-      ],
-      elevation: 8.0,
-    )
-        .then<void>((String itemSelected) {
-      if (itemSelected == null) return;
+        context: context,
+        position: RelativeRect.fromLTRB(200.0, 450.0, 40.0, 0.0),
+        items: [
+          PopupMenuItem<String>(
+            child: const Text('Record Sale'),
+            value: '1',
+          ),
+          PopupMenuItem<String>(
+            child: const Text('Record Order'),
+            value: '2',
+          ),
+          PopupMenuItem<String>(
+            child: const Text('Record Tansfer'),
+            value: '3',
+          ),
+          PopupMenuItem<String>(
+            child: const Text('Add Cookie'),
+            value: '4',
+          ),
+        ],
+        elevation: 8.0,
+    ).then<void>((String itemSelected) {
+        if (itemSelected == null) return;
 
-      if (itemSelected == '1') {
-        //TODO: Implement a functionality
-        print("Record Sale");
-      }
-      if (itemSelected == '2') {
-        //TODO: Implement a functionality
-        print("Record Order");
-      }
-      if (itemSelected == '3') {
-        //TODO: Implement a functionality
-        print("Record Transfer");
-      }
-      if (itemSelected == '4') {
-        //TODO: Implement a functionality
-        print("Add Cookie");
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => new AddCookie())
-        ).then((value) => {
-          setState(() {})
-        },);
-      }
+        if (itemSelected == '1') {
+          print("Record Sale");
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => new RecordSale())
+          );
+        }
+        if (itemSelected == '2') {
+          //TODO: Implement a functionality
+          print("Record Order");
+        }
+        if (itemSelected == '3') {
+          //TODO: Implement a functionality
+          print("Record Transfer");
+        }
+        if (itemSelected == '4') {
+          //TODO: Implement a functionality
+          print("Add Cookie");
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => new AddCookie())
+          ).then((value) => {
+            setState(() {})
+          },);
+        }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    isSeasonOver = db.isSeasonOver();
     isSeasonStarted = db.isSeasonStarted();
 
     return MaterialApp(
@@ -180,7 +208,9 @@ class _CookiesState extends State<Cookies>  with SingleTickerProviderStateMixin 
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                               Center( // display buttons
-                                  child: Text("Cookie season has not been started", style: TextStyle(fontSize: 20.0),),
+                                  child: isSeasonOver?
+                                  Text("Cookie season is over", style: TextStyle(fontSize: 20.0),)  :
+                                  Text("Cookie season has not been started", style: TextStyle(fontSize: 20.0),)
                               ),
                               SizedBox(height: 20.0),
                               Center( // display buttons
@@ -196,22 +226,31 @@ class _CookiesState extends State<Cookies>  with SingleTickerProviderStateMixin 
                                               borderRadius: new BorderRadius.circular(8.0),
                                           ),
                                           color: kGreenColor,
-                                          onPressed: () async { //enable button
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => new SeasonSetup()
-                                                  )
-                                              ).then((value) => setState(() {}));
-                                          },
+                                          onPressed: isSeasonOver ?
+                                              null :
+                                              () async { //enable button
+                                                Navigator.push(context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => new SeasonSetup()
+                                                    )
+                                                ).then((value) => setState(() {}));
+                                              },
                                       ),
                                   ),
                               ),
                           ]
                       ),
                   ListView(
-                    children: getCookieWidgetList(),
+                    children: getCookieWidgetList(callingObj: this),
                   ),
-                  ListView(),
+                  ListView(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(children: getSeasonWidgetList())
+                      )
+                    ]
+                  ),
             ],
           ),
             floatingActionButton: addCookieButton()

@@ -346,16 +346,17 @@ class SaleAdapter extends TypeAdapter<Sale> {
       fields[0] as int,
       fields[1] as DateTime,
       fields[2] as double,
-      (fields[3] as HiveList)?.castHiveList(),
+      fields[3] as String,
       (fields[4] as HiveList)?.castHiveList(),
       (fields[5] as HiveList)?.castHiveList(),
+      (fields[6] as HiveList)?.castHiveList(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Sale obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.quantity)
       ..writeByte(1)
@@ -363,10 +364,12 @@ class SaleAdapter extends TypeAdapter<Sale> {
       ..writeByte(2)
       ..write(obj.salesPrice)
       ..writeByte(3)
-      ..write(obj.season)
+      ..write(obj.typeOfSale)
       ..writeByte(4)
-      ..write(obj.member)
+      ..write(obj.season)
       ..writeByte(5)
+      ..write(obj.member)
+      ..writeByte(6)
       ..write(obj.cookie);
   }
 
@@ -518,6 +521,46 @@ class SeasonAdapter extends TypeAdapter<Season> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is SeasonAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class CookiesAdapter extends TypeAdapter<Cookies> {
+  @override
+  final int typeId = 10;
+
+  @override
+  Cookies read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Cookies(
+      fields[0] as String,
+      fields[1] as String,
+      fields[2] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Cookies obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.cookieName)
+      ..writeByte(1)
+      ..write(obj.amount)
+      ..writeByte(2)
+      ..write(obj.cost);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CookiesAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

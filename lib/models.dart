@@ -178,15 +178,18 @@ class Sale extends HiveObject {
   double salesPrice;
 
   @HiveField(3)
-  HiveList season;
+  String typeOfSale;
 
   @HiveField(4)
-  HiveList member;
+  HiveList season;
 
   @HiveField(5)
+  HiveList member;
+
+  @HiveField(6)
   HiveList cookie;
 
-  Sale(this.quantity, this.dateOfSale, this.salesPrice, this.season, this.member, this.cookie);
+  Sale(this.quantity, this.dateOfSale, this.salesPrice, this.typeOfSale, this.season, this.member, this.cookie);
 
 }
 
