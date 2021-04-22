@@ -146,7 +146,7 @@ class _AddEditBadgeState extends State<AddEditBadge> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: kLightGreenColor,
       appBar: AppBar(
         iconTheme: IconThemeData(
           color: kWhiteColor, //change your color here
@@ -158,7 +158,7 @@ class _AddEditBadgeState extends State<AddEditBadge> {
             fontSize: 20.0,
           ),
         ),
-        backgroundColor: Theme.of(context).primaryColor,),
+        backgroundColor: kPrimaryColor,),
       body: SingleChildScrollView(
         child: Form(
             key: _formKey,
@@ -167,10 +167,7 @@ class _AddEditBadgeState extends State<AddEditBadge> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Name", style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline2,),
+                  Text("Name", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: kBlackColor),),
                   SizedBox(height: 5),
                   TextFormField( //name
                     decoration: InputDecoration(
@@ -188,10 +185,7 @@ class _AddEditBadgeState extends State<AddEditBadge> {
                     style: TextStyle(color: kDarkGreyColor, fontSize: 16),
                   ),
                   SizedBox(height: 10),
-                  Text("Description", style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline2,),
+                  Text("Description", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: kBlackColor)),
                   SizedBox(height: 5),
                   TextFormField(
                     keyboardType: TextInputType.multiline,
@@ -211,10 +205,7 @@ class _AddEditBadgeState extends State<AddEditBadge> {
                     style: TextStyle(color: kDarkGreyColor, fontSize: 16),
                   ),
                   SizedBox(height: 20),
-                  Text("Grade", style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline2,),
+                  Text("Grade", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: kBlackColor)),
                   SizedBox(height: 5),
                   DropdownButtonFormField<String>(
                     isExpanded: true,
@@ -245,10 +236,7 @@ class _AddEditBadgeState extends State<AddEditBadge> {
                     }).toList(),
                   ),
                   SizedBox(height: 20),
-                  Text("Requirements", style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline2,),
+                  Text("Requirements", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: kBlackColor)),
                   SizedBox(height: 5),
 
                   Column (
