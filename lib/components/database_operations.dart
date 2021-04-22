@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -97,48 +96,24 @@ class GirlScoutDatabase {
     await badgeBox.clear();
     await memberBox.clear();
     await gradeBox.clear();
-    */
+
+
+    print('loading members');
+    await db.loadMembers();
+    print('loading badges');
+    await db.loadBadges();
+
+     */
+    print('loading grades');
     await loadGrades();
 
     imageCache.clear();
 
     var seasonsBox = Hive.box('seasons');
     if (seasonsBox.get('isStarted') == null) seasonsBox.put('isStarted', false);
-    if (seasonsBox.get(2017) == null) loadTestSeasons() ;
-  }
-
-  void loadTestSeasons() {
-
-    var seasonBox = Hive.box('seasons');
-    var memberBox = Hive.box('members');
-    var cookieBox = Hive.box('cookies'); //open boxes
-    var saleBox = Hive.box('sales');
-    var orderBox = Hive.box('orders');
-    var transferBox = Hive.box('transfers');
-
-    var memberLink = HiveList(memberBox); // create a hive list to hold 1 member
-    var cookieLink = HiveList(cookieBox); // create a hive list to hold 1 member
-    var saleLink = HiveList(saleBox); // create a hive list to hold 1 member
-    var orderLink = HiveList(orderBox); // create a hive list to hold 1 member
-    var transferLink = HiveList(
-        transferBox); // create a hive list to hold 1 member
-
-    for(int year = 2017; year < 2021; year++) {
-      Season season = Season(
-          year,
-          DateTime(year, 1, 1),
-          memberLink,
-          cookieLink,
-          saleLink,
-          orderLink,
-          transferLink);
-
-      seasonBox.put(year, season);
-    }
   }
 
   Future<void> loadGrades() async {
-    print('loading grades');
     var gradeBox = Hive.box('grades');
 
     if (gradeBox.isEmpty) {
@@ -156,9 +131,24 @@ class GirlScoutDatabase {
       gradeBox.put('Ambassador', Grade(gradeEnum.AMBASSADOR, memberHiveList, badgeHiveList));
     }
   }
+/*
+  Future<void> loadMembers() async{
+    try {
+      var memberBox = Hive.box('members');
 
-
-
+      for (var i in memberBox.values)
+        {
+          print(i.name);
+          Grade grade = i.grade.first;
+          addScoutToList(describeEnum(grade.name), i.team, i.name, monthNames[i.birthday.month], i.birthday.day, i.birthday.year, i.photoPath);
+        }
+    }
+    catch (e) {
+      print("Load member failed");
+      return;
+    }
+  }
+*/
   Future<void> addMember (String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
     //try {
     print('adding member');
@@ -183,6 +173,15 @@ class GirlScoutDatabase {
       Grade gradeObj = gradeBox.get(grade); // get grade from db
       gradeObj.members.add(member); // add member to grade
       gradeObj.save();
+      /*
+    }
+    catch (e) {
+      print(e);
+      print("Add member failed");
+      return;
+    }
+
+       */
   }
 
   Future<void> editMember (Member member, String grade, String team, String name, String birthMonth, int birthDay, int birthYear, String photoPath) async{
@@ -298,7 +297,7 @@ class GirlScoutDatabase {
 
  */
 
-  void addBadge(String grade, String name, String description, List<String> requirements, String photoPath) {
+  void addBadge(String grade, String name, String description, List<String> requirements, String photoLocation) {
     try {
       var badgeBox = Hive.box('badges'); //open boxes
       var gradeBox = Hive.box('grades');
@@ -309,7 +308,7 @@ class GirlScoutDatabase {
 
       var badgeTagLink = HiveList(badgeTagBox); // HiveList to initialize badge's BadgeTags
 
-      Badge badge = Badge(name, description, gradeLink, requirements, photoPath, badgeTagLink); // create member object based on data
+      Badge badge = Badge(name, description, gradeLink, requirements, photoLocation, badgeTagLink); // create member object based on data
       badgeBox.add(badge); // add member to db
 
       Grade gradeObj = gradeBox.get(grade); // get grade from db
@@ -323,7 +322,7 @@ class GirlScoutDatabase {
     }
   }
   
-  void editBadge(Badge badge, String grade, String name, String description, List<String> requirements, String photoPath) async {
+  void editBadge(Badge badge, String grade, String name, String description, List<String> requirements, String photoLocation) async {
     print('Editing badge');
     var badgeBox = Hive.box('badges'); //open boxes
     var gradeBox = Hive.box('grades');
@@ -350,15 +349,65 @@ class GirlScoutDatabase {
     badge.description = description;
     badge.requirements = requirements;
 
-    if(badge.photoPath != photoPath) { // if the photo is changed
+    if(badge.photoPath != photoLocation) { // if the photo is changed
       File(badge.photoPath).delete(); // delete old photo
-      badge.photoPath = photoPath; //set new photo
+      badge.photoPath = photoLocation; //set new photo
     }
 
     badge.save();
 
     }
 
+  Future<void> addCookie (String cookie, String amount, String price) async{
+    //try {
+    print('adding cookie');
+    var cookieBox = Hive.box('cookies'); //open boxes
+    //var amountBox = Hive.box('amount');
+    //var cookieTagBox = Hive.box('price');
+
+   // var amountLink = HiveList(amountBox);
+    //amountLink.add(amountBox.get(amount));
+
+   // var cookieTagLink = HiveList(cookieTagBox);
+
+    Cookie cookieObj = Cookie(cookie, double.parse(price), int.parse(amount));
+    cookieBox.add(cookieObj);
+
+
+  }
+
+  List<dynamic> getAllCookie() {
+    var cookieBox = Hive.box('cookies');
+    HiveList allCookieList;
+    Sale sale;
+
+    print('Getting a list of all cookies');
+
+    allCookieList = HiveList(cookieBox);
+    for(sale in cookieBox.values) {
+      allCookieList.addAll(sale.cookie);
+    }
+
+    return allCookieList.toList();
+  }
+
+  double getTotalPrice(){
+    List<dynamic> list = getCookieRestock();
+    double n = 0;
+    for(int i = 0; i < list.length; i++){
+      n += (list[i].price * list[i].quantity);
+    }
+    return n;
+  }
+
+  int getTotalCookiesSold(){
+    List<dynamic> list = getCookieRestock();
+    int n = 0;
+    for(int i = 0; i < list.length; i++){
+      n += list[i].quantity;
+    }
+    return n;
+  }
   Badge getBadge(String name)
   {
     print('getting badge');
@@ -431,15 +480,37 @@ class GirlScoutDatabase {
     BadgeTag badgeTag = BadgeTag(badgeLink, memberLink, requirementsMet); // create badgeTag
 
     badgeTagBox.add(badgeTag); // add badgeTag to db
+
+    /*
+    for (var i in badgeTagBox.values) {
+      print('badge tag box values');
+      print(i.status);
+    }
+  */
+
     badge.badgeTags.add(badgeTag); // link badgeTag to badge
     member.badgeTags.add(badgeTag); // link badgeTag to member
     member.save();
     badge.save();
     return 1;
+    /*
+    BadgeTag memberbadge = member.badgeTags.first;
+    print(memberbadge.status);
+    */
 
+    /*
+    }
+    catch (e) {
+      print(e);
+      print("Add member failed");
+      return;
+    }
+
+       */
   }
 
   List<dynamic> getMemberBadges (String name) {
+    //try {
     print('getting member\'s badges');
 
     var badgeTagBox = Hive.box('badgeTags');
@@ -454,10 +525,20 @@ class GirlScoutDatabase {
     print('member has no badges');
     return null; // return null if no badges
 
+    /*
+    }
+    catch (e) {
+      print(e);
+      print("Add member failed");
+      return;
+    }
+
+       */
   }
 
 
   List<dynamic> getUndistributedMemberBadges() {
+    //try {
     print('getting undistributed member\'s badges');
 
     var badgeTagBox = Hive.box('badgeTags');
@@ -472,26 +553,15 @@ class GirlScoutDatabase {
     print('No undistributed badges');
     return null; // return null if no badges
 
-  }
+    /*
+    }
+    catch (e) {
+      print(e);
+      print("Add member failed");
+      return;
+    }
 
-  Future<void> addCookie (String name, int quantity, double price, String photoPath) async{
-    print('adding cookie');
-    var cookieBox = Hive.box('cookies'); //open boxes
-    var seasonBox = Hive.box('seasons');
-    var saleBox = Hive.box('sales');
-    var orderBox = Hive.box('orders');
-    var transferBox = Hive.box('transfers');
-
-    var seasonLink = HiveList(seasonBox); // HiveList to initialize cookie's seasons
-    var saleLink = HiveList(saleBox); // HiveList to initialize cookie's seasons
-    var orderLink = HiveList(orderBox); // HiveList to initialize cookie's seasons
-    var transferLink = HiveList(transferBox); // HiveList to initialize cookie's seasons
-
-
-    Cookie cookie = Cookie(name, price, quantity, photoPath, seasonLink, saleLink, orderLink, transferLink);
-    cookieBox.add(cookie); //open boxes
-
-
+       */
   }
 
   dynamic getCookie() {
@@ -504,7 +574,7 @@ class GirlScoutDatabase {
 
   List<dynamic> getCookies() {
     //try {
-    print('getting cookies');
+    print('getting cookie names');
 
     var cookieBox = Hive.box('cookies');
     return cookieBox.values.toList();
@@ -529,115 +599,27 @@ class GirlScoutDatabase {
     return cookieRestock.toList(); // return null if no
   }
 
-  dynamic recordSale (int quantity, DateTime dateOfSale, String typeOfSale, Member member, Cookie cookie) {
-    //try {
-    print('recording sale');
 
-    var memberBox = Hive.box('members'); //open boxes
-    var cookieBox = Hive.box('cookies');
-    var seasonBox = Hive.box('seasons');
-    var saleBox = Hive.box('sales');
-
-    Season season = seasonBox.get('currentSeason');
-    var seasonLink = HiveList(seasonBox); // create a hive list to hold 1 season
-    seasonLink.add(season); // link sale to season
-
-    var memberLink = HiveList(memberBox); // create a hive list to hold 1 member
-    memberLink.add(member); // link sale to member
-
-    var cookieLink = HiveList(cookieBox);
-    cookieLink.add(cookie); // link sale to cookie
-
-    Sale sale = Sale(quantity, dateOfSale, cookie.price, typeOfSale, seasonLink, memberLink, cookieLink);
-
-    saleBox.add(sale); // add sale to db
-
-    season.sales.add(sale); // link season to sale
-    season.save();
-    member.sales.add(sale); // link member to sale
-    member.save();
-    cookie.sales.add(sale); // link cookie to sale
-    cookie.save();
-
-    //update inventory
-    return 1;
-  }
 
   void startSeason () {
-    var now = DateTime.now();
-    var today = DateTime(now.year, now.month, now.day);
     var seasonBox = Hive.box('seasons');
 
-    print(seasonBox.get(today.year));
-
-    if (seasonBox.get(today.year) == null) {
-        var memberBox = Hive.box('members');
-        var cookieBox = Hive.box('cookies'); //open boxes
-        var saleBox = Hive.box('sales');
-        var orderBox = Hive.box('orders');
-        var transferBox = Hive.box('transfers');
-
-        var memberLink = HiveList(memberBox); // create a hive list to hold 1 member
-        var cookieLink = HiveList(cookieBox); // create a hive list to hold 1 member
-        var saleLink = HiveList(saleBox); // create a hive list to hold 1 member
-        var orderLink = HiveList(orderBox); // create a hive list to hold 1 member
-        var transferLink = HiveList(
-            transferBox); // create a hive list to hold 1 member
-
-        Season season = Season(
-            today.year,
-            today,
-            memberLink,
-            cookieLink,
-            saleLink,
-            orderLink,
-            transferLink);
-
-        seasonBox.put('isStarted', true);
-        seasonBox.put('currentSeason', season);
-    }
-  }
-
-  List<dynamic> getSeasons() {
-      var seasonBox = Hive.box('seasons');
-
-      var seasons = seasonBox.toMap();
-      seasons.remove('isStarted');
-      seasons.remove('currentSeason');
-      seasons.remove(2021);
-
-      print('keys for all seasons: ' + seasons.keys.toString());
-      print('values for all seasons: ' + seasons.values.toString());
-
-      return seasons.values.toList();
+    seasonBox.put('isStarted', true);
   }
 
   void endSeason () {
     var seasonBox = Hive.box('seasons');
 
-    Season season = seasonBox.get('currentSeason'); // get current season
-    seasonBox.put('isStarted', false); // set season started to false
-    seasonBox.put('currentSeason', null); // set the current season to null
-    //seasonBox.put(season.year, season); // save season to box
-
+    seasonBox.put('isStarted', false);
   }
+
 
   bool isSeasonStarted() {
     var seasonBox = Hive.box('seasons');
 
-    print('keys in season box: ' + seasonBox.keys.toString());
-    print('values in season box: ' + seasonBox.values.toString());
-
     return seasonBox.get('isStarted');
   }
 
-  bool isSeasonOver() {
-    var now = DateTime.now();
 
-    var seasonBox = Hive.box('seasons');
-
-    print(seasonBox.get(now.year));
-    return seasonBox.get(now.year) == null ? false : true;
-  }
 
 }

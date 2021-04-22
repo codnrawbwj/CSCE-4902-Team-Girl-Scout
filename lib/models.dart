@@ -146,6 +146,10 @@ class Cookie extends HiveObject {
   int quantity;
 
   @HiveField(3)
+  DateTime date;
+
+/*
+  @HiveField(3)
   String photoPath;
 
   @HiveField(4)
@@ -162,8 +166,9 @@ class Cookie extends HiveObject {
 
   @HiveField(8)
   String isArchived;
-
-  Cookie(this.name, this.price, this.quantity, this.photoPath, this.seasons, this.sales, this.orders, this.transfers, {this.isArchived = 'No'});
+*/
+  //Cookie(this.name, this.price, this.quantity, this.photoPath, this.seasons, this.sales, this.orders, this.transfers, {this.isArchived = 'No'});
+  Cookie(this.name, this.price, this.quantity);
 }
 
 @HiveType(typeId: 6)

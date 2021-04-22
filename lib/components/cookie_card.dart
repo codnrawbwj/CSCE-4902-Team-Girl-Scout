@@ -25,13 +25,15 @@ class _AnimatedCookieCard extends State<AnimatedCookieCard> {
   String imageLocation;
   String price;
   String quantity;
+  String date;
 
   @override
   Widget build(BuildContext context) {
     name = widget.cookie.name;
-    imageLocation = widget.cookie.photoPath;
+    //imageLocation = widget.cookie.photoPath;
     price = widget.cookie.price.toString();
     quantity = widget.cookie.quantity.toString();
+    date = widget.cookie.date.toString();
 
     return AnimatedContainer(
       margin: EdgeInsets.fromLTRB(15, 15, 15, 0),
