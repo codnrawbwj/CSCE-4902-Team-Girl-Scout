@@ -288,15 +288,12 @@ class CookieAdapter extends TypeAdapter<Cookie> {
       fields[0] as String,
       fields[1] as double,
       fields[2] as int,
-      /*
       fields[3] as String,
       (fields[4] as HiveList)?.castHiveList(),
       (fields[5] as HiveList)?.castHiveList(),
       (fields[6] as HiveList)?.castHiveList(),
       (fields[7] as HiveList)?.castHiveList(),
       isArchived: fields[8] as String,
-
-       */
     );
   }
 
@@ -309,8 +306,7 @@ class CookieAdapter extends TypeAdapter<Cookie> {
       ..writeByte(1)
       ..write(obj.price)
       ..writeByte(2)
-      ..write(obj.quantity);
-      /*
+      ..write(obj.quantity)
       ..writeByte(3)
       ..write(obj.photoPath)
       ..writeByte(4)
@@ -323,8 +319,6 @@ class CookieAdapter extends TypeAdapter<Cookie> {
       ..write(obj.transfers)
       ..writeByte(8)
       ..write(obj.isArchived);
-
-       */
   }
 
   @override
@@ -527,46 +521,6 @@ class SeasonAdapter extends TypeAdapter<Season> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is SeasonAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class CookiesAdapter extends TypeAdapter<Cookies> {
-  @override
-  final int typeId = 10;
-
-  @override
-  Cookies read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return Cookies(
-      fields[0] as String,
-      fields[1] as String,
-      fields[2] as String,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, Cookies obj) {
-    writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj.cookieName)
-      ..writeByte(1)
-      ..write(obj.amount)
-      ..writeByte(2)
-      ..write(obj.cost);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CookiesAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

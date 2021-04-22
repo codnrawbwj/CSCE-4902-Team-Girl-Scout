@@ -146,10 +146,6 @@ class Cookie extends HiveObject {
   int quantity;
 
   @HiveField(3)
-  DateTime date;
-
-/*
-  @HiveField(3)
   String photoPath;
 
   @HiveField(4)
@@ -166,9 +162,8 @@ class Cookie extends HiveObject {
 
   @HiveField(8)
   String isArchived;
-*/
-  //Cookie(this.name, this.price, this.quantity, this.photoPath, this.seasons, this.sales, this.orders, this.transfers, {this.isArchived = 'No'});
-  Cookie(this.name, this.price, this.quantity);
+
+  Cookie(this.name, this.price, this.quantity, this.photoPath, this.seasons, this.sales, this.orders, this.transfers, {this.isArchived = 'No'});
 }
 
 @HiveType(typeId: 6)
@@ -259,18 +254,4 @@ class Season extends HiveObject {
   HiveList transfers;
   
   Season(this.year, this.startDate, this.members, this.cookies, this.sales, this.orders, this.transfers);
-}
-
-@HiveType(typeId: 10)
-class Cookies extends HiveObject{
-  @HiveField(0)
-  String cookieName;
-
-  @HiveField(1)
-  String amount;
-
-  @HiveField(2)
-  String cost;
-
-  Cookies(this.cookieName, this.amount, this.cost);
 }
