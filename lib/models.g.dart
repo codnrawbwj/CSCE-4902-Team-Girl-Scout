@@ -288,12 +288,15 @@ class CookieAdapter extends TypeAdapter<Cookie> {
       fields[0] as String,
       fields[1] as double,
       fields[2] as int,
+      /*
       fields[3] as String,
       (fields[4] as HiveList)?.castHiveList(),
       (fields[5] as HiveList)?.castHiveList(),
       (fields[6] as HiveList)?.castHiveList(),
       (fields[7] as HiveList)?.castHiveList(),
       isArchived: fields[8] as String,
+
+       */
     );
   }
 
@@ -306,7 +309,8 @@ class CookieAdapter extends TypeAdapter<Cookie> {
       ..writeByte(1)
       ..write(obj.price)
       ..writeByte(2)
-      ..write(obj.quantity)
+      ..write(obj.quantity);
+      /*
       ..writeByte(3)
       ..write(obj.photoPath)
       ..writeByte(4)
@@ -319,6 +323,8 @@ class CookieAdapter extends TypeAdapter<Cookie> {
       ..write(obj.transfers)
       ..writeByte(8)
       ..write(obj.isArchived);
+
+       */
   }
 
   @override

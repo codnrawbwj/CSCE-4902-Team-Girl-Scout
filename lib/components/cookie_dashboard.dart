@@ -41,7 +41,7 @@ class _CookieDashboardState extends State<CookieDashboard> {
                     .textTheme
                     .subtitle1,),
                 leading: CircleAvatar(
-                    backgroundImage: FileImage(File(cookie.photoPath))
+                    //backgroundImage: FileImage(File(cookie.photoPath))
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right),
                 onTap: () {
@@ -75,6 +75,15 @@ class _CookieDashboardState extends State<CookieDashboard> {
       weeklyCookieSales[day - 1] = earnedBadges.length;
     }
 */
+    //https://cs.uwaterloo.ca/~alopez-o/math-faq/node73.html
+    int k = now.day;
+    int m = now.month;
+    int c = ((now.year - now.year%1000)/(100)).round();
+    int y = now.year%1000;
+    int w = ((k + (2.6 * m - .2).floor() - 2*c + y + (y/4).floor() + (c/4).floor())%7) + 2;
+
+    weeklyCookieSales[w] += globals.db.getTotalCookiesSold();
+
       var cookieSales = [
         _Day('Sun', weeklyCookieSales[0]),
         _Day('Mon', weeklyCookieSales[1]),
@@ -95,6 +104,7 @@ class _CookieDashboardState extends State<CookieDashboard> {
               colorFn: (_Day cookie, _) => charts.ColorUtil.fromDartColor(Colors.black)
           )
       );
+
   }
 
   _getCookieSalesPerFlavorData() {
@@ -185,9 +195,9 @@ class _CookieDashboardState extends State<CookieDashboard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(' Weekly Sales:  \$' + globals.db.getMemberCount().toString(), style: Theme.of(context).textTheme.bodyText2,),
+              Text(' Weekly Sales:  \$' + globals.db.getTotalPrice().toString(), style: Theme.of(context).textTheme.bodyText2,),
               SizedBox(width: 50),
-              Text(' Cookies Sold:  ' + globals.db.getBadgeCount().toString(), style: Theme.of(context).textTheme.bodyText2,),
+              Text(' Cookies Sold:  ' + globals.db.getTotalCookiesSold().toString(), style: Theme.of(context).textTheme.bodyText2,),
             ]
           ),
           ReusableCard(title: 'Cookie Restock',

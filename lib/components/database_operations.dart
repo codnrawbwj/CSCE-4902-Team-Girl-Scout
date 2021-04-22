@@ -362,26 +362,18 @@ class GirlScoutDatabase {
     //try {
     print('adding cookie');
     var cookieBox = Hive.box('cookies'); //open boxes
-    // var amountBox = Hive.box('amount');
-    // var priceTagBox = Hive.box('price');
+    //var amountBox = Hive.box('amount');
+    //var cookieTagBox = Hive.box('price');
 
-    var cookieLink = HiveList(cookieBox); // create a hive list to hold 1 grade
-    print(cookieBox.get(cookie));
-    cookieLink.add(cookieBox.get(cookie)); // add the member's grade to the list
+   // var amountLink = HiveList(amountBox);
+    //amountLink.add(amountBox.get(amount));
 
-    Cookies cookies = Cookies(cookie, amount, price);
-    // priceTagBox.add(cookies);
-    //
-    // var priceTagHiveList = HiveList(priceTagBox); // HiveList to initialize member's BadgeTags
-    /*
-    }
-    catch (e) {
-      print(e);
-      print("Add member failed");
-      return;
-    }
+   // var cookieTagLink = HiveList(cookieTagBox);
 
-       */
+    Cookie cookieObj = Cookie(cookie, double.parse(price), int.parse(amount));
+    cookieBox.add(cookieObj);
+
+
   }
 
   List<dynamic> getAllCookie() {
@@ -399,6 +391,23 @@ class GirlScoutDatabase {
     return allCookieList.toList();
   }
 
+  double getTotalPrice(){
+    List<dynamic> list = getCookieRestock();
+    double n = 0;
+    for(int i = 0; i < list.length; i++){
+      n += (list[i].price * list[i].quantity);
+    }
+    return n;
+  }
+
+  int getTotalCookiesSold(){
+    List<dynamic> list = getCookieRestock();
+    int n = 0;
+    for(int i = 0; i < list.length; i++){
+      n += list[i].quantity;
+    }
+    return n;
+  }
   Badge getBadge(String name)
   {
     print('getting badge');

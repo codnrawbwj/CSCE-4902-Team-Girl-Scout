@@ -24,6 +24,11 @@ class _SampleCookieState extends State<SampleCookie> {
   String name;
   int amount;
   double price;
+  String month;
+  int day;
+  int year;
+  var now = DateTime.now();
+  //var today = DateTime(now.year, now.month, now.day);
 
   final cookieNameController = TextEditingController();
   final amountController = TextEditingController();
@@ -112,6 +117,119 @@ class _SampleCookieState extends State<SampleCookie> {
                     style: TextStyle(color: kDarkGreyColor, fontSize: 16),
                   ),
                   SizedBox(height: 20),
+                  Text("Today's Date", style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline2,),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.3,
+                        child: DropdownButtonFormField<String>(
+                          isExpanded: true,
+                          value: month,
+                          hint: Text('month'),
+                          elevation: 10,
+                          style: TextStyle(fontSize: 16, color: kDarkGreyColor),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              month = newValue;
+                            });
+                          },
+                          validator: (choice) => choice == null ?
+                          "Please enter today's date" : null,
+                          items: <String>[
+                            'January',
+                            'February',
+                            'March',
+                            'April',
+                            'May',
+                            'June',
+                            'July',
+                            'August',
+                            'September',
+                            'October',
+                            'November',
+                            'December'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      SizedBox(width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.05),
+                      Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.2,
+                        child: DropdownButtonFormField<int>(
+                          isExpanded: true,
+                          value: day,
+                          hint: Text('day'),
+                          elevation: 10,
+                          style: TextStyle(fontSize: 16, color: kDarkGreyColor),
+                          onChanged: (int newValue) {
+                            setState(() {
+                              day = newValue;
+                            });
+                          },
+                          validator: (choice) => choice == null ?
+                          "Please enter today's date" : null,
+                          items: getDays().map<DropdownMenuItem<int>>((int value) {
+                            return DropdownMenuItem<int>(
+                              value: value,
+                              child: Text(value.toString()),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      SizedBox(width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.05),
+                      Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.3,
+                        child: DropdownButtonFormField<int>(
+                          isExpanded: true,
+                          value: year,
+                          hint: Text('year'),
+                          elevation: 10,
+                          style: TextStyle(fontSize: 16, color: kDarkGreyColor),
+                          onChanged: (int newValue) {
+                            setState(() {
+                              year = newValue;
+                            });
+                          },
+                          validator: (choice) => choice == null ?
+                          "Please enter today's date" : null,
+                          items:
+                          <int>[
+                            for(var i=now.year-19; i<=now.year-7; i++) i
+                          ].map<DropdownMenuItem<int>>((int value) {
+                            return DropdownMenuItem<int>(
+                              value: value,
+                              child: Text(value.toString()),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 50.0),
@@ -149,4 +267,20 @@ class _SampleCookieState extends State<SampleCookie> {
       ),
     );
   }
+  List<int> getDays() {
+    List<int> days;
+
+    days = <int>[for(var i = 1; i <= 28; i++) i];
+    if(month != 'February'){
+      days.addAll(<int>[29, 30]);
+    }
+    if(month == 'January' || month == 'March' ||
+        month == 'May' || month == 'July' ||
+        month == 'August' || month == 'October' ||
+        month == 'December') {
+      days.add(31);
+    }
+    return days;
+  }
 }
+
