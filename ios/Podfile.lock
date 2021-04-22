@@ -1,6 +1,10 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_money_formatter (0.0.1):
+    - Flutter
   - image_picker (0.0.1):
+    - Flutter
+  - moneytextformfield (0.0.1):
     - Flutter
   - path_provider (0.0.1):
     - Flutter
@@ -9,15 +13,21 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_money_formatter (from `.symlinks/plugins/flutter_money_formatter/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - moneytextformfield (from `.symlinks/plugins/moneytextformfield/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - simple_image_crop (from `.symlinks/plugins/simple_image_crop/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_money_formatter:
+    :path: ".symlinks/plugins/flutter_money_formatter/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  moneytextformfield:
+    :path: ".symlinks/plugins/moneytextformfield/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   simple_image_crop:
@@ -25,7 +35,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_money_formatter: d0d18ddc5be333fad8d09964d741b59fa11a91dc
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  moneytextformfield: e6e6855de28568922701dcde9198a4c7f17e2c79
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   simple_image_crop: 7bc768de8b5fa16adafb0c96557bba83ec6f734e
 
